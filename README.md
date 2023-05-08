@@ -9,6 +9,4 @@ yarn dev
 # or
 pnpm dev
 
-
-
 ##  npx prisma generate
