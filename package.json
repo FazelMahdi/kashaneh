@@ -10,6 +10,11 @@
   },
   "dependencies": {
     "@apollo/client": "^3.7.12",
+    "@emotion/cache": "^11.11.0",
+    "@emotion/react": "^11.11.0",
+    "@emotion/server": "^11.11.0",
+    "@emotion/styled": "^11.11.0",
+    "@mui/material": "^5.12.3",
     "@prisma/client": "^4.13.0",
     "@types/react": "18.0.37",
     "@types/react-dom": "18.0.11",
