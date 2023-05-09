@@ -1,8 +1,11 @@
-## Getting Started
+Kashane CRM
 
-First, run the development server:
+Sale managment
 
-```bash
-npm run dev
-# or
-##  npx prisma generate
+includes 6 phases:
+
+- Reaching a potential customer.
+- Customer acquisition.
+- Conversion.
+- Customer retention.
+- Customer loyalty.
