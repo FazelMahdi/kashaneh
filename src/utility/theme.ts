@@ -6,17 +6,17 @@ export const roboto = Roboto({
   weight: ['300', '400', '500', '700'],
   subsets: ['latin'],
   display: 'swap',
-  fallback: ['Helvetica', 'Arial', 'sans-serif'],
+  fallback: ['iranyekan', 'Arial', 'sans-serif'],
 });
 
 // Create a theme instance.
 const theme = createTheme({
   palette: {
     primary: {
-      main: '#556cd6',
+      main: '#d7a85f',
     },
     secondary: {
-      main: '#19857b',
+      main: '#fff',
     },
     error: {
       main: red.A400,
