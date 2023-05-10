@@ -1,0 +1,48 @@
+﻿$weights: (Bold: bold,
+  Thin: 100,
+  Light: 300,
+  Medium: 500,
+  ExtraBold: 800,
+  Black: 850,
+  ExtraBlack: 900,
+  Regular: normal,
+);
+
+// @each $name, $weight in $weights {
+//   @font-face {
+//     font-family: iranyekan;
+//     font-style: normal;
+//     font-weight: $weight;
+//     src: local('IRANYekanWeb#{$name}'),
+//       url('~../fonts/iranyekan/#{$name}.woff2') format('woff2');
+//     unicode-range: U+0600-06ff, U+200c-200e, U+2010-2011, U+FB50-FDFF, U+FE80-FEFC;
+//   }
+// }
+
+@each $name,
+$weight in $weights {
+  @font-face {
+    font-family: iranyekan;
+    font-style: normal;
+    font-display: swap;
+    font-weight: $weight;
+    src: local('iranyekanweb#{$name}fanum'),
+    url('../fonts/woff/#{$name}.woff') format('woff'),
+    url('../fonts/iranyekanFaNum/#{$name}.woff2') format('woff2');
+    unicode-range: U+0030-0039, U+0600-06ff, U+200c-200e, U+2010-2011, U+FB50-FDFF, U+FE80-FEFC;
+  }
+}
+
+/* roboto-latin-400-normal*/
+// $roboto-path: '~@fontsource/roboto/files';
+
+// @font-face {
+//   font-family: 'Roboto';
+//   font-style: normal;
+//   font-display: swap;
+//   font-weight: 400;
+//   src: local('Roboto'), url('#{$roboto-path}/roboto-latin-400-normal.woff2') format('woff2'),
+//     url('#{$roboto-path}/roboto-all-400-normal.woff') format('woff');
+//   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F,
+//     U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+// }
