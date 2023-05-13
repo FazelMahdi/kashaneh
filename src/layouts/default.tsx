@@ -134,7 +134,9 @@ export default function DefaultLayout({ children }) {
           </Toolbar>
         </Container>
       </AppBar>
-      <div>{children}</div>
+      <Container maxWidth={false} className='my-5'>
+        {children}
+      </Container>
     </>
   );
 }
