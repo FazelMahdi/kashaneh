@@ -2,7 +2,6 @@ import MenuIcon from '@mui/icons-material/Menu';
 import { Avatar, Tooltip } from '@mui/material';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
 import IconButton from '@mui/material/IconButton';
 import Menu from '@mui/material/Menu';
@@ -10,9 +9,31 @@ import MenuItem from '@mui/material/MenuItem';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Image from 'next/image';
+import Link from 'next/link';
 import { MouseEvent, useState } from 'react';
 
-const pages = ['فروش', 'حسابداری', 'مشتریان'];
+const pages = [
+  {
+    title: 'فروش',
+    path: '/sales/new-sale'
+  },
+  {
+    title: 'سفارش جاری',
+    path: ''
+  },
+  {
+    title: 'سفارشات',
+    path: ''
+  },
+  {
+    title: 'حسابداری',
+    path: ''
+  },
+  {
+    title: 'مشتریان',
+    path: ''
+  },
+];
 const settings = ['مهدی فاضلی', 'تنظیمات', 'خروج'];
 
 export default function DefaultLayout({ children }) {
@@ -83,22 +104,20 @@ export default function DefaultLayout({ children }) {
                   display: { xs: 'block', md: 'none' },
                 }}
               >
-                {pages.map((page) => (
-                  <MenuItem key={page} onClick={handleCloseNavMenu}>
-                    <Typography className='text-gray-700 font-bold' textAlign="center">{page}</Typography>
+                {pages.map((page, index) => (
+                  <MenuItem key={index} onClick={handleCloseNavMenu}>
+                    <Link href={page.path} className='text-gray-700 font-bold text-center'>
+                      {page.title}
+                    </Link>
                   </MenuItem>
                 ))}
               </Menu>
             </Box>
             <Box className='grow hidden md:flex'>
-              {pages.map((page) => (
-                <Button
-                  key={page}
-                  onClick={handleCloseNavMenu}
-                  className='text-gray-700 font-bold my-2 block'
-                >
-                  {page}
-                </Button>
+              {pages.map((page, i) => (
+                <Link href={page.path} key={i + 'mo'} className='text-gray-700 font-bold text-center mx-3'>
+                  {page.title}
+                </Link>
               ))}
             </Box>
 

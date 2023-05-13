@@ -15,6 +15,25 @@ const layouts = {
 
 const clientSideEmotionCache = createEmotionCache();
 
+// const router = useRouter();
+
+// useEffect(() => {
+//     const handleRouteChange = (url, { shallow }) => {
+//         console.log(
+//             `App is changing to ${url} ${shallow ? 'with' : 'without'
+//             } shallow routing`,
+//         );
+//     };
+
+//     router.events.on('routeChangeStart', handleRouteChange);
+
+//     // If the component is unmounted, unsubscribe
+//     // from the event with the `off` method:
+//     return () => {
+//         router.events.off('routeChangeStart', handleRouteChange);
+//     };
+// }, [router]);
+
 export default function App({ Component, emotionCache = clientSideEmotionCache, pageProps }) {
     const Layout = layouts[Component.layout ?? 'default'] || ((children) => <>{children}</>);
 
