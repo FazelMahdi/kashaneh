@@ -28,11 +28,18 @@ const theme = createTheme({
   },
   components: {
     // Name of the component
-    MuiButtonBase: {
-      defaultProps: {
-        // The props to change the default for.
-        // disableRipple: true, // No more ripple, on the whole application 💣!
-      },
+    MuiButton: {
+      styleOverrides: {
+        root: () => ({
+          fontweight: 500,
+          color: 'black'
+        })
+
+      }
+      // defaultProps: {
+      //   // The props to change the default for.
+      //   // disableRipple: true, // No more ripple, on the whole application 💣!
+      // },
     },
   },
 });

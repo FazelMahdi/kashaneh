@@ -1,5 +1,6 @@
+import CalcWeightDialog from '@/components/sales/calc-weight-dialog';
 import PageHeader from "@/components/utils/page-header";
-import { Autocomplete, Box, Button, Chip, Container, Divider, InputAdornment, TextField } from "@mui/material";
+import { Autocomplete, Box, Button, Chip, Container, Divider, InputAdornment, MenuItem, Select, TextField } from "@mui/material";
 import { useState } from "react";
 
 interface INewSale {
@@ -9,7 +10,7 @@ interface INewSale {
     carNumber: string;
     carWeightEmpty: number | null;
     orderWeight: number | null;
-
+    productType: number | null;
 
 }
 
@@ -22,7 +23,10 @@ export default function NewSale() {
         carNumber: '',
         carWeightEmpty: null,
         orderWeight: null,
+        productType: 1
     })
+
+    const [calcWeightDialog, setCalcWeightDialog] = useState<Boolean>(false)
 
     const handleChange = (evt) => {
         const value = evt.target.value;
@@ -104,7 +108,6 @@ export default function NewSale() {
                                     <div className="flex justify-start items-center  w-full md:w-6/12 mb-8">
                                         <TextField
                                             label="وزن ماشین (بدون بار)"
-                                            placeholder=""
                                             name="carWeightEmpty"
                                             className="w-full ml-2"
                                             onChange={(e) => handleChange(e)}
@@ -113,10 +116,21 @@ export default function NewSale() {
                                                 endAdornment: <InputAdornment position="end">کیلوگرم <small className="mr-1">(تُن * 1000) </small></InputAdornment>,
                                             }}
                                         />
-                                        <Button variant="outlined" size="large">
+                                        <Button variant="outlined" size="large" onClick={() => setCalcWeightDialog(true)}>
                                             محاسبه
                                         </Button>
                                     </div>
+                                    <Select
+                                        name="productType"
+                                        onChange={(e) => handleChange(e)}
+                                        label="نوع محصول"
+                                        value={form.productType}
+                                        className="w-full md:w-6/12 mb-8 text-gray-700"
+                                    >
+                                        {breakTypeList.map((item, index) => (
+                                            <MenuItem key={index + 'breakkey'} value={item.id}>{item.label}</MenuItem>
+                                        ))}
+                                    </Select>
                                     <TextField
                                         label="مقدار سفارش"
                                         placeholder=""
@@ -132,6 +146,7 @@ export default function NewSale() {
                                         صدور مجوز بارگیری
                                     </Button>
                                 </Box>
+                                {calcWeightDialog && <CalcWeightDialog show={calcWeightDialog} onClose={() => setCalcWeightDialog(false)} onSome={(val) => setForm((prev) => ({ ...prev, carWeightEmpty: val }))} />}
                             </>
                         )
                     }
@@ -149,6 +164,11 @@ interface IVehicleType {
     capacity: string;
 }
 
+interface IBreakType {
+    id: number;
+    label: string;
+}
+
 const vehiclesList: readonly IVehicleType[] = [
     { id: 1, label: 'تک', capacity: 'تا ۱۰ تن' },
     { id: 2, label: 'جفت', capacity: 'تا ۱۵ تن' },
@@ -164,4 +184,10 @@ const vehiclesList: readonly IVehicleType[] = [
     { id: 12, label: 'وانت پیکان', capacity: '۴۰۰ تا ۷۰۰ کیلو' },
     { id: 13, label: 'وانت مزدا', capacity: '۷۵۰ کیلو' },
     { id: 14, label: 'وانت نیسان', capacity: '۱۵۰۰ تا ۲۰۰۰ کیلو' },
+];
+const breakTypeList: readonly IBreakType[] = [
+    { id: 1, label: 'آجر فشاری' },
+    { id: 2, label: 'آجر سفال' },
+    { id: 4, label: 'آجر ضایعات' },
+    { id: 3, label: 'ماسه' },
 ];

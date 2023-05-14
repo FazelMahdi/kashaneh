@@ -115,9 +115,9 @@ export default function DefaultLayout({ children }) {
             </Box>
             <Box className='grow hidden md:flex'>
               {pages.map((page, i) => (
-                <Link href={page.path} key={i + 'mo'} className='text-gray-700 font-bold text-center mx-3'>
+                <a href={page.path} key={i + 'mo'} className='text-gray-700 font-bold text-center mx-3'>
                   {page.title}
-                </Link>
+                </a>
               ))}
             </Box>
 
