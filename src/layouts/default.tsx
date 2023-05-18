@@ -19,7 +19,7 @@ const pages = [
   },
   {
     title: 'سفارش جاری',
-    path: ''
+    path: '/sales/inprogress-sales-list'
   },
   {
     title: 'سفارشات',
