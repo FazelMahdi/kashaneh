@@ -7,7 +7,7 @@ interface INewSale {
     phoneNumber: string;
     name: string;
     family: string;
-    carNumber: string;
+    carNO: string;
     carWeightEmpty: number | null;
     orderWeight: number | null;
     productType: number | null;
@@ -20,7 +20,7 @@ export default function NewSale() {
         phoneNumber: '09122132389',
         name: '',
         family: '',
-        carNumber: '',
+        carNO: '',
         carWeightEmpty: null,
         orderWeight: null,
         productType: 1
@@ -67,10 +67,10 @@ export default function NewSale() {
                                     <TextField
                                         label="شماره پلاک ماشین"
                                         placeholder="09..."
-                                        name="carNumber"
+                                        name="carNO"
                                         className="w-full md:w-6/12 ltr mb-8"
                                         onChange={(e) => handleChange(e)}
-                                        value={form.carNumber}
+                                        value={form.carNO}
                                         inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
                                     />
                                     <Autocomplete
