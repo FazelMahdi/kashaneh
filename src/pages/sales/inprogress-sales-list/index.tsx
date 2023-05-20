@@ -1,3 +1,4 @@
+import SaleCheckoutDialog from '@/components/sales/sale-checkout';
 import PageHeader from '@/components/utils/page-header';
 import { FireTruckOutlined } from '@mui/icons-material';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -8,6 +9,7 @@ import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
+import { useState } from 'react';
 
 function createData(
     name: string,
@@ -37,6 +39,8 @@ const rows = [
 ];
 
 export default function InprogressSalesList() {
+    const [saleCheckouttDialog, setSaleCheckouttDialog] = useState<Boolean>(false)
+    
     return (
         <Container maxWidth={false}>
             <Box sx={{ bgcolor: 'white', borderRadius: '1rem', padding: '2rem' }}>
@@ -66,7 +70,7 @@ export default function InprogressSalesList() {
                                     <TableCell align="right">{row.orderWeight}</TableCell>
                                     <TableCell align="left">
                                         <div className='flex justify-end items-center'>
-                                            <Button className='rounded-full bg-green-600 font-extrabold text-white' variant="contained" endIcon={<FireTruckOutlined />}>
+                                            <Button className='rounded-full bg-green-600 font-extrabold text-white' variant="contained" onClick={() => setSaleCheckouttDialog(true)} endIcon={<FireTruckOutlined />}>
                                                 بارگیری
                                             </Button>
                                             <IconButton aria-label="delete">
@@ -81,6 +85,7 @@ export default function InprogressSalesList() {
                     </Table>
                 </TableContainer>
             </Box>
+            {saleCheckouttDialog && <SaleCheckoutDialog show={saleCheckouttDialog} onClose={() => setSaleCheckouttDialog(false)} />}
         </Container>
 
     );
