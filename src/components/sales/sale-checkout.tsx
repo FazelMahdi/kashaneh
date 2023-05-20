@@ -7,9 +7,15 @@ import { useEffect, useState } from 'react';
 export default function SaleCheckoutDialog({ show, onClose }) {
     const [open, setOpen] = useState(false);
 
-    const handleClose = () => {
-        setOpen(false);
-        onClose(false)
+    const handleClose = (
+        event: any,
+        reason: "backdropClick" | "escapeKeyDown"
+    ) => {
+        event.stopPropagation();
+        if (reason !== "backdropClick") {
+            setOpen(false);
+            onClose(false)
+        }
     };
 
     useEffect(() => {
@@ -22,6 +28,7 @@ export default function SaleCheckoutDialog({ show, onClose }) {
             maxWidth="md"
             fullWidth
             onClose={handleClose}
+            disableEscapeKeyDown
         >
             <DialogTitle >
                 <div className='flex justify-between'>
@@ -36,7 +43,7 @@ export default function SaleCheckoutDialog({ show, onClose }) {
                     انصراف
                 </Button>
                 <Button onClick={() => { handleClose() }} variant='contained' className='bg-orange-400'>
-                 ثبت نهایی فروش
+                    ثبت نهایی فروش
                 </Button>
             </div>
         </Dialog>
