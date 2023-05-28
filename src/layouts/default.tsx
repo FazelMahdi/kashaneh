@@ -106,7 +106,7 @@ export default function DefaultLayout({ children }) {
               >
                 {pages.map((page, index) => (
                   <MenuItem key={index} onClick={handleCloseNavMenu}>
-                    <Link href={page.path} className='text-gray-700 font-bold text-center'>
+                    <Link href={page.path} shallow={true} className='text-gray-700 font-bold text-center'>
                       {page.title}
                     </Link>
                   </MenuItem>
@@ -115,9 +115,9 @@ export default function DefaultLayout({ children }) {
             </Box>
             <Box className='grow hidden md:flex'>
               {pages.map((page, i) => (
-                <a href={page.path} key={i + 'mo'} className='text-gray-700 font-bold text-center mx-3'>
+                <Link href={page.path} shallow={true} key={i + 'mo'} className='text-gray-700 font-bold text-center mx-3'>
                   {page.title}
-                </a>
+                </Link>
               ))}
             </Box>
 
