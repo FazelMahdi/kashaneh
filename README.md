@@ -1,6 +1,6 @@
 **Kashaneh CRM
 
-postgreSQL, Prisma, Next 13
+postgreSQL, Prisma, Next 13, ...
 
 # Sale managment
 
