@@ -38,20 +38,20 @@ model Destination {
 }
 
 model Driver {
-  id       String    @id @default(auto()) @map("_id") @db.ObjectId
-  firstName    String
-  lastName    String
-  mobile    String
-  pelak     String
-  date      Date
+  id            String    @id @default(auto()) @map("_id") @db.ObjectId
+  firstName     String
+  lastName      String
+  mobile        String
+  pelak         String
+  date          Date
 }
 
 model Product {
-  id       String    @id @default(auto()) @map("_id") @db.ObjectId
-  title    String
-  unit     32-Bit Integer
-  price    32-Bit Integer
+  id            String    @id @default(auto()) @map("_id") @db.ObjectId
+  title         String
+  unit          32-Bit Integer
+  price         32-Bit Integer
   finalPrice    32-Bit Integer
-  loadPrice 32-Bit Integer
-  baskulPrice 32-Bit Integer
+  loadPrice     32-Bit Integer
+  baskulPrice   32-Bit Integer
 }
