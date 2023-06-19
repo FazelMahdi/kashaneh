@@ -7,35 +7,51 @@ generator client {
   provider = "prisma-client-js"
 }
 
-model Post {
+model Order {
+  id            String    @id @default(auto()) @map("_id") @db.ObjectId
+  driver        Driver    @relation(fields: [driverId], references: [id])
+  driverId      String   @db.ObjectId
+  pelak         String
+  startDate     Date
+  endDate       Date
+  destination   Destination    @relation(fields: [destinationId], references: [id])
+  destinationId String
+  address       String
+  product       Product    @relation(fields: [productId], references: [id])
+  productId     String
+  workerGroup   WorkerGroup    @relation(fields: [workerGroupId], references: [id])
+  workerGroupId String
+  state         32-Bit Integer
+  emptyWeight   32-Bit Integer
+  amount        32-Bit Integer
+  needsOfAmount 32-Bit Integer
+}
+
+model WorkerGroup {
   id       String    @id @default(auto()) @map("_id") @db.ObjectId
-  slug     String    @unique
   title    String
-  body     String
-  author   User      @relation(fields: [authorId], references: [id])
-  authorId String    @db.ObjectId
-  comments Comment[]
 }
 
-model User {
-  id      String   @id @default(auto()) @map("_id") @db.ObjectId
-  email   String   @unique
-  name    String?
-  address Address?
-  Post    Post[]
+model Destination {
+  id       String    @id @default(auto()) @map("_id") @db.ObjectId
+  title    String
 }
 
-model Comment {
-  id      String @id @default(auto()) @map("_id") @db.ObjectId
-  comment String
-  post    Post   @relation(fields: [postId], references: [id])
-  postId  String @db.ObjectId
+model Driver {
+  id       String    @id @default(auto()) @map("_id") @db.ObjectId
+  firstName    String
+  lastName    String
+  mobile    String
+  pelak     String
+  date      Date
 }
 
-// Address is an embedded document
-type Address {
-  street String
-  city   String
-  state  String
-  zip    String
+model Product {
+  id       String    @id @default(auto()) @map("_id") @db.ObjectId
+  title    String
+  unit     32-Bit Integer
+  price    32-Bit Integer
+  finalPrice    32-Bit Integer
+  loadPrice 32-Bit Integer
+  baskulPrice 32-Bit Integer
 }
