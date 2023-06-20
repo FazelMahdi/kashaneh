@@ -1,6 +1,6 @@
 import { ChevronLeft } from "@mui/icons-material";
 import { Button, Divider } from "@mui/material";
-import { useRouter } from "next/navigation";
+import { useRouter } from "next/router";
 
 const PageHeader = (props: {
     title: string

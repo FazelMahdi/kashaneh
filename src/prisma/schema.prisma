@@ -10,31 +10,33 @@ generator client {
 model Order {
   id            String    @id @default(auto()) @map("_id") @db.ObjectId
   driver        Driver    @relation(fields: [driverId], references: [id])
-  driverId      String   @db.ObjectId
+  driverId      String    @db.ObjectId
   pelak         String
-  startDate     Date
-  endDate       Date
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @default(now()) @map(name: "updated_at")
   destination   Destination    @relation(fields: [destinationId], references: [id])
-  destinationId String
+  destinationId String         @db.ObjectId
   address       String
   product       Product    @relation(fields: [productId], references: [id])
-  productId     String
+  productId     String     @db.ObjectId
   workerGroup   WorkerGroup    @relation(fields: [workerGroupId], references: [id])
-  workerGroupId String
-  state         32-Bit Integer
-  emptyWeight   32-Bit Integer
-  amount        32-Bit Integer
-  needsOfAmount 32-Bit Integer
+  workerGroupId String         @db.ObjectId
+  state         Int
+  emptyWeight   Int
+  amount        Int
+  needsOfAmount Int
 }
 
 model WorkerGroup {
   id       String    @id @default(auto()) @map("_id") @db.ObjectId
   title    String
+  orders        Order[]
 }
 
 model Destination {
   id       String    @id @default(auto()) @map("_id") @db.ObjectId
   title    String
+  orders        Order[]
 }
 
 model Driver {
@@ -43,15 +45,17 @@ model Driver {
   lastName      String
   mobile        String
   pelak         String
-  date          Date
+  orders        Order[]
+  createdAt     DateTime @default(now())
 }
 
 model Product {
   id            String    @id @default(auto()) @map("_id") @db.ObjectId
   title         String
-  unit          32-Bit Integer
-  price         32-Bit Integer
-  finalPrice    32-Bit Integer
-  loadPrice     32-Bit Integer
-  baskulPrice   32-Bit Integer
+  unit          Int
+  price         Int
+  finalPrice    Int
+  loadPrice     Int
+  baskulPrice   Int
+  order         Order[]
 }
