@@ -1,7 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" style="margin:auto;background:0 0" width="204" height="204"
-  viewBox="0 0 100 100" preserveAspectRatio="xMidYMid" display="block">
-  <circle cx="50" cy="50" fill="none" stroke="#ff6517" stroke-width="4" r="16" stroke-dasharray="75.398 27.133">
-    <animateTransform attributeName="transform" type="rotate" repeatCount="indefinite" dur="1.639344262295082s"
-      values="0 50 50;360 50 50" keyTimes="0;1" />
-  </circle>
-</svg>
