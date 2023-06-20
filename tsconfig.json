@@ -1,11 +1,15 @@
 {
   "compilerOptions": {
     "target": "es5",
-    "lib": ["dom", "dom.iterable", "esnext"],
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
     "allowJs": true,
     "skipLibCheck": true,
-    "strict": true,
-    "forceConsistentCasingInFileNames": true,
+    "strict": false,
+    "forceConsistentCasingInFileNames": false,
     "noEmit": true,
     "esModuleInterop": true,
     "module": "esnext",
@@ -20,9 +24,24 @@
       }
     ],
     "paths": {
-      "@/*": ["./*"]
-    }
+      "@/*": [
+        "./src/*"
+      ],
+    },
+    "strictNullChecks": true,
+    "allowSyntheticDefaultImports": true /* Allow default imports from modules with no default export. This does not affect code emit, just typechecking. */,
+    "noUnusedLocals": true /* Report errors on unused locals. */,
+    "noUnusedParameters": true /* Report errors on unused parameters. */,
+    // "noImplicitReturns": true,             /* Report error when not all code paths in function return a value. */
+    "noFallthroughCasesInSwitch": true /* Report errors for fallthrough cases in switch statement. */,
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
-  "exclude": ["node_modules"]
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
 }
