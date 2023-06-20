@@ -1,27 +1,39 @@
 export type SiteConfig = typeof siteConfig;
 
 export const siteConfig = {
-	name: "Next.js + NextUI",
-	description: "Make beautiful websites regardless of your design experience.",
+	name: "مدیریت فروش کارخانه آجر کاشانه",
+	description: "کارخانه آجر ماشینی کاشانه",
 	navItems: [
 		{
-			label: "Home",
+			label: "خانه",
 			href: "/",
 		},
     {
-      label: "Docs",
-      href: "/docs",
+      label: "فروش",
+      href: "/sales/new-sale",
     },
     {
-      label: "Pricing",
+      label: "لیست مجوز ها",
       href: "/pricing",
     },
     {
-      label: "Blog",
+      label: "گزارش فروش",
       href: "/blog",
     },
     {
-      label: "About",
+      label: "رانندگان",
+      href: "/about",
+    },
+    {
+      label: "محصولات",
+      href: "/about",
+    },
+    {
+      label: "مقصدها",
+      href: "/about",
+    },
+    {
+      label: "گروه های کاری",
       href: "/about",
     }
 	],
