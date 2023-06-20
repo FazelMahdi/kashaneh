@@ -1,0 +1,61 @@
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Order {
+  id            String    @id @default(auto()) @map("_id") @db.ObjectId
+  driver        Driver    @relation(fields: [driverId], references: [id])
+  driverId      String    @db.ObjectId
+  pelak         String
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @default(now()) @map(name: "updated_at")
+  destination   Destination    @relation(fields: [destinationId], references: [id])
+  destinationId String         @db.ObjectId
+  address       String
+  product       Product    @relation(fields: [productId], references: [id])
+  productId     String     @db.ObjectId
+  workerGroup   WorkerGroup    @relation(fields: [workerGroupId], references: [id])
+  workerGroupId String         @db.ObjectId
+  state         Int
+  emptyWeight   Int
+  amount        Int
+  needsOfAmount Int
+}
+
+model WorkerGroup {
+  id       String    @id @default(auto()) @map("_id") @db.ObjectId
+  title    String
+  orders        Order[]
+}
+
+model Destination {
+  id       String    @id @default(auto()) @map("_id") @db.ObjectId
+  title    String
+  orders        Order[]
+}
+
+model Driver {
+  id            String    @id @default(auto()) @map("_id") @db.ObjectId
+  firstName     String
+  lastName      String
+  mobile        String
+  pelak         String
+  orders        Order[]
+  createdAt     DateTime @default(now())
+}
+
+model Product {
+  id            String    @id @default(auto()) @map("_id") @db.ObjectId
+  title         String
+  unit          Int
+  price         Int
+  finalPrice    Int
+  loadPrice     Int
+  baskulPrice   Int
+  order         Order[]
+}

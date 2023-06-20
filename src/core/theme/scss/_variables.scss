@@ -1,0 +1,65 @@
+$theme-color: #ff6517;
+$theme-secondary-color: #99ca3c;
+$theme-third-color: #eee;
+$border-color: #d8dde2;
+
+$text-color: #5a595a;
+$text-light-color: #909090;
+
+$primary-color: #7e489c;
+$success-color: #28a745;
+$secondary-color: #99ca3c;
+$warning-color: #d39e00;
+$error-color: #dc3545;
+$info-color: #17a2b8;
+
+// Framework overrides
+$font-family-sans-serif: iranyekan, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+  'Helvetica Neue', Arial, 'Noto Sans', 'Liberation Sans', sans-serif, 'Apple Color Emoji',
+  'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+
+$body-font-family: $font-family-sans-serif;
+
+// $font-size-root: 12.8px;
+$date-picker-title-date-font-size: 1.5rem;
+
+// remove letter spacings
+$btn-letter-spacing: 0;
+$input-letter-spacing: 0;
+$input-label-letter-spacing: 0;
+$dialog-card-title-letter-spacing: 0;
+$tabs-item-letter-spacing: 0;
+$card-text-letter-spacing: 0;
+$card-title-letter-spacing: 0;
+$snackbar-content-letter-spacing: 0;
+$badge-letter-spacing: 0;
+
+// $color-pack: false; // TODO: uncomment after removing vuetify color classes
+$text-field-line-height: 1;
+$input-label-height: 1.2;
+
+$spacer: 0.25rem;
+$font-size-root: 1rem;
+$border-radius-root: 0.25rem;
+$blockquote-font-size: 1.125rem;
+$code-kbd-border-radius: 0.1875rem;
+$input-top-spacing: 1rem;
+$text-field-active-label-height: 0.75rem;
+
+// $grid-breakpoints: (
+//   'xs': 0,
+//   'sm': 40rem,
+//   'md': 48rem,
+//   'lg': 64rem,
+//   'xl': 80,
+//   '2xl': 96,
+// );
+
+$grid-breakpoints: (
+  'xs': 0,
+  'sm': 640px,
+  'md': 768px,
+  'lg': 1024px,
+  'xl': 1280px,
+  // '2xl': 1536px,
+);
