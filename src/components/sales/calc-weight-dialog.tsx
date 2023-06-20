@@ -1,17 +1,15 @@
+'use client'
+
 import { TextField } from '@mui/material';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
-import { useTheme } from '@mui/material/styles';
-import useMediaQuery from '@mui/material/useMediaQuery';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 export default function CalcWeightDialog({ show, onClose, onSome }) {
-    const [open, setOpen] = useState(false);
+    const [open, setOpen] = useState(show);
     const [weightList, setWeightList] = useState<string[]>([''])
-    const theme = useTheme();
-    const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
 
     const handleClose = () => {
         setOpen(false);
@@ -35,9 +33,9 @@ export default function CalcWeightDialog({ show, onClose, onSome }) {
         return weightList.reduce((a, b) => { return +a + +b }, 0)
     }
 
-    useEffect(() => {
-        setOpen(show);
-    }, show)
+    // useEffect(() => {
+    //     setOpen(show);
+    // }, [show])
 
     return (
         <Dialog

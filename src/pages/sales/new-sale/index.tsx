@@ -23,21 +23,22 @@ export default function NewSale() {
         name: '',
         family: '',
         carNO: '',
-        carWeightEmpty: null,
-        orderWeight: null,
+        carWeightEmpty: '',
+        orderWeight: '',
         productType: 1
     })
 
-    const [calcWeightDialog, setCalcWeightDialog] = useState<Boolean>(false)
+    const [calcWtDialog, setCalcWtDialog] = useState<Boolean>(false)
 
     const handleChange = (evt) => {
         const value = evt.target.value;
+        console.log("🚀 ~ file: index.tsx:35 ~ handleChange ~ evt.target:", evt)
         setForm(
             {
                 ...form,
                 [evt.target.name]: value
             }
-        )
+            )
     }
 
     return (
@@ -118,7 +119,7 @@ export default function NewSale() {
                                                 endAdornment: <InputAdornment position="end">کیلوگرم <small className="mr-1">(تُن * 1000) </small></InputAdornment>,
                                             }}
                                         />
-                                        <Button variant="outlined" size="large" onClick={() => setCalcWeightDialog(true)}>
+                                        <Button variant="outlined" size="large" onClick={() => setCalcWtDialog(true)}>
                                             محاسبه
                                         </Button>
                                     </div>
@@ -148,7 +149,8 @@ export default function NewSale() {
                                         صدور مجوز بارگیری
                                     </Button>
                                 </Box>
-                                {calcWeightDialog && <CalcWeightDialog show={calcWeightDialog} onClose={() => setCalcWeightDialog(false)} onSome={(val) => setForm((prev) => ({ ...prev, carWeightEmpty: val }))} />}
+                                {calcWtDialog}
+                                {calcWtDialog && <CalcWeightDialog show={calcWtDialog} onClose={() => setCalcWtDialog(false)} onSome={(val) => setForm(() => ({ ...form, carWeightEmpty: val }))} />}
                             </>
                         )
                     }

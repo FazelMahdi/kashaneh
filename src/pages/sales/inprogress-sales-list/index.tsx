@@ -1,3 +1,5 @@
+'use client'
+
 import SaleCheckoutDialog from '@/components/sales/sale-checkout';
 import PageHeader from '@/components/utils/page-header';
 import { FireTruckOutlined } from '@mui/icons-material';
