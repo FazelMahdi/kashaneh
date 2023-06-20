@@ -1,0 +1,37 @@
+/* leaflet -------------------- */
+
+// .leaflet-container {
+//   .leaflet-top.leaflet-left {
+//     top: auto !important;
+//     bottom: 60px !important;
+//     right: 10px !important;
+//     left: auto !important;
+//   }
+
+//   div:last-child {
+//     bottom: -50px !important;
+//   }
+
+//   .leaflet-popup-content {
+//     padding-top: 1rem;
+//     font-size: 0.8rem;
+//     line-height: 1.7rem;
+//     text-align: center;
+//   }
+
+//   a.leaflet-popup-close-button {
+//     top: 5px !important;
+//     right: 5px !important;
+//   }
+// }
+
+/* swiper -------------------- */
+button.slick-prev:before,
+button.slick-next:before {
+  color: gray;
+  font-size: 2rem;
+}
+
+.tox-notifications-container {
+  display: none !important;
+}

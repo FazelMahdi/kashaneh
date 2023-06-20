@@ -1,0 +1,52 @@
+a {
+  color: #666;
+  text-decoration: none;
+
+  &.link {
+    color: var(--v-anchor-base);
+  }
+}
+
+ul {
+  list-style: none;
+}
+
+.v-application--is-rtl .v-btn {
+  letter-spacing: 0 !important;
+}
+
+body {
+  min-width: 20rem;
+  min-height: 100vh;
+  font-size: 0.8rem;
+  font-family: 'iranyekan' !important;
+  direction: rtl;
+
+
+  b,
+  strong {
+    font-weight: 600;
+  }
+
+  @screen md {
+    font-size: 0.8rem;
+  }
+}
+
+input[type='number']::-webkit-outer-spin-button,
+input[type='number']::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type='number'] {
+  -moz-appearance: textfield;
+}
+
+input[type='tel'] {
+  letter-spacing: 0.125rem;
+
+  &:placeholder-shown {
+    letter-spacing: 0;
+  }
+}
