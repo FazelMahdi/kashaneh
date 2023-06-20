@@ -111,16 +111,16 @@ export default function NewSale() {
                                         <TextField
                                             label="وزن ماشین (بدون بار)"
                                             name="carWeightEmpty"
-                                            className="w-full ml-2"
+                                            className="w-full"
                                             onChange={(e) => handleChange(e)}
                                             value={form.carWeightEmpty}
                                             InputProps={{
                                                 endAdornment: <InputAdornment position="end">کیلوگرم <small className="mr-1">(تُن * 1000) </small></InputAdornment>,
                                             }}
                                         />
-                                        <Button variant="outlined" size="large" onClick={() => setCalcWeightDialog(true)}>
+                                        {/* <Button variant="outlined" size="large" onClick={() => setCalcWeightDialog(true)}>
                                             محاسبه
-                                        </Button>
+                                        </Button> */}
                                     </div>
                                     <Select
                                         name="productType"
@@ -148,7 +148,7 @@ export default function NewSale() {
                                         صدور مجوز بارگیری
                                     </Button>
                                 </Box>
-                                {calcWeightDialog && <CalcWeightDialog show={calcWeightDialog} onClose={() => setCalcWeightDialog(false)} onSome={(val) => setForm((prev) => ({ ...prev, carWeightEmpty: val }))} />}
+                                {/* {calcWeightDialog && <CalcWeightDialog show={calcWeightDialog} onClose={() => setCalcWeightDialog(false)} onSome={(val) => setForm((prev) => ({ ...prev, carWeightEmpty: val }))} />} */}
                             </>
                         )
                     }

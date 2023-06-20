@@ -45,8 +45,8 @@ model Driver {
   lastName      String
   mobile        String
   pelak         String
-  orders        Order[]
   createdAt     DateTime @default(now())
+  orders        Order[]
 }
 
 model Product {
