@@ -29,13 +29,13 @@ model Order {
 
 model WorkerGroup {
   id       String    @id @default(auto()) @map("_id") @db.ObjectId
-  title    String
+  title    String    @unique
   orders        Order[]
 }
 
 model Destination {
   id       String    @id @default(auto()) @map("_id") @db.ObjectId
-  title    String
+  title    String    @unique
   orders        Order[]
 }
 
@@ -43,7 +43,7 @@ model Driver {
   id            String    @id @default(auto()) @map("_id") @db.ObjectId
   firstName     String
   lastName      String
-  mobile        String
+  mobile        String    @unique
   pelak         String
   createdAt     DateTime @default(now())
   orders        Order[]
@@ -51,7 +51,7 @@ model Driver {
 
 model Product {
   id            String    @id @default(auto()) @map("_id") @db.ObjectId
-  title         String
+  title         String    @unique
   unit          Int
   price         Int
   finalPrice    Int
