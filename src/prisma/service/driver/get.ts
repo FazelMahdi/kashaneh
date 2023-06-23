@@ -2,19 +2,16 @@ import prisma from "..";
 
 export async function getDriver(search: string) {
     try {
-        const driverFromDb = await prisma.driver.findUnique({
+        console.log(search);
+        const driverFromDb = await prisma.driver.findFirst({
             where: {
                 OR: [
                     {
-                        mobile: {
-                            contains: search
-                        }
+                        mobile: search
 
                     },
                     {
-                        pelak: {
-                            contains: search
-                        }
+                        pelak: search
                     },
                 ],
             },
