@@ -1,8 +1,8 @@
 'use client'
 
-import CalcWeightDialog from '@/components/sales/calc-weight-dialog';
 import PageHeader from "@/components/utils/page-header";
-import { Autocomplete, Box, Button, Chip, Container, Divider, InputAdornment, MenuItem, Select, TextField } from "@mui/material";
+import { AccountCircleOutlined } from "@mui/icons-material";
+import { Autocomplete, Avatar, Box, Button, Chip, Container, Divider, FormControl, InputAdornment, InputLabel, MenuItem, Paper, Select, TextField } from "@mui/material";
 import { useState } from "react";
 
 interface INewSale {
@@ -10,8 +10,8 @@ interface INewSale {
     name: string;
     family: string;
     carNO: string;
-    carWeightEmpty: number | null;
-    orderWeight: number | null;
+    carWeightEmpty: number | undefined;
+    orderWeight: number | undefined;
     productType: number | null;
 
 }
@@ -23,12 +23,12 @@ export default function NewSale() {
         name: '',
         family: '',
         carNO: '',
-        carWeightEmpty: null,
-        orderWeight: null,
+        carWeightEmpty: undefined,
+        orderWeight: undefined,
         productType: 1
     })
 
-    const [calcWeightDialog, setCalcWeightDialog] = useState<Boolean>(false)
+    // const [calcWeightDialog, setCalcWeightDialog] = useState<Boolean>(false)
 
     const handleChange = (evt) => {
         const value = evt.target.value;
@@ -44,17 +44,16 @@ export default function NewSale() {
         <>
             <Container maxWidth={false}>
                 <Box sx={{ bgcolor: 'white', borderRadius: '1rem', padding: '2rem' }}>
-                    <PageHeader title="ثبت فروش جدید" />
+                    <PageHeader title="ثبت فروش جدید (صدور مجوز)" />
 
                     <Divider className="mt-5 mb-5">
                         <Chip color="primary" label="اطلاعات خریدار" className="font-bold" />
                     </Divider>
                     <Box display="flex" justifyContent="center" alignItems="center" sx={{ marginX: 'auto' }} component="form" autoComplete="off">
                         <TextField
-                            label="شماره همراه راننده"
-                            placeholder="09..."
+                            label="شماره همراه / شماره پلاک"
                             name="phoneNumber"
-                            className="w-full md:w-6/12 mb-2 ltr"
+                            className="w-full md:w-6/12 ltr"
                             onChange={(e) => handleChange(e)}
                             value={form.phoneNumber}
                             inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
@@ -65,12 +64,117 @@ export default function NewSale() {
                         (
 
                             <>
+                                <Box className="w-full md:w-6/12 " sx={{ marginY: '2rem', marginX: 'auto' }} component="form" autoComplete="off">
+                                    <Paper className=" rounded-lg md:p-3 p-3" elevation={3}>
+                                        <div className="flex justify-between flex-wrap">
+                                            <div className="flex justify-start items-center">
+
+                                                <Avatar className="bg-green-500">
+                                                    <AccountCircleOutlined />
+                                                </Avatar>
+                                                <p className="mr-2 font-bold !text-sm"> مهدی فاضلی</p>
+                                                <p className="mr-2 font-bold !text-sm !block">09031003088</p>
+
+                                            </div>
+                                            <div
+                                                className="flex w-21 justify-between border border-solid border-gray-800 rounded-sm overflow-hidden bg-yellow-500"
+                                            >
+                                                <div className="w-10 border-0 border-l border-solid border-gray-800 text-center my-auto text-lg">
+                                                    <p>
+                                                        22
+                                                    </p>
+                                                </div>
+                                                <div className="w-30 flex justify-around items-center text-center text-lg">
+                                                    <p className="mx-2">12</p>
+
+                                                    <p className="mx-2">ع</p>
+
+                                                    <p className="mx-2">345</p>
+                                                </div>
+                                                <div className="w-2 bg-blue-800 ml-0">
+                                                    <div className="mx-auto">
+                                                        <div className="h-1 w-full bg-green-500" />
+                                                        <div className="h-1 bg-white" />
+                                                        <div className="h-1 bg-red-500" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </Paper>
+
+                                </Box>
+                                <Divider className="mt-5 mb-5">
+                                    <Chip color="primary" label="سفارش گیری" className="font-bold" />
+                                </Divider>
+                                <Box display="flex" flexDirection="column" justifyContent="center" alignItems="center" sx={{ marginY: '2rem', marginX: 'auto' }} component="form" autoComplete="off">
+
+                                    <div className="flex justify-start items-center  w-full md:w-6/12 mb-5">
+                                        <TextField
+                                            label="وزن ماشین (بدون بار)"
+                                            name="carWeightEmpty"
+                                            className="w-full"
+                                            onChange={(e) => handleChange(e)}
+                                            value={form.carWeightEmpty}
+                                            InputProps={{
+                                                endAdornment: <InputAdornment position="end">کیلوگرم <small className="mr-1">(تُن * 1000) </small></InputAdornment>,
+                                            }}
+                                        />
+                                        {/* <Button variant="outlined" size="large" onClick={() => setCalcWeightDialog(true)}>
+                                            محاسبه
+                                        </Button> */}
+                                    </div>
+                                    <FormControl className="w-full md:w-6/12 mb-5 text-gray-700" fullWidth>
+                                        <InputLabel id="productgroup">نوع محصول</InputLabel>
+                                        <Select
+                                            labelId="productgroup"
+                                            name="productType"
+                                            onChange={(e) => handleChange(e)}
+                                            label="نوع محصول"
+                                            value={form.productType}
+
+                                        >
+                                            {breakTypeList.map((item, index) => (
+                                                <MenuItem key={index + 'breakkey'} value={item.id}>{item.label}</MenuItem>
+                                            ))}
+                                        </Select>
+                                    </FormControl>
+                                    <TextField
+                                        label="مقدار سفارش"
+                                        placeholder=""
+                                        name="orderWeight"
+                                        className="w-full md:w-6/12  mb-5"
+                                        onChange={(e) => handleChange(e)}
+                                        value={form.orderWeight}
+                                        InputProps={{
+                                            endAdornment: <InputAdornment position="end">کیلوگرم <small className="mr-1">(تُن * 1000) </small></InputAdornment>,
+                                        }}
+                                    />
+                                    <FormControl className="w-full md:w-6/12 mb-5 text-gray-700" fullWidth>
+                                        <InputLabel id="labGroup">گروه بارگیری</InputLabel>
+                                        <Select
+                                            labelId="labGroup"
+                                            name="productType"
+                                            onChange={(e) => handleChange(e)}
+                                            label="گروه بارگیری"
+                                            value={form.productType}
+                                        >
+                                            {breakTypeList.map((item, index) => (
+                                                <MenuItem key={index + 'breakkey'} value={item.id}>{item.label}</MenuItem>
+                                            ))}
+                                        </Select>
+                                    </FormControl>
+
+                                </Box>
+                                <Divider className="mt-5 mb-5">
+                                    <Chip color="primary" label="مقصد بار" className="font-bold" />
+                                </Divider>
                                 <Box display="flex" flexDirection="column" justifyContent="center" alignItems="center" sx={{ marginY: '2rem', marginX: 'auto' }} component="form" autoComplete="off">
                                     <TextField
-                                        label="شماره پلاک ماشین"
-                                        placeholder="09..."
+                                        label="آدرس"
+                                        placeholder=""
                                         name="carNO"
-                                        className="w-full md:w-6/12 ltr mb-8"
+                                        className="w-full md:w-6/12 ltr mb-5"
                                         onChange={(e) => handleChange(e)}
                                         value={form.carNO}
                                         inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
@@ -93,7 +197,8 @@ export default function NewSale() {
                                         renderInput={(params) => (
                                             <TextField
                                                 {...params}
-                                                label="نوع ماشین"
+                                                label="مقصد بار"
+                                                className="mb-5"
                                                 inputProps={{
                                                     ...params.inputProps,
                                                 }}
@@ -101,50 +206,7 @@ export default function NewSale() {
                                         )}
                                     />
 
-                                </Box>
-                                <Divider className="mt-5 mb-5">
-                                    <Chip color="primary" label="سفارش گیری" className="font-bold" />
-                                </Divider>
-                                <Box display="flex" flexDirection="column" justifyContent="center" alignItems="center" sx={{ marginY: '2rem', marginX: 'auto' }} component="form" autoComplete="off">
-
-                                    <div className="flex justify-start items-center  w-full md:w-6/12 mb-8">
-                                        <TextField
-                                            label="وزن ماشین (بدون بار)"
-                                            name="carWeightEmpty"
-                                            className="w-full"
-                                            onChange={(e) => handleChange(e)}
-                                            value={form.carWeightEmpty}
-                                            InputProps={{
-                                                endAdornment: <InputAdornment position="end">کیلوگرم <small className="mr-1">(تُن * 1000) </small></InputAdornment>,
-                                            }}
-                                        />
-                                        {/* <Button variant="outlined" size="large" onClick={() => setCalcWeightDialog(true)}>
-                                            محاسبه
-                                        </Button> */}
-                                    </div>
-                                    <Select
-                                        name="productType"
-                                        onChange={(e) => handleChange(e)}
-                                        label="نوع محصول"
-                                        value={form.productType}
-                                        className="w-full md:w-6/12 mb-8 text-gray-700"
-                                    >
-                                        {breakTypeList.map((item, index) => (
-                                            <MenuItem key={index + 'breakkey'} value={item.id}>{item.label}</MenuItem>
-                                        ))}
-                                    </Select>
-                                    <TextField
-                                        label="مقدار سفارش"
-                                        placeholder=""
-                                        name="orderWeight"
-                                        className="w-full md:w-6/12 mb-8"
-                                        onChange={(e) => handleChange(e)}
-                                        value={form.orderWeight}
-                                        InputProps={{
-                                            endAdornment: <InputAdornment position="end">کیلوگرم <small className="mr-1">(تُن * 1000) </small></InputAdornment>,
-                                        }}
-                                    />
-                                    <Button className="w-full md:w-6/12 mb-8 bg-green-600 font-extrabold rounded-lg py-5" variant="contained" size="large">
+                                    <Button className="w-full md:w-6/12 mb-5 bg-green-600 font-extrabold rounded-lg py-5" variant="contained" size="large">
                                         صدور مجوز بارگیری
                                     </Button>
                                 </Box>
@@ -153,7 +215,7 @@ export default function NewSale() {
                         )
                     }
                 </Box>
-            </Container>
+            </Container >
 
         </>
     )
