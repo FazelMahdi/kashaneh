@@ -20,7 +20,7 @@ interface INewSale {
 export default function NewSale() {
 
     const [form, setForm] = useState<INewSale>({
-        phoneNumber: '09122132389',
+        phoneNumber: '',
         name: '',
         family: '',
         carNO: '',
@@ -105,9 +105,7 @@ export default function NewSale() {
                                                 </div>
                                             </div>
                                         </div>
-
                                     </Paper>
-
                                 </Box>
                                 <Divider className="mt-5 mb-5">
                                     <Chip color="primary" label="سفارش گیری" className="font-bold" />
