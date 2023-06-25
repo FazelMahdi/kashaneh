@@ -176,7 +176,7 @@ export default function NewSale() {
                                         label="آدرس"
                                         placeholder=""
                                         name="carNO"
-                                        className="ltr mb-5 w-full"
+                                        className=" mb-5 w-full"
                                         onChange={(e) => handleChange(e)}
                                         value={form.carNO}
                                         inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
