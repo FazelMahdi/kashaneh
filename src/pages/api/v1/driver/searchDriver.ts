@@ -4,7 +4,6 @@ import { NextApiRequest, NextApiResponse } from "next";
 
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
-    if (req.method === 'GET') {
         try {
             const { search } = req.query as any
 
@@ -15,7 +14,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         } catch (error) {
             return res.status(500).json({ error: error.message })
         }
-    }
     // res.setHeader('Allow', ['GET', 'POST'])
 }
 
