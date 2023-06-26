@@ -9,16 +9,18 @@ import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
+import Link from 'next/link';
 import { useState } from 'react';
 
 function createData(
+    id: number,
     name: string,
     phoneNumber: string,
     carNO: string,
     carWeightEmpty: number | null,
     orderWeight: number | null
 ) {
-    return { name, phoneNumber, carNO, carWeightEmpty, orderWeight };
+    return { id, name, phoneNumber, carNO, carWeightEmpty, orderWeight };
 }
 
 const StyledTableRow = styled(TableRow)(({ theme }) => ({
@@ -32,15 +34,15 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 }));
 
 const rows = [
-    createData('مهدی فاضلی', '09031003088', '25 ع 158', 2400, 10000),
-    createData('محمد فاضلی', '09031003088', '25 ع 158', 2400, 10000),
-    createData('مهدی حسنی', '09031003088', '25 ع 158', 2400, 10000),
+    createData(1, 'مهدی فاضلی', '09031003088', '25 ع 158', 2400, 10000),
+    createData(2, 'محمد فاضلی', '09031003088', '25 ع 158', 2400, 10000),
+    createData(3, 'مهدی حسنی', '09031003088', '25 ع 158', 2400, 10000),
 
 ];
 
 export default function InprogressSalesList() {
     const [saleCheckouttDialog, setSaleCheckouttDialog] = useState<Boolean>(false)
-    
+
     return (
         <Container maxWidth={false}>
             <Box sx={{ bgcolor: 'white', borderRadius: '1rem', padding: '2rem' }}>
@@ -70,9 +72,15 @@ export default function InprogressSalesList() {
                                     <TableCell align="right">{row.orderWeight}</TableCell>
                                     <TableCell align="left">
                                         <div className='flex justify-end items-center'>
-                                            <Button className='rounded-full bg-green-600 font-extrabold text-white' variant="contained" onClick={() => setSaleCheckouttDialog(true)} endIcon={<FireTruckOutlined />}>
+                                            <Link href={{
+                                                pathname: '/sales/payment',
+                                                query: { orderId: row.id },
+                                            }}
+                                                shallow={true}
+                                                className='rounded-full px-3 py-1 bg-green-600 font-extrabold text-white'>
+
                                                 بارگیری
-                                            </Button>
+                                            </Link>
                                             <IconButton aria-label="delete">
                                                 <DeleteIcon />
                                             </IconButton>

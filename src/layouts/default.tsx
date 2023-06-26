@@ -22,7 +22,19 @@ const pages = [
     path: '/sales/inprogress-sales-list'
   },
   {
-    title: 'سفارشات',
+    title: 'گروه بارگیری',
+    path: ''
+  },
+  {
+    title: 'محصولات',
+    path: ''
+  },
+  {
+    title: 'مقصد ها',
+    path: ''
+  },
+  {
+    title: 'رانندگان',
     path: ''
   },
   {
