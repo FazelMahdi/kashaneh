@@ -5,7 +5,7 @@ import PageHeader from "@/components/utils/page-header";
 import { AccountCircleOutlined } from "@mui/icons-material";
 import { Autocomplete, Avatar, Box, Button, Chip, Container, Divider, FormControl, InputAdornment, InputLabel, MenuItem, Paper, Select, Skeleton, TextField } from "@mui/material";
 import { useState } from "react";
-import axios from 'axios'
+import axios from 'axios';
 
 
 interface INewSale {
