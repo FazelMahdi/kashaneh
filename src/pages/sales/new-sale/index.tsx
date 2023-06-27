@@ -32,6 +32,14 @@ export default function NewSale() {
     // const [calcWeightDialog, setCalcWeightDialog] = useState<Boolean>(false)
     const [showAddDriverDialog, setShowAddDriverDialog] = useState<Boolean>(false)
 
+    // const checkDriver = () =>{
+    //       fetch('/api/v1/driver/searchDriver', {
+    //         method: "POST",
+    //       });
+    //         .then( (response) => response.json() )
+    //         .then( (data) => setData(data) )
+    // }
+
     const handleChange = (evt) => {
         const value = evt.target.value;
         setForm(
