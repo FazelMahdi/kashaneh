@@ -19,6 +19,7 @@
     "@prisma/client": "^4.13.0",
     "@types/react": "18.0.37",
     "@types/react-dom": "18.0.11",
+    "axios": "^1.4.0",
     "eslint": "8.38.0",
     "eslint-config-next": "13.3.0",
     "graphql": "^16.6.0",

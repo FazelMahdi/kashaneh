@@ -30,4 +30,5 @@ export function fixChars(val: string | number) {
 
   val = replaceUnicodeDigitsWithAscii(val);
   val = val.replace(/ي/g, 'ی').replace(/ك/g, 'ک');
+  return val
 }

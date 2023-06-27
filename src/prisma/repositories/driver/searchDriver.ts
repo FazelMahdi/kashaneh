@@ -1,3 +1,4 @@
+import { fixChars } from "@/core/util/number";
 import prisma from "..";
 
 export async function getDriver(search: string) {
@@ -6,10 +7,10 @@ export async function getDriver(search: string) {
             where: {
                 OR: [
                     {
-                        mobile: search
+                        mobile: fixChars(search)
                     },
                     {
-                        pelak: search
+                        fullPelak: fixChars(search)
                     },
                 ],
             },

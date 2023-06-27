@@ -21,7 +21,7 @@ export default function AddDriverDialog({ show, onClose }) {
 
     useEffect(() => {
         setOpen(show);
-    }, show)
+    }, [show])
 
     return (
         <Dialog
@@ -61,37 +61,37 @@ export default function AddDriverDialog({ show, onClose }) {
                             className="flex justify-between border border-solid border-gray-800 rounded-sm overflow-hidden bg-yellow-500"
                         >
                             <div className="w-20 border-0 border-l border-solid border-gray-800 text-center my-auto text-lg">
-                                <p>
+                                <div>
                                     <TextField
                                         name="phoneNumber"
                                         className="w-full center"
                                         inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
                                     />
-                                </p>
+                                </div>
                             </div>
                             <div className="w-60 flex justify-around items-center text-center text-lg">
-                                <p className="mx-2 w-20">
-                                <TextField
+                                <div className="mx-2 w-20">
+                                    <TextField
                                         name="phoneNumber"
                                         className="w-full center"
                                         inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
                                     />
-                                </p>
+                                </div>
 
-                                <p className="mx-2 w-20">
-                                <TextField
+                                <div className="mx-2 w-20">
+                                    <TextField
                                         name="phoneNumber"
                                         className="w-full center"
                                     />
-                                </p>
+                                </div>
 
-                                <p className="mx-2 w-20">
-                                <TextField
+                                <div className="mx-2 w-20">
+                                    <TextField
                                         name="phoneNumber"
                                         className="w-full text-center"
                                         inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
                                     />
-                                </p>
+                                </div>
                             </div>
                             <div className="w-5  bg-blue-800 ml-0">
                                 <div className="mx-auto">

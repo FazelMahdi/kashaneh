@@ -5,11 +5,11 @@ import { NextApiRequest, NextApiResponse } from "next";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         try {
-            const { search } = req.query as any
+            const { keyword } = req.query as any
 
-            const { error, data } = await getDriver(search);
+            const { error, data } = await getDriver(keyword)
             if (error) throw new Error(error);
-            return res.status(200).json({ data })
+            return res.status(200).json(data)
 
         } catch (error) {
             return res.status(500).json({ error: error.message })

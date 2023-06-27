@@ -44,7 +44,8 @@ model Driver {
   firstName     String
   lastName      String
   mobile        String    @unique
-  pelak         String
+  pelak         Pelak
+  fullPelak     String
   createdAt     DateTime @default(now())
   orders        Order[]
 }
@@ -58,4 +59,11 @@ model Product {
   loadPrice     Int
   baskulPrice   Int
   order         Order[]
+}
+
+type Pelak {
+  p1    String
+  p2    String
+  p3    String
+  p4    String
 }
