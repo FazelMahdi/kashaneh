@@ -106,6 +106,7 @@ export default function AddDriverDialog({ show, onClose }) {
                         onChange={(e) => handleChange(e)}
                         value={form.mobile}
                         className="w-full ltr"
+                        type="number"
                         inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
                     />
                     <div className="flex justify-between flex-wrap mt-5">
@@ -115,7 +116,7 @@ export default function AddDriverDialog({ show, onClose }) {
                             <div className="w-20 border-0 border-l border-solid border-gray-800 text-center my-auto text-lg">
                                 <div>
                                     <TextField
-                                        className="w-full center"
+                                        className="w-full !text-center"
                                         onChange={(e) => setForm((prevState) =>
                                         ({
                                             ...prevState,
@@ -124,7 +125,8 @@ export default function AddDriverDialog({ show, onClose }) {
                                                 p4: fixChars(e.target.value)
                                             }
                                         }))}
-                                        value={form.pelak.p1}
+                                        value={form.pelak.p4}
+                                        type="number"
                                         inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
                                     />
                                 </div>
@@ -140,8 +142,9 @@ export default function AddDriverDialog({ show, onClose }) {
                                                 p1: fixChars(e.target.value)
                                             }
                                         }))}
-                                        value={form.pelak.p2}
-                                        className="w-full center"
+                                        value={form.pelak.p1}
+                                        className="w-full ltr"
+                                        type="number"
                                         inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
                                     />
                                 </div>
@@ -156,8 +159,8 @@ export default function AddDriverDialog({ show, onClose }) {
                                                 p2: fixChars(e.target.value)
                                             }
                                         }))}
-                                        value={form.pelak.p3}
-                                        className="w-full center"
+                                        value={form.pelak.p2}
+                                        className="w-full"
                                     />
                                 </div>
 
@@ -171,9 +174,10 @@ export default function AddDriverDialog({ show, onClose }) {
                                                 p3: fixChars(e.target.value)
                                             }
                                         }))}
-                                        value={form.pelak.p4}
-                                        className="w-full text-center"
-                                        inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
+                                        value={form.pelak.p3}
+                                        className="w-full ltr"
+                                        type="number"
+                                        inputProps={{ inputMode: 'numeric', pattern: '[0-9]*'}}
                                     />
                                 </div>
                             </div>
@@ -194,7 +198,7 @@ export default function AddDriverDialog({ show, onClose }) {
                 </Button>
                 <Button disabled={loading ?? null} onClick={() => addDriver()} variant='contained' className='bg-orange-400 rounded-lg p-3 px-4'>
                     {
-                        loading ? ' ذخیره کاربر' : 'در حال ذخیره'
+                        loading ? 'در حال ذخیره' : ' ذخیره کاربر'
                     }
                 </Button>
             </div>
