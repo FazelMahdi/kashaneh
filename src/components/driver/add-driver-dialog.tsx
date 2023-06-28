@@ -42,7 +42,8 @@ export default function AddDriverDialog({ show, onClose }) {
             .then(() => {
                 setOpen(false);
                 onClose(false)
-            }).finally(() => setLoading(false))
+            }).catch(() => alert('مشکل در ارتباط با سرور'))
+            .finally(() => setLoading(false))
     }
 
     const handleClose = (
@@ -177,7 +178,7 @@ export default function AddDriverDialog({ show, onClose }) {
                                         value={form.pelak.p3}
                                         className="w-full ltr"
                                         type="number"
-                                        inputProps={{ inputMode: 'numeric', pattern: '[0-9]*'}}
+                                        inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
                                     />
                                 </div>
                             </div>

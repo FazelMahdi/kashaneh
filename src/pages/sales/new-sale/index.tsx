@@ -4,8 +4,8 @@ import AddDriverDialog from "@/components/driver/add-driver-dialog";
 import PageHeader from "@/components/utils/page-header";
 import { AccountCircleOutlined } from "@mui/icons-material";
 import { Autocomplete, Avatar, Box, Button, Chip, Container, Divider, FormControl, InputAdornment, InputLabel, MenuItem, Paper, Select, Skeleton, TextField } from "@mui/material";
-import { useState } from "react";
 import axios from 'axios';
+import { useState } from "react";
 
 
 interface INewSale {
@@ -53,7 +53,9 @@ export default function NewSale() {
                 .then((response) => {
                     setDriver(response.data)
                     !response.data && setShowAddDriverDialog(true)
-                }).finally(() => setLoading((prevState) => ({ ...prevState, driver: false })))
+                })
+                .catch(() => alert('مشکل در ارتباط با سرور'))
+                .finally(() => setLoading((prevState) => ({ ...prevState, driver: false })))
         }
     }
 
