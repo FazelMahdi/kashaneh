@@ -27,7 +27,7 @@ const pages = [
   },
   {
     title: 'محصولات',
-    path: ''
+    path: '/products'
   },
   {
     title: 'مقصد ها',
