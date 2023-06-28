@@ -1,11 +1,11 @@
+import { fixChars } from '@/core/util/number';
 import { Box, TextField } from '@mui/material';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
-import { useEffect, useState } from 'react';
 import axios from 'axios';
-import { fixChars } from '@/core/util/number';
+import { useEffect, useState } from 'react';
 
 interface INewDriver {
     firstName: string;
@@ -36,7 +36,7 @@ export default function AddDriverDialog({ show, onClose }) {
     });
     const [loading, setLoading] = useState<boolean>(false)
     const addDriver = () => {
-        setForm((prevState) => ({ ...prevState, fullPelak: `${prevState.pelak.p1}${prevState.pelak.p2}${prevState.pelak.p3}${prevState.pelak.p4}` }))
+        setForm((prevState) => ({ ...prevState, fullPelak: `${prevState.pelak.p1}${prevState.pelak.p2}${prevState.pelak.p3}` }))
         setLoading(true)
         axios.post('/api/v1/driver/create', form)
             .then(() => {
