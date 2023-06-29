@@ -58,6 +58,7 @@ model Product {
   finalPrice    Int
   loadPrice     Int
   baskulPrice   Int
+  createdAt     DateTime @default(now())
   order         Order[]
 }
 

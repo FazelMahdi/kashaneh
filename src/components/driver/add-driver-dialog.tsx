@@ -35,10 +35,9 @@ export default function AddDriverDialog({ show, onClose }) {
         fullPelak: '',
     });
     const [loading, setLoading] = useState<boolean>(false)
-    const addDriver = () => {
-        setForm((prevState) => ({ ...prevState, fullPelak: `${prevState.pelak.p1}${prevState.pelak.p2}${prevState.pelak.p3}` }))
+    const addDriver = async () => {
         setLoading(true)
-        axios.post('/api/v1/driver/create', form)
+        axios.post('/api/v1/driver/create', { ...form, fullPelak: form.pelak.p1 + form.pelak.p2 + form.pelak.p3 })
             .then(() => {
                 setOpen(false);
                 onClose(false)

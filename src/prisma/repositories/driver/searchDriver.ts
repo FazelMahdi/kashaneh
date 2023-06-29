@@ -3,7 +3,7 @@ import prisma from "..";
 
 export async function getDriver(search: string) {
     try {
-        await prisma.driver.findFirst({
+        const driverFromDb = await prisma.driver.findFirst({
             where: {
                 OR: [
                     {
@@ -15,7 +15,8 @@ export async function getDriver(search: string) {
                 ],
             },
 
-        }).then((response) => ({ data: response })).catch((err) => err)
+        }).catch((err) => err)
+        return { data: driverFromDb }
     } catch (error) {
         return error
     }

@@ -27,9 +27,15 @@ export default function AddProductDialog({ show, onClose }) {
     });
     const [loading, setLoading] = useState<boolean>(false)
     const addDriver = () => {
-        setForm((prevState) => ({ ...prevState, fullPelak: `${prevState.pelak.p1}${prevState.pelak.p2}${prevState.pelak.p3}` }))
         setLoading(true)
-        axios.post('/api/v1/driver/create', form)
+        axios.post('/api/v1/product/create', {
+            title: form.title,
+            unit: 1, // kilogram
+            price: +form.price,
+            finalPrice: +form.finalPrice,
+            loadPrice: +form.loadPrice,
+            baskulPrice: 0,
+        })
             .then(() => {
                 setOpen(false);
                 onClose(false)
@@ -118,7 +124,7 @@ export default function AddProductDialog({ show, onClose }) {
                 </Button>
                 <Button disabled={loading ?? null} onClick={() => addDriver()} variant='contained' className='bg-orange-400 rounded-lg p-3 px-4'>
                     {
-                        loading ? 'در حال ذخیره' : ' ذخیره کاربر'
+                        loading ? 'در حال ذخیره' : ' ذخیره محصول'
                     }
                 </Button>
             </div>
