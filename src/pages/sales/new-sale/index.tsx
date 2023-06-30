@@ -126,10 +126,13 @@ export default function NewSale() {
 
   const onSaveOrder = () => {
     setLoading((prevState) => ({ ...prevState, save: true }));
-    const payload: INewSale = {
-      ...form,
+
+    const { productId, ...rest } = form;
+
+    const payload = {
+      ...rest,
       fullPelak: driver.pelak.p1 + driver.pelak.p2 + driver.pelak.p3,
-      product: prms.products.find((x)=> x.id == form.productId),
+      product: prms.products.find((x) => x.id == form.productId),
       pelak: driver.pelak,
       driverId: driver.id,
       emptyWeight: +form.emptyWeight,
