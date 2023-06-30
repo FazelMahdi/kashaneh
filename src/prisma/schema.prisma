@@ -9,10 +9,7 @@ generator client {
 
 model Order {
   id            String      @id @default(auto()) @map("_id") @db.ObjectId
-  driver        Driver      @relation(fields: [driverId], references: [id])
-  driverId      String      @db.ObjectId
-  pelak         Pelak
-  fullPelak     String
+  driver        DriverType      
   createdAt     DateTime    @default(now())
   updatedAt     DateTime    @default(now()) @map(name: "updated_at")
   destination   Destination @relation(fields: [destinationId], references: [id])
@@ -48,7 +45,6 @@ model Driver {
   pelak     Pelak
   fullPelak String
   createdAt DateTime @default(now())
-  orders    Order[]
 
   @@unique([firstName, lastName])
 }
@@ -79,5 +75,15 @@ type ProductType {
   finalPrice  Int
   loadPrice   Int
   baskulPrice Int
-  createdAt   String
+  createdAt   DateTime
+}
+
+type DriverType {
+  id        String
+  firstName String
+  lastName  String
+  mobile    String
+  pelak     Pelak
+  fullPelak String
+  createdAt DateTime
 }

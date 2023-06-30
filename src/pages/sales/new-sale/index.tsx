@@ -24,13 +24,7 @@ import { useEffect, useState } from "react";
 
 interface INewSale {
   driverId: string;
-  pelak: {
-    p1: string;
-    p2: string;
-    p3: string;
-    p4: string;
-  };
-  fullPelak: string;
+  driver: object;
   destinationId: string;
   address: string;
   productId: string;
@@ -45,17 +39,11 @@ interface INewSale {
 export default function NewSale() {
   const [form, setForm] = useState<INewSale>({
     driverId: "",
-    pelak: {
-      p1: "",
-      p2: "",
-      p3: "",
-      p4: "",
-    },
-    fullPelak: "",
     destinationId: "",
     address: "",
     productId: "",
     product: {},
+    driver: {},
     workerGroupId: "",
     emptyWeight: undefined,
     needsOfAmount: undefined,
@@ -69,8 +57,8 @@ export default function NewSale() {
   const [driver, setDriver] = useState<any>(null);
   const [keyword, setKeyword] = useState<string>("");
   const [prms, setPrms] = useState<any>({
-    destination: null,
-    product: null,
+    destinations: null,
+    products: null,
     workerGroup: null,
   });
   const [loading, setLoading] = useState<any>({
@@ -127,14 +115,12 @@ export default function NewSale() {
   const onSaveOrder = () => {
     setLoading((prevState) => ({ ...prevState, save: true }));
 
-    const { productId, ...rest } = form;
+    const { productId, driverId, ...rest } = form;
 
     const payload = {
       ...rest,
-      fullPelak: driver.pelak.p1 + driver.pelak.p2 + driver.pelak.p3,
       product: prms.products.find((x) => x.id == productId),
-      pelak: driver.pelak,
-      driverId: driver.id,
+      driver,
       emptyWeight: +form.emptyWeight,
       needsOfAmount: +form.needsOfAmount,
     };
