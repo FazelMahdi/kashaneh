@@ -30,6 +30,8 @@ interface INewSale {
   productId: string;
   product: object;
   workerGroupId: string;
+  workerGroup: object;
+  destination: object;
   emptyWeight: number | undefined;
   needsOfAmount: number | undefined;
   amount: number | undefined;
@@ -44,6 +46,8 @@ export default function NewSale() {
     productId: "",
     product: {},
     driver: {},
+    workerGroup: {},
+    destination: {},
     workerGroupId: "",
     emptyWeight: undefined,
     needsOfAmount: undefined,
@@ -114,11 +118,13 @@ export default function NewSale() {
   const onSaveOrder = () => {
     setLoading((prevState) => ({ ...prevState, save: true }));
 
-    const { productId, driverId, ...rest } = form;
+    const { productId, workerGroupId, destinationId, driverId, ...rest } = form;
 
     const payload = {
       ...rest,
       product: prms.products.find((x) => x.id == productId),
+      workerGroup: prms.workerGroup.find((x) => x.id == workerGroupId),
+      destination: prms.destinations.find((x) => x.id == destinationId),
       driver,
       emptyWeight: +form.emptyWeight,
       needsOfAmount: +form.needsOfAmount,

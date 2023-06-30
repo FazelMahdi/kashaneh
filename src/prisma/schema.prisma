@@ -12,12 +12,10 @@ model Order {
   driver        DriverType      
   createdAt     DateTime    @default(now())
   updatedAt     DateTime    @default(now()) @map(name: "updated_at")
-  destination   Destination @relation(fields: [destinationId], references: [id])
-  destinationId String      @db.ObjectId
+  destination   DestinationType
   address       String
   product       ProductType 
-  workerGroup   WorkerGroup @relation(fields: [workerGroupId], references: [id])
-  workerGroupId String      @db.ObjectId
+  workerGroup   WorkerGroupType
   state         Int         @default(1)
   emptyWeight   Int
   amount        Int
@@ -28,13 +26,11 @@ model Order {
 model WorkerGroup {
   id     String  @id @default(auto()) @map("_id") @db.ObjectId
   title  String  @unique
-  orders Order[]
 }
 
 model Destination {
   id     String  @id @default(auto()) @map("_id") @db.ObjectId
   title  String  @unique
-  orders Order[]
 }
 
 model Driver {
@@ -86,4 +82,12 @@ type DriverType {
   pelak     Pelak
   fullPelak String
   createdAt DateTime
+}
+type WorkerGroupType {
+  id     String
+  title  String
+}
+type DestinationType {
+  id     String
+  title  String
 }

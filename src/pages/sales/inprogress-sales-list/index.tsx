@@ -19,17 +19,6 @@ import axios from "axios";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
-function createData(
-  id: number,
-  name: string,
-  phoneNumber: string,
-  carNO: string,
-  carWeightEmpty: number | null,
-  orderWeight: number | null
-) {
-  return { id, name, phoneNumber, carNO, carWeightEmpty, orderWeight };
-}
-
 const StyledTableRow = styled(TableRow)(({ theme }) => ({
   "&:nth-of-type(odd)": {
     backgroundColor: theme.palette.action.hover,
