@@ -4,9 +4,8 @@ import prisma from "..";
 export async function createDriver(driver: any) {
 
     try {
-        const response = await prisma.driver.create({ data: { ...driver, mobile: fixChars(driver.mobile) } }).then((response) => {
-        }).catch((err) => err)
-        return {response }
+        const driverFromDb = await prisma.driver.create({ data: { ...driver, mobile: fixChars(driver.mobile) } }).catch((err) => err)
+        return { driver: driverFromDb }
 
     } catch (error) {
         return error

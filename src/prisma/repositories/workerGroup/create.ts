@@ -1,10 +1,9 @@
 import prisma from "..";
 
-export async function createDriver(driver: any) {
+export async function createWorker(worker: any) {
     try {
-        const driverFromDb = await prisma.driver.create({ data: driver })
-        return { driver: driverFromDb }
-
+        const workerFromDb = await prisma.workerGroup.create({ data: worker })
+        return { group: workerFromDb }
     } catch (error) {
         return error
     }

@@ -23,7 +23,7 @@ const pages = [
   },
   {
     title: 'گروه بارگیری',
-    path: ''
+    path: '/worker-groups'
   },
   {
     title: 'محصولات',
@@ -31,11 +31,11 @@ const pages = [
   },
   {
     title: 'مقصد ها',
-    path: ''
+    path: '/destinations'
   },
   {
     title: 'رانندگان',
-    path: ''
+    path: '/drivers'
   },
   {
     title: 'حسابداری',

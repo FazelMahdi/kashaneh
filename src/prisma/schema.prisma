@@ -8,63 +8,74 @@ generator client {
 }
 
 model Order {
-  id            String    @id @default(auto()) @map("_id") @db.ObjectId
-  driver        Driver    @relation(fields: [driverId], references: [id])
-  driverId      String    @db.ObjectId
-  pelak         String
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @default(now()) @map(name: "updated_at")
-  destination   Destination    @relation(fields: [destinationId], references: [id])
-  destinationId String         @db.ObjectId
+  id            String      @id @default(auto()) @map("_id") @db.ObjectId
+  driver        Driver      @relation(fields: [driverId], references: [id])
+  driverId      String      @db.ObjectId
+  pelak         Pelak
+  fullPelak     String
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @default(now()) @map(name: "updated_at")
+  destination   Destination @relation(fields: [destinationId], references: [id])
+  destinationId String      @db.ObjectId
   address       String
-  product       Product    @relation(fields: [productId], references: [id])
-  productId     String     @db.ObjectId
-  workerGroup   WorkerGroup    @relation(fields: [workerGroupId], references: [id])
-  workerGroupId String         @db.ObjectId
-  state         Int
+  product       ProductType
+  workerGroup   WorkerGroup @relation(fields: [workerGroupId], references: [id])
+  workerGroupId String      @db.ObjectId
+  state         Int         @default(1)
   emptyWeight   Int
   amount        Int
   needsOfAmount Int
+  preOrder      Int         @default(0)
 }
 
 model WorkerGroup {
-  id       String    @id @default(auto()) @map("_id") @db.ObjectId
-  title    String    @unique
-  orders        Order[]
+  id     String  @id @default(auto()) @map("_id") @db.ObjectId
+  title  String  @unique
+  orders Order[]
 }
 
 model Destination {
-  id       String    @id @default(auto()) @map("_id") @db.ObjectId
-  title    String    @unique
-  orders        Order[]
+  id     String  @id @default(auto()) @map("_id") @db.ObjectId
+  title  String  @unique
+  orders Order[]
 }
 
 model Driver {
-  id            String    @id @default(auto()) @map("_id") @db.ObjectId
-  firstName     String
-  lastName      String
-  mobile        String    @unique
-  pelak         Pelak
-  fullPelak     String
-  createdAt     DateTime @default(now())
-  orders        Order[]
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  firstName String
+  lastName  String
+  mobile    String   @unique
+  pelak     Pelak
+  fullPelak String
+  createdAt DateTime @default(now())
+  orders    Order[]
 }
 
 model Product {
-  id            String    @id @default(auto()) @map("_id") @db.ObjectId
-  title         String    @unique
-  unit          Int
-  price         Int
-  finalPrice    Int
-  loadPrice     Int
-  baskulPrice   Int
-  createdAt     DateTime @default(now())
-  order         Order[]
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  title       String   @unique
+  unit        Int
+  price       Int
+  finalPrice  Int
+  loadPrice   Int
+  baskulPrice Int
+  createdAt   DateTime @default(now())
 }
 
 type Pelak {
-  p1    String
-  p2    String
-  p3    String
-  p4    String
+  p1 String
+  p2 String
+  p3 String
+  p4 String
+}
+
+type ProductType {
+  id          String
+  title       String
+  unit        Int
+  price       Int
+  finalPrice  Int
+  loadPrice   Int
+  baskulPrice Int
+  createdAt   DateTime
 }

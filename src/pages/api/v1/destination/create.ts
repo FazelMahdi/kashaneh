@@ -1,13 +1,13 @@
 import { withMethods } from "@/lib/api-middlewares/with-methods";
-import { createDriver } from "@/prisma/repositories/driver/create";
+import { createDestination } from "@/prisma/repositories/destination/create";
 import { NextApiRequest, NextApiResponse } from "next";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         try {
             const data = req.body;
-            const { driver, error } = await createDriver(data);
+            const { destination, error } = await createDestination(data);
             if (error) throw new Error(error);
-            return res.status(200).json({ driver })
+            return res.status(200).json({ destination })
 
         } catch (error) {
             return res.status(500).json({ error: error.message })

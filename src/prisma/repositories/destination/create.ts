@@ -1,10 +1,9 @@
 import prisma from "..";
 
-export async function createDriver(driver: any) {
+export async function createDestination(destination: any) {
     try {
-        const driverFromDb = await prisma.driver.create({ data: driver })
-        return { driver: driverFromDb }
-
+        const destinationFromDb = await prisma.destination.create({ data: destination })
+        return { destination: destinationFromDb }
     } catch (error) {
         return error
     }

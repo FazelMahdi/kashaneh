@@ -1,296 +1,372 @@
-'use client'
+"use client";
 
 import AddDriverDialog from "@/components/driver/add-driver-dialog";
 import PageHeader from "@/components/utils/page-header";
 import { AccountCircleOutlined } from "@mui/icons-material";
-import { Autocomplete, Avatar, Box, Button, Chip, Container, Divider, FormControl, InputAdornment, InputLabel, MenuItem, Paper, Select, Skeleton, TextField } from "@mui/material";
-import axios from 'axios';
-import { useState } from "react";
-
+import {
+  Autocomplete,
+  Avatar,
+  Box,
+  Button,
+  Chip,
+  Container,
+  Divider,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Paper,
+  Select,
+  Skeleton,
+  TextField,
+} from "@mui/material";
+import axios from "axios";
+import { useEffect, useState } from "react";
 
 interface INewSale {
-    phoneNumber: string;
-    keyword: string;
-    name: string;
-    family: string;
-    carNO: string;
-    carWeightEmpty: number | undefined;
-    orderWeight: number | undefined;
-    productType: number | null;
-
+  driverId: string;
+  pelak: {
+    p1: string;
+    p2: string;
+    p3: string;
+    p4: string;
+  };
+  fullPelak: string;
+  destinationId: string;
+  address: string;
+  productId: string;
+  product: object;
+  workerGroupId: string;
+  emptyWeight: number | undefined;
+  needsOfAmount: number | undefined;
+  amount: number | undefined;
+  preOrder: number | undefined;
 }
 
 export default function NewSale() {
+  const [form, setForm] = useState<INewSale>({
+    driverId: "",
+    pelak: {
+      p1: "",
+      p2: "",
+      p3: "",
+      p4: "",
+    },
+    fullPelak: "",
+    destinationId: "",
+    address: "",
+    productId: "",
+    product: {},
+    workerGroupId: "",
+    emptyWeight: undefined,
+    needsOfAmount: undefined,
+    amount: 0,
+    preOrder: 0,
+  });
 
-    const [form, setForm] = useState<INewSale>({
-        phoneNumber: '',
-        keyword: '',
-        name: '',
-        family: '',
-        carNO: '',
-        carWeightEmpty: undefined,
-        orderWeight: undefined,
-        productType: 1
-    })
+  // const [calcWeightDialog, setCalcWeightDialog] = useState<Boolean>(false)
+  const [showAddDriverDialog, setShowAddDriverDialog] =
+    useState<Boolean>(false);
+  const [driver, setDriver] = useState<any>(null);
+  const [keyword, setKeyword] = useState<string>("");
+  const [prms, setPrms] = useState<any>({
+    destination: null,
+    product: null,
+    workerGroup: null,
+  });
+  const [loading, setLoading] = useState<any>({
+    driver: false,
+    order: false,
+    prms: false,
+    save: false,
+  });
 
-    // const [calcWeightDialog, setCalcWeightDialog] = useState<Boolean>(false)
-    const [showAddDriverDialog, setShowAddDriverDialog] = useState<Boolean>(false)
-    const [driver, setDriver] = useState<any>(null)
-    const [loading, setLoading] = useState<any>({
-        driver: false,
-        order: false,
-        prms: false
-    })
-
-    const checkDriver = (e) => {
-        if (e.keyCode == 13) {
-            setLoading((prevState) => ({ ...prevState, driver: true }))
-            axios.get('/api/v1/driver/searchDriver', {
-                params: {
-                    keyword: form.keyword
-                }
-            })
-                .then((response) => {
-                    setDriver(response.data)
-                    !response.data && setShowAddDriverDialog(true)
-                })
-                .catch(() => alert('مشکل در ارتباط با سرور'))
-                .finally(() => setLoading((prevState) => ({ ...prevState, driver: false })))
-        }
+  const checkDriver = (e) => {
+    if (e.keyCode == 13) {
+      e.preventDefault();
+      setLoading((prevState) => ({ ...prevState, driver: true }));
+      axios
+        .get("/api/v1/driver/searchDriver", {
+          params: {
+            keyword,
+          },
+        })
+        .then((response) => {
+          setDriver(response.data);
+          !response.data && setShowAddDriverDialog(true);
+        })
+        .catch(() => alert("مشکل در ارتباط با سرور"))
+        .finally(() =>
+          setLoading((prevState) => ({ ...prevState, driver: false }))
+        );
     }
+  };
 
-    const handleChange = (evt) => {
-        const value = evt.target.value;
-        setForm(
-            {
-                ...form,
-                [evt.target.name]: value
-            }
-        )
-    }
+  const getPrms = () => {
+    Promise.all([
+      axios.get("/api/v1/destination/search"),
+      axios.get("/api/v1/product/search"),
+      axios.get("/api/v1/workerGroup/search"),
+    ]).then((result) => {
+      console.log(result);
+      setPrms({
+        destinations: result[0].data.destinations,
+        products: result[1].data.products,
+        workerGroup: result[2].data.groups,
+      });
+    });
+  };
 
-    return (
-        <>
-            <Container maxWidth={false}>
-                <Box className="w-full lg:w-6/12 mx-auto text-center" sx={{ bgcolor: 'white', borderRadius: '1rem', padding: '2rem' }}>
-                    <PageHeader title="ثبت فروش جدید (صدور مجوز)" />
+  const handleChange = (evt) => {
+    const value = evt.target.value;
+    setForm({
+      ...form,
+      [evt.target.name]: value,
+    });
+  };
 
-                    <Divider className="mt-5 mb-5">
-                        <Chip color="primary" label="اطلاعات خریدار" className="font-bold" />
-                    </Divider>
+  const onSaveOrder = () => {
+    setLoading((prevState) => ({ ...prevState, save: true }));
+    const payload: INewSale = {
+      ...form,
+      fullPelak: driver.pelak.p1 + driver.pelak.p2 + driver.pelak.p3,
+      product: prms.products.find((x)=> x.id == form.productId),
+      pelak: driver.pelak,
+      driverId: driver.id,
+      emptyWeight: +form.emptyWeight,
+      needsOfAmount: +form.needsOfAmount,
+    };
+    console.log(payload);
+    axios
+      .post("/api/v1/order/create", payload)
+      .catch(() => alert("مشکل در ارتباط با سرور"))
+      .finally(() =>
+        setLoading((prevState) => ({ ...prevState, driver: false }))
+      );
+  };
+
+  useEffect(() => {
+    getPrms();
+  }, []);
+
+  return (
+    <>
+      <Container maxWidth={false}>
+        <Box
+          className="w-full lg:w-6/12 mx-auto text-center"
+          sx={{ bgcolor: "white", borderRadius: "1rem", padding: "2rem" }}
+          component="form"
+          autoComplete="off"
+        >
+          <PageHeader title="ثبت فروش جدید (صدور مجوز)" />
+
+          <Divider className="mt-5 mb-5">
+            <Chip
+              color="primary"
+              label="اطلاعات خریدار"
+              className="font-bold"
+            />
+          </Divider>
+          <div className="flex justify-start items-center">
+            <TextField
+              label="شماره همراه / شماره پلاک"
+              name="keyword"
+              className="w-full ltr ml-2"
+              onChange={(e) => setKeyword(() => e.target.value)}
+              value={keyword}
+              onKeyDown={(e) => checkDriver(e)}
+            />
+            <Button
+              variant="outlined"
+              className="bg-green-50"
+              size="small"
+              onClick={() => setShowAddDriverDialog(true)}
+            >
+              افزودن راننده جدید
+            </Button>
+          </div>
+          {driver && !loading.driver && (
+            <>
+              <Box
+                sx={{ marginY: "2rem", marginX: "auto" }}
+                component="form"
+                autoComplete="off"
+              >
+                <Paper className=" rounded-lg md:p-3 p-3" elevation={3}>
+                  <div className="flex justify-between flex-wrap">
                     <div className="flex justify-start items-center">
-                        <TextField
-                            label="شماره همراه / شماره پلاک"
-                            name="keyword"
-                            className="w-full ltr ml-2"
-                            onChange={(e) => handleChange(e)}
-                            value={form.keyword}
-                            inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
-                            onKeyDown={(e) => checkDriver(e)}
-                        />
-                        <Button variant="outlined" className="bg-green-50" size="small" onClick={() => setShowAddDriverDialog(true)}>
-                            افزودن راننده جدید
-                        </Button>
+                      <Avatar className="bg-green-500">
+                        <AccountCircleOutlined />
+                      </Avatar>
+                      <p className="mr-2 font-bold !text-sm">
+                        {driver.firstName} {driver.lastName}
+                      </p>
+                      {driver.mobile && (
+                        <p className="mr-2 font-bold !text-sm !block">
+                          {driver.mobile}
+                        </p>
+                      )}
                     </div>
-                    {
-                        driver && !loading.driver &&
-                        (
+                    <div className="flex w-21 justify-between border border-solid border-gray-800 rounded-sm overflow-hidden bg-yellow-500">
+                      <div className="w-10 border-0 border-l border-solid border-gray-800 text-center my-auto text-lg">
+                        <p>{driver.pelak.p4 || "-"}</p>
+                      </div>
+                      <div className="w-30 flex justify-around items-center text-center text-lg">
+                        <p className="mx-2"> {driver.pelak.p1 || "-"}</p>
 
-                            <>
-                                <Box sx={{ marginY: '2rem', marginX: 'auto' }} component="form" autoComplete="off">
-                                    <Paper className=" rounded-lg md:p-3 p-3" elevation={3}>
-                                        <div className="flex justify-between flex-wrap">
-                                            <div className="flex justify-start items-center">
+                        <p className="mx-2"> {driver.pelak.p2 || "-"}</p>
 
-                                                <Avatar className="bg-green-500">
-                                                    <AccountCircleOutlined />
-                                                </Avatar>
-                                                <p className="mr-2 font-bold !text-sm">{driver.firstName} {driver.lastName}</p>
-                                                {driver.mobile && (<p className="mr-2 font-bold !text-sm !block">{driver.mobile}</p>)}
+                        <p className="mx-2"> {driver.pelak.p3 || "-"}</p>
+                      </div>
+                      <div className="w-2 bg-blue-800 ml-0">
+                        <div className="mx-auto">
+                          <div className="h-1 w-full bg-green-500" />
+                          <div className="h-1 bg-white" />
+                          <div className="h-1 bg-red-500" />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </Paper>
+              </Box>
+              <Divider className="mt-5 mb-5">
+                <Chip
+                  color="primary"
+                  label="سفارش گیری"
+                  className="font-bold"
+                />
+              </Divider>
+              <Box
+                display="flex"
+                flexDirection="column"
+                justifyContent="center"
+                alignItems="center"
+                sx={{ marginY: "2rem", marginX: "auto" }}
+                component="form"
+                autoComplete="off"
+              >
+                <TextField
+                  label="وزن ماشین (بدون بار)"
+                  name="emptyWeight"
+                  className="w-full mb-5"
+                  placeholder="کیلوگرم"
+                  onChange={(e) => handleChange(e)}
+                  value={form.emptyWeight}
+                />
+                <FormControl className=" mb-5 text-gray-700" fullWidth>
+                  <InputLabel id="productId">نوع محصول</InputLabel>
+                  <Select
+                    labelId="productId"
+                    name="productId"
+                    className="text-right"
+                    onChange={(e) => handleChange(e)}
+                    label="نوع محصول"
+                    value={form.productId}
+                  >
+                    {prms &&
+                      prms.products.map((item, index) => (
+                        <MenuItem key={index + "breakkey"} value={item.id}>
+                          {item.title}
+                        </MenuItem>
+                      ))}
+                  </Select>
+                </FormControl>
+                <TextField
+                  label="مقدار سفارش"
+                  placeholder="کیلوگرم"
+                  name="needsOfAmount"
+                  className="mb-5 w-full"
+                  onChange={(e) => handleChange(e)}
+                  value={form.needsOfAmount}
+                />
+                <FormControl className="mb-5 text-gray-700" fullWidth>
+                  <InputLabel id="workerGroupId">گروه بارگیری</InputLabel>
+                  <Select
+                    labelId="workerGroupId"
+                    name="workerGroupId"
+                    className="text-right"
+                    onChange={(e) => handleChange(e)}
+                    label="گروه بارگیری"
+                    value={form.workerGroupId}
+                  >
+                    {prms &&
+                      prms.workerGroup.map((item, index) => (
+                        <MenuItem key={index + "breakkey"} value={item.id}>
+                          {item.title}
+                        </MenuItem>
+                      ))}
+                  </Select>
+                </FormControl>
+              </Box>
+              <Divider className="mt-5 mb-5">
+                <Chip color="primary" label="مقصد بار" className="font-bold" />
+              </Divider>
+              <Box
+                display="flex"
+                flexDirection="column"
+                justifyContent="center"
+                alignItems="center"
+                sx={{ marginY: "2rem", marginX: "auto" }}
+                component="form"
+                autoComplete="off"
+              >
+                <Autocomplete
+                  options={prms && prms.destinations}
+                  autoHighlight
+                  className="w-full"
+                  getOptionLabel={(option: any) => option.title}
+                  onChange={(_e, value: any) =>
+                    setForm({
+                      ...form,
+                      destinationId: value.id,
+                    })
+                  }
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      label="مقصد بار"
+                      className="mb-5"
+                      inputProps={{
+                        ...params.inputProps,
+                      }}
+                    />
+                  )}
+                />
+                <TextField
+                  label="آدرس"
+                  placeholder="آدرس تحویل سفارش"
+                  name="address"
+                  className="mb-5 w-full"
+                  onChange={(e) => handleChange(e)}
+                  value={form.address}
+                />
 
-                                            </div>
-                                            <div
-                                                className="flex w-21 justify-between border border-solid border-gray-800 rounded-sm overflow-hidden bg-yellow-500"
-                                            >
-                                                <div className="w-10 border-0 border-l border-solid border-gray-800 text-center my-auto text-lg">
-                                                    <p>
-                                                        {driver.pelak.p4 || '-'}
-                                                    </p>
-                                                </div>
-                                                <div className="w-30 flex justify-around items-center text-center text-lg">
-                                                    <p className="mx-2"> {driver.pelak.p1 || '-'}</p>
-
-                                                    <p className="mx-2"> {driver.pelak.p2 || '-'}</p>
-
-                                                    <p className="mx-2"> {driver.pelak.p3 || '-'}</p>
-                                                </div>
-                                                <div className="w-2 bg-blue-800 ml-0">
-                                                    <div className="mx-auto">
-                                                        <div className="h-1 w-full bg-green-500" />
-                                                        <div className="h-1 bg-white" />
-                                                        <div className="h-1 bg-red-500" />
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </Paper>
-                                </Box>
-                                <Divider className="mt-5 mb-5">
-                                    <Chip color="primary" label="سفارش گیری" className="font-bold" />
-                                </Divider>
-                                <Box display="flex" flexDirection="column" justifyContent="center" alignItems="center" sx={{ marginY: '2rem', marginX: 'auto' }} component="form" autoComplete="off">
-
-                                    <TextField
-                                        label="وزن ماشین (بدون بار)"
-                                        name="carWeightEmpty"
-                                        className="w-full mb-5"
-                                        onChange={(e) => handleChange(e)}
-                                        value={form.carWeightEmpty}
-                                        InputProps={{
-                                            endAdornment: <InputAdornment position="end">کیلوگرم <small className="mr-1">(تُن * 1000) </small></InputAdornment>,
-                                        }}
-                                    />
-                                    <FormControl className=" mb-5 text-gray-700" fullWidth>
-                                        <InputLabel id="productgroup">نوع محصول</InputLabel>
-                                        <Select
-                                            labelId="productgroup"
-                                            name="productType"
-                                            className="text-right"
-                                            onChange={(e) => handleChange(e)}
-                                            label="نوع محصول"
-                                            value={form.productType}
-
-                                        >
-                                            {breakTypeList.map((item, index) => (
-                                                <MenuItem key={index + 'breakkey'} value={item.id}>{item.label}</MenuItem>
-                                            ))}
-                                        </Select>
-                                    </FormControl>
-                                    <TextField
-                                        label="مقدار سفارش"
-                                        placeholder=""
-                                        name="orderWeight"
-                                        className="mb-5 w-full"
-                                        onChange={(e) => handleChange(e)}
-                                        value={form.orderWeight}
-                                        InputProps={{
-                                            endAdornment: <InputAdornment position="end">کیلوگرم <small className="mr-1">(تُن * 1000) </small></InputAdornment>,
-                                        }}
-                                    />
-                                    <FormControl className="mb-5 text-gray-700" fullWidth>
-                                        <InputLabel id="labGroup">گروه بارگیری</InputLabel>
-                                        <Select
-                                            labelId="labGroup"
-                                            name="productType"
-                                            className="text-right"
-                                            onChange={(e) => handleChange(e)}
-                                            label="گروه بارگیری"
-                                            value={form.productType}
-                                        >
-                                            {breakTypeList.map((item, index) => (
-                                                <MenuItem key={index + 'breakkey'} value={item.id}>{item.label}</MenuItem>
-                                            ))}
-                                        </Select>
-                                    </FormControl>
-
-                                </Box>
-                                <Divider className="mt-5 mb-5">
-                                    <Chip color="primary" label="مقصد بار" className="font-bold" />
-                                </Divider>
-                                <Box display="flex" flexDirection="column" justifyContent="center" alignItems="center" sx={{ marginY: '2rem', marginX: 'auto' }} component="form" autoComplete="off">
-                                    <TextField
-                                        label="آدرس"
-                                        placeholder=""
-                                        name="carNO"
-                                        className=" mb-5 w-full"
-                                        onChange={(e) => handleChange(e)}
-                                        value={form.carNO}
-                                        inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
-                                    />
-                                    <Autocomplete
-                                        id="vehicle-select"
-                                        options={vehiclesList}
-                                        autoHighlight
-                                        className="w-full"
-                                        getOptionLabel={(option) => option.label}
-                                        renderOption={(props, option) => (
-                                            <Box component="li" sx={{ '& > img': { mr: 2, flexShrink: 0 } }} {...props}>
-                                                <div className="flex flex-col">
-                                                    <p className="font-bold">{option.label}</p>
-                                                    <small>{option.capacity}</small>
-                                                </div>
-                                                <Divider />
-                                            </Box>
-                                        )}
-                                        renderInput={(params) => (
-                                            <TextField
-                                                {...params}
-                                                label="مقصد بار"
-                                                className="mb-5"
-                                                inputProps={{
-                                                    ...params.inputProps,
-                                                }}
-                                            />
-                                        )}
-                                    />
-
-                                    <Button className="mb-5 w-full bg-green-600 font-extrabold rounded-lg py-5" variant="contained" size="large">
-                                        صدور مجوز بارگیری
-                                    </Button>
-                                </Box>
-                                {/* {calcWeightDialog && <CalcWeightDialog show={calcWeightDialog} onClose={() => setCalcWeightDialog(false)} onSome={(val) => setForm((prev) => ({ ...prev, carWeightEmpty: val }))} />} */}
-                            </>
-                        )
-                    }
-                    {
-                        loading.driver &&
-                        (
-                            <Box className="mt-5" >
-                                <Skeleton />
-                                <Skeleton animation="wave" />
-                                <Skeleton animation={false} />
-                            </Box>
-                        )
-                    }
-                </Box>
-                {showAddDriverDialog && <AddDriverDialog show={showAddDriverDialog} onClose={() => setShowAddDriverDialog(false)} />}
-            </Container >
-
-        </>
-    )
-
+                <Button
+                  className="mb-5 w-full bg-green-600 font-extrabold rounded-lg py-5"
+                  variant="contained"
+                  size="large"
+                  onClick={() => onSaveOrder()}
+                >
+                  صدور مجوز بارگیری
+                </Button>
+              </Box>
+              {/* {calcWeightDialog && <CalcWeightDialog show={calcWeightDialog} onClose={() => setCalcWeightDialog(false)} onSome={(val) => setForm((prev) => ({ ...prev, carWeightEmpty: val }))} />} */}
+            </>
+          )}
+          {loading.driver && (
+            <Box className="mt-5">
+              <Skeleton />
+              <Skeleton animation="wave" />
+              <Skeleton animation={false} />
+            </Box>
+          )}
+        </Box>
+        {showAddDriverDialog && (
+          <AddDriverDialog
+            show={showAddDriverDialog}
+            onClose={() => setShowAddDriverDialog(false)}
+          />
+        )}
+      </Container>
+    </>
+  );
 }
-
-interface IVehicleType {
-    id: number;
-    label: string;
-    capacity: string;
-}
-
-interface IBreakType {
-    id: number;
-    label: string;
-}
-
-const vehiclesList: readonly IVehicleType[] = [
-    { id: 1, label: 'تک', capacity: 'تا ۱۰ تن' },
-    { id: 2, label: 'جفت', capacity: 'تا ۱۵ تن' },
-    { id: 3, label: 'تریلی کفی', capacity: '۲۴ تن' },
-    { id: 4, label: 'تریلی بغدار', capacity: '۲۴ تن' },
-    { id: 5, label: 'تریلی ترانزیت', capacity: '۲۴ تن' },
-    { id: 6, label: 'خاور چوبی (۶۰۸)', capacity: '۳و نیم تن' },
-    { id: 7, label: 'خاور چوبی (۸۰۸)', capacity: 'تا ۵ تن' },
-    { id: 8, label: 'خاور مسقف', capacity: 'تا ۳ تن' },
-    { id: 9, label: 'خاور بغل بازشو', capacity: 'تا ۳ و نیم تن' },
-    { id: 10, label: 'خاور ۹۱۱', capacity: 'تا ۵ و نیم تن' },
-    { id: 11, label: 'وانت پراید', capacity: 'زیر ۷۰۰ کیلو' },
-    { id: 12, label: 'وانت پیکان', capacity: '۴۰۰ تا ۷۰۰ کیلو' },
-    { id: 13, label: 'وانت مزدا', capacity: '۷۵۰ کیلو' },
-    { id: 14, label: 'وانت نیسان', capacity: '۱۵۰۰ تا ۲۰۰۰ کیلو' },
-];
-const breakTypeList: readonly IBreakType[] = [
-    { id: 1, label: 'آجر فشاری' },
-    { id: 2, label: 'آجر سفال' },
-    { id: 4, label: 'آجر ضایعات' },
-    { id: 3, label: 'ماسه' },
-];
