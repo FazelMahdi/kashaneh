@@ -95,7 +95,6 @@ export default function NewSale() {
       axios.get("/api/v1/product/search"),
       axios.get("/api/v1/workerGroup/search"),
     ]).then((result) => {
-      console.log(result);
       setPrms({
         destinations: result[0].data.destinations,
         products: result[1].data.products,
@@ -124,7 +123,6 @@ export default function NewSale() {
       emptyWeight: +form.emptyWeight,
       needsOfAmount: +form.needsOfAmount,
     };
-    console.log(payload);
     axios
       .post("/api/v1/order/create", payload)
       .catch(() => alert("مشکل در ارتباط با سرور"))
