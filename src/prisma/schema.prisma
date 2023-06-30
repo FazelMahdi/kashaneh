@@ -18,7 +18,7 @@ model Order {
   destination   Destination @relation(fields: [destinationId], references: [id])
   destinationId String      @db.ObjectId
   address       String
-  product       ProductType
+  product       ProductType 
   workerGroup   WorkerGroup @relation(fields: [workerGroupId], references: [id])
   workerGroupId String      @db.ObjectId
   state         Int         @default(1)
@@ -49,6 +49,8 @@ model Driver {
   fullPelak String
   createdAt DateTime @default(now())
   orders    Order[]
+
+  @@unique([firstName, lastName])
 }
 
 model Product {
@@ -77,5 +79,5 @@ type ProductType {
   finalPrice  Int
   loadPrice   Int
   baskulPrice Int
-  createdAt   DateTime
+  createdAt   String
 }
