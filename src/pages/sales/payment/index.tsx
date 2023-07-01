@@ -3,6 +3,7 @@
 import PageHeader from "@/components/utils/page-header";
 import { formatDatetime } from "@/core/util/date-format";
 import { numeral } from "@/core/util/number";
+import Toastify from "toastify-js";
 import { PermIdentity } from "@mui/icons-material";
 import {
   Alert,
@@ -16,7 +17,7 @@ import {
   ListItemIcon,
   ListItemText,
   Skeleton,
-  TextField
+  TextField,
 } from "@mui/material";
 import axios from "axios";
 import { useRouter } from "next/router";
@@ -71,12 +72,29 @@ export default function NewSale() {
     setLoading((prevState) => ({ ...prevState, save: true }));
     const orderAmount = Math.floor(
       +form.cardLoadedWeight - orderDetail.emptyWeight
-    )
+    );
     const payload = {
-      amount: orderAmount
+      amount: orderAmount,
     };
     axios
       .put(`/api/v1/order/${orderDetail.id}/update`, payload)
+      .then(() => {
+        Toastify({
+          text: "فروش با موفقیت ثبت شد.",
+          className: "font-extrabold text-lg",
+          duration: 3000,
+          newWindow: true,
+          gravity: "bottom", // `top` or `bottom`
+          position: "center", // `left`, `center` or `right`
+          stopOnFocus: true, // Prevents dismissing of toast on hover
+          style: {
+            background: "green",
+            borderRadius: "1rem",
+            padding: "1rem",
+          },
+        }).showToast();
+        router.push("/sales/inprogress-sales-list");
+      })
       .catch(() => alert("مشکل در ارتباط با سرور"))
       .finally(() =>
         setLoading((prevState) => ({ ...prevState, save: false }))
@@ -86,34 +104,34 @@ export default function NewSale() {
   const totalPrice = () => {
     const orderAmount = Math.floor(
       +form.cardLoadedWeight - orderDetail.emptyWeight
-    )
-    return orderAmount * orderDetail.product.price
-  }
+    );
+    return orderAmount * orderDetail.product.price;
+  };
   const totalDiscount = () => {
     const orderAmount = Math.floor(
       +form.cardLoadedWeight - orderDetail.emptyWeight
-    )
-    return totalPrice() - (orderAmount * orderDetail.product.finalPrice)
-  }
+    );
+    return totalPrice() - orderAmount * orderDetail.product.finalPrice;
+  };
   const totalLoadPrice = () => {
     const orderAmount = Math.floor(
       +form.cardLoadedWeight - orderDetail.emptyWeight
-    )
-    return (orderAmount * orderDetail.product.loadPrice || 0)
-  }
-
+    );
+    return orderAmount * orderDetail.product.loadPrice || 0;
+  };
 
   const totalFinalPrice = () => {
     const orderAmount = Math.floor(
       +form.cardLoadedWeight - orderDetail.emptyWeight
-    )
-    return (orderAmount * orderDetail.product.finalPrice) + totalLoadPrice()
-  }
+    );
+    return orderAmount * orderDetail.product.finalPrice + totalLoadPrice();
+  };
 
   const canSave = () => {
-    return form.cardLoadedWeight &&
-      form.cardLoadedWeight > orderDetail.emptyWeight
-  }
+    return (
+      form.cardLoadedWeight && form.cardLoadedWeight > orderDetail.emptyWeight
+    );
+  };
 
   const handleChange = (evt) => {
     const value = evt.target.value;
@@ -159,7 +177,8 @@ export default function NewSale() {
                       <small>خریدار</small>
                     </ListItemText>
                     <p className="text-lg font-bold">
-                      {orderDetail.driver.firstName} {orderDetail.driver.lastName}
+                      {orderDetail.driver.firstName}{" "}
+                      {orderDetail.driver.lastName}
                     </p>
                   </ListItemButton>
                   <ListItemButton>
@@ -257,7 +276,8 @@ export default function NewSale() {
                       <small>هزینه بارگیری</small>
                     </ListItemText>
                     <p className="text-lg font-bold">
-                      {numeral(orderDetail.product.loadPrice)} <small>ریال</small>
+                      {numeral(orderDetail.product.loadPrice)}{" "}
+                      <small>ریال</small>
                     </p>
                   </ListItemButton>
                   <ListItemButton>
@@ -267,7 +287,9 @@ export default function NewSale() {
                     <ListItemText>
                       <small>وزن خالی ماشین</small>
                     </ListItemText>
-                    <p className="text-lg">{numeral(orderDetail.emptyWeight)} <small>کیلوگرم</small></p>
+                    <p className="text-lg">
+                      {numeral(orderDetail.emptyWeight)} <small>کیلوگرم</small>
+                    </p>
                   </ListItemButton>
                 </List>
 
@@ -287,44 +309,62 @@ export default function NewSale() {
                       <div className="flex flex-col justify-between items-center mb-4">
                         <div className="flex justify-between items-center w-full">
                           <small className="ml-2">مقدار سفارش</small>
-                          <p >
+                          <p>
                             <span className="text-lg font-extrabold ml-2">
-                              {numeral(Math.floor(
-                                +form.cardLoadedWeight - orderDetail.emptyWeight
-                              ))}
+                              {numeral(
+                                Math.floor(
+                                  +form.cardLoadedWeight -
+                                    orderDetail.emptyWeight
+                                )
+                              )}
                             </span>
-                            <small >کیلوگرم</small>
+                            <small>کیلوگرم</small>
                           </p>
                         </div>
 
                         <div className="flex justify-between items-center w-full my-2">
                           <small className="ml-2">قیمت کالا</small>
-                          <p><span className="text-lg font-bold">{numeral(totalPrice())}</span> <small>ریال</small></p>
+                          <p>
+                            <span className="text-lg font-bold">
+                              {numeral(totalPrice())}
+                            </span>{" "}
+                            <small>ریال</small>
+                          </p>
                         </div>
 
                         <div className="flex justify-between items-center w-full mb-2">
                           <small className="ml-2">تخفیف اعمال شده</small>
-                          <p><span className="text-lg font-bold text-red-600">{numeral(totalDiscount())}</span> <small>ریال</small></p>
+                          <p>
+                            <span className="text-lg font-bold text-red-600">
+                              {numeral(totalDiscount())}
+                            </span>{" "}
+                            <small>ریال</small>
+                          </p>
                         </div>
                         <div className="flex justify-between items-center w-full">
                           <small className="ml-2">هزینه بارگیری</small>
                           <p>
-                            <span className="text-lg font-bold text-blue-700">{numeral(totalLoadPrice())}</span> <small>ریال</small>
+                            <span className="text-lg font-bold text-blue-700">
+                              {numeral(totalLoadPrice())}
+                            </span>{" "}
+                            <small>ریال</small>
                           </p>
                         </div>
                         <Divider className="my-2 w-full" />
                         <div className="flex justify-between items-center w-full">
                           <small className="ml-2">قیمت کل</small>
                           <p>
-                            <span className="text-2xl font-extrabold text-green-700">{numeral(totalFinalPrice())}</span> <small>ریال</small>
+                            <span className="text-2xl font-extrabold text-green-700">
+                              {numeral(totalFinalPrice())}
+                            </span>{" "}
+                            <small>ریال</small>
                           </p>
                         </div>
                       </div>
                     </div>
-                  )
-                    :
-                    (<span className="text-red-800">وزن پر ماشین وارد شود</span>)
-                  }
+                  ) : (
+                    <span className="text-red-800">وزن پر ماشین وارد شود</span>
+                  )}
 
                   <Button
                     className="w-full mb-8 bg-green-600 font-extrabold rounded-lg py-5 text-white"
@@ -365,7 +405,6 @@ export default function NewSale() {
             </Alert>
           )}
         </Box>
-
       </Container>
     </>
   );

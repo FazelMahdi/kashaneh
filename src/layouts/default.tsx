@@ -11,6 +11,7 @@ import Typography from '@mui/material/Typography';
 import Image from 'next/image';
 import Link from 'next/link';
 import { MouseEvent, useState } from 'react';
+import "toastify-js/src/toastify.css"
 
 const pages = [
   {
