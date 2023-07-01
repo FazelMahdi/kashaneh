@@ -32,3 +32,10 @@ export function fixChars(val: string | number) {
   val = val.replace(/ي/g, 'ی').replace(/ك/g, 'ک');
   return val
 }
+
+export function numeral(val: string | number) {
+  if (val) {
+    return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  }
+  return val;
+}
