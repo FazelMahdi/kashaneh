@@ -10,16 +10,14 @@ import {
   Chip,
   Container,
   Divider,
-  InputAdornment,
   List,
   ListItemButton,
   ListItemIcon,
   ListItemText,
   Skeleton,
-  TextField,
+  TextField
 } from "@mui/material";
 import axios from "axios";
-import { spawn } from "child_process";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
@@ -129,7 +127,7 @@ export default function NewSale() {
                     </div>
                     <div className="w-30 flex justify-around items-center text-center text-lg">
                       <p className="mx-2">
-                        {orderDetail.driver.pelak.p1 || "-"}
+                        {orderDetail.driver.pelak.p3 || "-"}
                       </p>
 
                       <p className="mx-2">
@@ -137,7 +135,7 @@ export default function NewSale() {
                       </p>
 
                       <p className="mx-2">
-                        {orderDetail.driver.pelak.p3 || "-"}
+                        {orderDetail.driver.pelak.p1 || "-"}
                       </p>
                     </div>
                     <div className="w-2 bg-blue-800 ml-0">

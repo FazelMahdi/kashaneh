@@ -204,11 +204,11 @@ export default function NewSale() {
                         <p>{driver.pelak.p4 || "-"}</p>
                       </div>
                       <div className="w-30 flex justify-around items-center text-center text-lg">
-                        <p className="mx-2"> {driver.pelak.p1 || "-"}</p>
+                        <p className="mx-2"> {driver.pelak.p3 || "-"}</p>
 
                         <p className="mx-2"> {driver.pelak.p2 || "-"}</p>
 
-                        <p className="mx-2"> {driver.pelak.p3 || "-"}</p>
+                        <p className="mx-2"> {driver.pelak.p1 || "-"}</p>
                       </div>
                       <div className="w-2 bg-blue-800 ml-0">
                         <div className="mx-auto">
