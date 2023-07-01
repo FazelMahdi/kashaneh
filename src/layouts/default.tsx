@@ -38,6 +38,10 @@ const pages = [
     path: '/drivers'
   },
   {
+    title: 'گزارشات فروش',
+    path: '/reports/sales-report'
+  },
+  {
     title: 'حسابداری',
     path: ''
   },

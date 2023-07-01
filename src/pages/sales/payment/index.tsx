@@ -52,7 +52,6 @@ export default function NewSale() {
   const route = useRouter();
 
   const getOrderDetail = (orderId) => {
-    console.log("🚀 ~ file: index.tsx:54 ~ getOrderDetail ~ orderId:", orderId)
     setLoading((prevState) => ({ ...prevState, detail: true }));
     axios
       .get("/api/v1/order/searchOrder", {
@@ -66,6 +65,21 @@ export default function NewSale() {
       .catch(() => alert("مشکل در ارتباط با سرور"))
       .finally(() =>
         setLoading((prevState) => ({ ...prevState, detail: false }))
+      );
+  };
+  const onSaveOrder = () => {
+    setLoading((prevState) => ({ ...prevState, save: true }));
+    const orderAmount = Math.floor(
+      +form.cardLoadedWeight - orderDetail.emptyWeight
+    )
+    const payload = {
+      amount: orderAmount
+    };
+    axios
+      .put(`/api/v1/order/${orderDetail.id}/update`, payload)
+      .catch(() => alert("مشکل در ارتباط با سرور"))
+      .finally(() =>
+        setLoading((prevState) => ({ ...prevState, save: false }))
       );
   };
 
@@ -316,9 +330,21 @@ export default function NewSale() {
                     className="w-full mb-8 bg-green-600 font-extrabold rounded-lg py-5 text-white"
                     variant="contained"
                     size="large"
-                    disabled={!canSave()}
+                    disabled={!canSave() || loading.save}
+                    onClick={() => onSaveOrder()}
                   >
                     ثبت فروش
+                    {/* {
+                      loading.save ?
+                        (<span>
+                          در حال ذخیره فروش
+                        </span>)
+                        :
+                        (<span>
+
+                          ثبت فروش
+                        </span>)
+                    } */}
                   </Button>
                 </div>
               </Box>
