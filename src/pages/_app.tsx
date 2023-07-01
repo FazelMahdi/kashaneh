@@ -65,7 +65,7 @@ export default function App({
                 <p className="font-extrabold text-center text-orange-800 mb-2">
                   کارخانه آجر کاشانه
                 </p>
-                <span className="font-light">در حال بارگزاری</span>{" "}
+                <span className="font-light">در حال بارگذاری</span>{" "}
               </div>
             </div>
           ) : (
