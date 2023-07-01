@@ -42,7 +42,6 @@ export default function App({
   emotionCache = clientSideEmotionCache,
   pageProps,
 }) {
-  const router = useRouter();
   const isLoading = useLoading();
   const Layout =
     layouts[Component.layout ?? "default"] || ((children) => <>{children}</>);
