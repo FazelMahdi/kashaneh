@@ -17,10 +17,11 @@ import {
   Paper,
   Select,
   Skeleton,
-  TextField,
+  TextField
 } from "@mui/material";
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { Controller, useForm } from "react-hook-form";
 
 interface INewSale {
   driverId: string;
@@ -54,6 +55,23 @@ export default function NewSale() {
     amount: 0,
     preOrder: 0,
   });
+  const { control, formState: { errors }, handleSubmit } = useForm({
+    defaultValues: {
+      driverId: "",
+      destinationId: "",
+      address: "",
+      productId: "",
+      product: {},
+      driver: {},
+      workerGroup: {},
+      destination: {},
+      workerGroupId: "",
+      emptyWeight: undefined,
+      needsOfAmount: undefined,
+      amount: 0,
+      preOrder: 0,
+    },
+  })
 
   // const [calcWeightDialog, setCalcWeightDialog] = useState<Boolean>(false)
   const [showAddDriverDialog, setShowAddDriverDialog] =
@@ -137,18 +155,25 @@ export default function NewSale() {
       );
   };
 
+
+  const onSubmit = (data) => {
+    console.log(data)
+  }
+  const onSubmitDriver = (data) => {
+    console.log(data)
+  }
+
   useEffect(() => {
     getPrms();
   }, []);
 
   return (
     <>
-      <Container maxWidth={false}>
+      <Container >
         <Box
           className="w-full lg:w-6/12 mx-auto text-center"
           sx={{ bgcolor: "white", borderRadius: "1rem", padding: "2rem" }}
-          component="form"
-          autoComplete="off"
+          component="div"
         >
           <PageHeader title="ثبت فروش جدید (صدور مجوز)" />
 
@@ -159,7 +184,7 @@ export default function NewSale() {
               className="font-bold"
             />
           </Divider>
-          <div className="flex justify-start items-center">
+          <form className="flex justify-start items-center">
             <TextField
               label="شماره همراه / شماره پلاک"
               name="keyword"
@@ -176,13 +201,11 @@ export default function NewSale() {
             >
               افزودن راننده جدید
             </Button>
-          </div>
+          </form>
           {driver && !loading.driver && (
-            <>
-              <Box
-                sx={{ marginY: "2rem", marginX: "auto" }}
-                component="form"
-                autoComplete="off"
+            <form>
+              <div
+                className="my-2 mx-auto"
               >
                 <Paper className=" rounded-lg md:p-3 p-3" elevation={3}>
                   <div className="flex justify-between flex-wrap">
@@ -220,7 +243,7 @@ export default function NewSale() {
                     </div>
                   </div>
                 </Paper>
-              </Box>
+              </div>
               <Divider className="mt-5 mb-5">
                 <Chip
                   color="primary"
@@ -228,102 +251,110 @@ export default function NewSale() {
                   className="font-bold"
                 />
               </Divider>
-              <Box
-                display="flex"
-                flexDirection="column"
-                justifyContent="center"
-                alignItems="center"
-                sx={{ marginY: "2rem", marginX: "auto" }}
-                component="form"
-                autoComplete="off"
+              <div
+                className="flex flex-col justify-center items-center"
               >
-                <TextField
-                  label="وزن ماشین (بدون بار)"
+                <Controller
                   name="emptyWeight"
-                  className="w-full mb-5"
-                  placeholder="کیلوگرم"
-                  onChange={(e) => handleChange(e)}
-                  value={form.emptyWeight}
+                  control={control}
+                  rules={{ required: true }}
+                  render={({ field }) => <TextField
+                    {...field}
+                    label="وزن ماشین (بدون بار)"
+                    className="w-full mb-5"
+                    placeholder="کیلوگرم"
+                  />}
                 />
-                <FormControl className=" mb-5 text-gray-700" fullWidth>
-                  <InputLabel id="productId">نوع محصول</InputLabel>
-                  <Select
-                    labelId="productId"
-                    name="productId"
-                    className="text-right"
-                    onChange={(e) => handleChange(e)}
-                    label="نوع محصول"
-                    value={form.productId}
-                  >
-                    {prms &&
-                      prms.products.map((item, index) => (
-                        <MenuItem key={index + "breakkey"} value={item.id}>
-                          {item.title}
-                        </MenuItem>
-                      ))}
-                  </Select>
-                </FormControl>
-                <TextField
-                  label="مقدار سفارش"
-                  placeholder="کیلوگرم"
+
+                <Controller
+                  name="productId"
+                  control={control}
+                  rules={{ required: true }}
+                  render={({ field }) => <FormControl className=" mb-5 text-gray-700" fullWidth>
+                    <InputLabel id="productId">نوع محصول</InputLabel>
+                    <Select
+                      {...field}
+                      labelId="productId"
+                      className="text-right"
+                      label="نوع محصول"
+                    >
+                      {prms &&
+                        prms.products.map((item, index) => (
+                          <MenuItem key={index + "breakkey"} value={item.id}>
+                            {item.title}
+                          </MenuItem>
+                        ))}
+                    </Select>
+                  </FormControl>}
+                />
+
+                <Controller
                   name="needsOfAmount"
-                  className="mb-5 w-full"
-                  onChange={(e) => handleChange(e)}
-                  value={form.needsOfAmount}
+                  control={control}
+                  rules={{ required: true }}
+                  render={({ field }) => <TextField
+                    {...field}
+                    label="مقدار سفارش"
+                    placeholder="کیلوگرم"
+                    className="mb-5 w-full"
+                  />}
                 />
-                <FormControl className="mb-5 text-gray-700" fullWidth>
-                  <InputLabel id="workerGroupId">گروه بارگیری</InputLabel>
-                  <Select
-                    labelId="workerGroupId"
-                    name="workerGroupId"
-                    className="text-right"
-                    onChange={(e) => handleChange(e)}
-                    label="گروه بارگیری"
-                    value={form.workerGroupId}
-                  >
-                    {prms &&
-                      prms.workerGroup.map((item, index) => (
-                        <MenuItem key={index + "breakkey"} value={item.id}>
-                          {item.title}
-                        </MenuItem>
-                      ))}
-                  </Select>
-                </FormControl>
-              </Box>
+
+                <Controller
+                  name="workerGroupId"
+                  control={control}
+                  rules={{ required: true }}
+                  render={({ field }) => <FormControl className="mb-5 text-gray-700" fullWidth>
+                    <InputLabel id="workerGroupId">گروه بارگیری</InputLabel>
+                    <Select
+                      {...field}
+                      labelId="workerGroupId"
+                      className="text-right"
+                      label="گروه بارگیری"
+                    >
+                      {prms &&
+                        prms.workerGroup.map((item, index) => (
+                          <MenuItem key={index + "breakkey"} value={item.id}>
+                            {item.title}
+                          </MenuItem>
+                        ))}
+                    </Select>
+                  </FormControl>}
+                />
+
+
+              </div>
               <Divider className="mt-5 mb-5">
                 <Chip color="primary" label="مقصد بار" className="font-bold" />
               </Divider>
-              <Box
-                display="flex"
-                flexDirection="column"
-                justifyContent="center"
-                alignItems="center"
-                sx={{ marginY: "2rem", marginX: "auto" }}
-                component="form"
-                autoComplete="off"
+              <div
+                className="flex flex-col justify-center items-center"
               >
-                <Autocomplete
-                  options={prms && prms.destinations}
-                  autoHighlight
-                  className="w-full"
-                  getOptionLabel={(option: any) => option.title}
-                  onChange={(_e, value: any) =>
-                    setForm({
-                      ...form,
-                      destinationId: value.id,
-                    })
-                  }
-                  renderInput={(params) => (
-                    <TextField
-                      {...params}
-                      label="مقصد بار"
-                      className="mb-5"
-                      inputProps={{
-                        ...params.inputProps,
-                      }}
-                    />
-                  )}
+
+                <Controller
+                  name="destinationId"
+                  control={control}
+                  rules={{ required: true }}
+                  render={({ field }) =>
+                    <Autocomplete
+                    {...field}
+                      options={prms && prms.destinations}
+                      autoHighlight
+                      className="w-full"
+                      getOptionLabel={(option: any) => option.title || ''}
+                      renderInput={(params) => (
+                        <TextField
+                          {...params}
+                          label="مقصد بار"
+                          className="mb-5"
+                          inputProps={{
+                            ...params.inputProps,
+                          }}
+                        />
+                      )}
+                    />}
                 />
+
                 <TextField
                   label="آدرس"
                   placeholder="آدرس تحویل سفارش"
@@ -337,20 +368,20 @@ export default function NewSale() {
                   className="mb-5 w-full bg-green-600 font-extrabold rounded-lg py-5"
                   variant="contained"
                   size="large"
-                  onClick={() => onSaveOrder()}
+                  onClick={handleSubmit(onSubmit)}
                 >
                   صدور مجوز بارگیری
                 </Button>
-              </Box>
+              </div>
               {/* {calcWeightDialog && <CalcWeightDialog show={calcWeightDialog} onClose={() => setCalcWeightDialog(false)} onSome={(val) => setForm((prev) => ({ ...prev, carWeightEmpty: val }))} />} */}
-            </>
+            </form>
           )}
           {loading.driver && (
-            <Box className="mt-5">
+            <div className="mt-5">
               <Skeleton />
               <Skeleton animation="wave" />
               <Skeleton animation={false} />
-            </Box>
+            </div>
           )}
         </Box>
         {showAddDriverDialog && (
@@ -360,6 +391,7 @@ export default function NewSale() {
           />
         )}
       </Container>
+
     </>
   );
 }

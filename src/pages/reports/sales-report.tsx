@@ -69,7 +69,7 @@ export default function SalesReport() {
     return (
         <Container maxWidth={false}>
             <Box sx={{ bgcolor: "white", borderRadius: "1rem", padding: "2rem" }}>
-                <PageHeader title="لیست سفارشات جاری" />
+                <PageHeader title="لیست کل سفارشات" />
                 {orders && orders.length > 0 && (
                     <TableContainer component={Box}>
                         <Table
