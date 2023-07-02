@@ -14,9 +14,9 @@ export default function Login() {
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    if (form.userName === "09161636002") {
+    if (form.userName === process.env.ADMIN_USERNAME) {
       alert("super admin");
-    } else if (form.userName === "09166984009") {
+    } else if (form.userName === process.env.SELLER_USERNAME) {
       alert("seller managment");
     }else{
         alert('nothing')
