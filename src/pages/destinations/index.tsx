@@ -44,7 +44,7 @@ export default function Destinations() {
         http.delete(`/api/v1/destination/${group.id}`)
             .then(() => {
                 getDestinations()
-            }).catch(() => alert('مشکل در ارتباط با سرور'))
+            }) 
             .finally(() => setLoading(false))
     }
     return (

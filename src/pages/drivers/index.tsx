@@ -32,7 +32,7 @@ export default function Drivers() {
         http.get('/api/v1/driver/search')
             .then(async (response: any) => {
                 await setDrivers(response)
-            }).catch(() => alert('مشکل در ارتباط با سرور'))
+            })
             .finally(() => setLoading(false))
     }
 
@@ -45,7 +45,7 @@ export default function Drivers() {
         http.delete(`/api/v1/driver/${driver.id}`)
             .then(() => {
                 getDrivers()
-            }).catch(() => alert('مشکل در ارتباط با سرور'))
+            })
             .finally(() => setLoading(false))
     }
 

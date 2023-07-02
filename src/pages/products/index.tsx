@@ -32,7 +32,7 @@ export default function Products() {
         http.get('/api/v1/product/search')
             .then(async (response: any) => {
                 await setProducts(response)
-            }).catch(() => alert('مشکل در ارتباط با سرور'))
+            })
             .finally(() => setLoading(false))
     }
 
@@ -45,7 +45,7 @@ export default function Products() {
         http.delete(`/api/v1/product/${prod.id}`)
             .then(() => {
                 getProducts()
-            }).catch(() => alert('مشکل در ارتباط با سرور'))
+            })
             .finally(() => setLoading(false))
     }
 

@@ -50,7 +50,7 @@ export default function NewSale() {
     save: false,
     detail: false,
   });
-  const route = useRouter();
+  const router = useRouter();
 
   const getOrderDetail = (orderId) => {
     setLoading((prevState) => ({ ...prevState, detail: true }));
@@ -95,7 +95,6 @@ export default function NewSale() {
         }).showToast();
         router.push("/sales/inprogress-sales-list");
       })
-      .catch(() => alert("مشکل در ارتباط با سرور"))
       .finally(() =>
         setLoading((prevState) => ({ ...prevState, save: false }))
       );
@@ -142,7 +141,7 @@ export default function NewSale() {
   };
 
   useEffect(() => {
-    getOrderDetail(route.query.orderId);
+    getOrderDetail(router.query.orderId);
   }, []);
 
   return (
@@ -314,7 +313,7 @@ export default function NewSale() {
                               {numeral(
                                 Math.floor(
                                   +form.cardLoadedWeight -
-                                    orderDetail.emptyWeight
+                                  orderDetail.emptyWeight
                                 )
                               )}
                             </span>

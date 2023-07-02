@@ -31,7 +31,7 @@ export default function WorkerGroups() {
         http.get('/api/v1/workerGroup/search')
             .then(async (response: any) => {
                 await setWorkers(response)
-            }).catch(() => alert('مشکل در ارتباط با سرور'))
+            })
             .finally(() => setLoading(false))
     }
 
@@ -44,7 +44,7 @@ export default function WorkerGroups() {
         http.delete(`/api/v1/workerGroup/${group.id}`)
             .then(() => {
                 getWorkers()
-            }).catch(() => alert('مشکل در ارتباط با سرور'))
+            })
             .finally(() => setLoading(false))
     }
 

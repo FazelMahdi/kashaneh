@@ -24,7 +24,7 @@ export default function AddProductDialog({ show, onClose }) {
             .then(() => {
                 setOpen(false);
                 onClose(false)
-            }).catch(() => alert('مشکل در ارتباط با سرور'))
+            })
             .finally(() => setLoading(false))
     }
 
