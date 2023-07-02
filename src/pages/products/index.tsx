@@ -111,7 +111,7 @@ export default function Products() {
                     </Box>
                 }
             </Box>
-            {addProductDialog && <AddProductDialog show={addProductDialog} onClose={() => setAddProductDialog(false)} />}
+            {addProductDialog && <AddProductDialog show={addProductDialog} onClose={() => setAddProductDialog(false)} onUpdate={() => getProducts()} />}
         </Container>
 
     );

@@ -1,4 +1,4 @@
-import http from '@/core/http/axios';
+import http from "@/core/http/axios";
 import { Box, TextField } from "@mui/material";
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
@@ -10,7 +10,7 @@ interface INewDestination {
   title: string;
 }
 
-export default function AddDestionationDialog({ show, onClose }) {
+export default function AddDestionationDialog({ show, onClose, onUpdate }) {
   const [open, setOpen] = useState(false);
   const [form, setForm] = useState<INewDestination>({
     title: "",
@@ -25,6 +25,7 @@ export default function AddDestionationDialog({ show, onClose }) {
       .then(() => {
         setOpen(false);
         onClose(false);
+        onUpdate(true);
       })
       .finally(() => setLoading(false));
   };

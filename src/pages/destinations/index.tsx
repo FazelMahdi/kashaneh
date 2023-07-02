@@ -98,7 +98,7 @@ export default function Destinations() {
                     </Box>
                 }
             </Box>
-            {addDestinationDialog && <AddDestinationDialog show={addDestinationDialog} onClose={() => setAddDestinationDialog(false)} />}
+            {addDestinationDialog && <AddDestinationDialog show={addDestinationDialog} onClose={() => setAddDestinationDialog(false)} onUpdate={() => getDestinations()} />}
         </Container>
 
     );
