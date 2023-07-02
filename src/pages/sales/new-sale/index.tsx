@@ -2,7 +2,7 @@
 
 import AddDriverDialog from "@/components/driver/add-driver-dialog";
 import PageHeader from "@/components/utils/page-header";
-import Toastify from "toastify-js";
+import http from '@/core/http/axios';
 import { AccountCircleOutlined } from "@mui/icons-material";
 import {
   Autocomplete,
@@ -20,10 +20,10 @@ import {
   Skeleton,
   TextField,
 } from "@mui/material";
-import axios from "axios";
+import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
-import { useRouter } from "next/router";
+import Toastify from "toastify-js";
 
 export default function NewSale() {
   const router = useRouter();
@@ -72,17 +72,16 @@ export default function NewSale() {
     if (e.keyCode == 13) {
       e.preventDefault();
       setLoading((prevState) => ({ ...prevState, driver: true }));
-      axios
+      http
         .get("/api/v1/driver/searchDriver", {
           params: {
             keyword,
           },
         })
         .then((response) => {
-          setDriver(response.data);
-          !response.data && setShowAddDriverDialog(true);
+          response ? setDriver(response)
+            : setShowAddDriverDialog(true);
         })
-        .catch(() => alert("مشکل در ارتباط با سرور"))
         .finally(() =>
           setLoading((prevState) => ({ ...prevState, driver: false }))
         );
@@ -92,15 +91,15 @@ export default function NewSale() {
   const getPrms = () => {
     setLoading((prevState) => ({ ...prevState, order: true }));
     Promise.all([
-      axios.get("/api/v1/destination/search"),
-      axios.get("/api/v1/product/search"),
-      axios.get("/api/v1/workerGroup/search"),
+      http.get("/api/v1/destination/search"),
+      http.get("/api/v1/product/search"),
+      http.get("/api/v1/workerGroup/search"),
     ])
       .then((result) => {
         setPrms({
-          destinations: result[0].data.destinations,
-          products: result[1].data.products,
-          workerGroup: result[2].data.groups,
+          destinations: result[0],
+          products: result[1],
+          workerGroup: result[2],
         });
       })
       .finally(() =>
@@ -130,7 +129,7 @@ export default function NewSale() {
       emptyWeight: +emptyWeight,
       needsOfAmount: +needsOfAmount,
     };
-    axios
+    http
       .post("/api/v1/order/create", payload)
       .then(() => {
         Toastify({
@@ -163,7 +162,7 @@ export default function NewSale() {
     <>
       <Container>
         <Box
-          className="w-full lg:w-6/12 mx-auto text-center"
+          className="w-full xl:w-7/12 mx-auto text-center"
           sx={{ bgcolor: "white", borderRadius: "1rem", padding: "2rem" }}
           component="div"
         >
@@ -368,7 +367,7 @@ export default function NewSale() {
                 />
 
                 <Button
-                  className="mb-5 w-full bg-green-600 font-extrabold rounded-lg py-5"
+                  className="mb-5 w-full bg-green-600 font-extrabold rounded-lg py-5 text-white"
                   variant="contained"
                   size="large"
                   onClick={handleSubmit(onSubmit)}

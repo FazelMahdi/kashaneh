@@ -1,5 +1,6 @@
-import AddWorkerDialog from '@/components/workerGroups/add-workergroup-dialog';
 import PageHeader from '@/components/utils/page-header';
+import AddWorkerDialog from '@/components/workerGroups/add-workergroup-dialog';
+import http from '@/core/http/axios';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { Alert, Box, Button, Container, IconButton, Skeleton, styled } from '@mui/material';
 import Table from '@mui/material/Table';
@@ -8,7 +9,6 @@ import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
-import axios from 'axios';
 import { useEffect, useState } from 'react';
 
 const StyledTableRow = styled(TableRow)(({ theme }) => ({
@@ -28,9 +28,9 @@ export default function WorkerGroups() {
 
     const getWorkers = () => {
         setLoading(true)
-        axios.get('/api/v1/workerGroup/search')
+        http.get('/api/v1/workerGroup/search')
             .then(async (response: any) => {
-                await setWorkers(response.data.groups)
+                await setWorkers(response)
             }).catch(() => alert('مشکل در ارتباط با سرور'))
             .finally(() => setLoading(false))
     }
@@ -41,7 +41,7 @@ export default function WorkerGroups() {
 
     const deleteWorker = (group) => {
         setLoading(true)
-        axios.delete(`/api/v1/workerGroup/${group.id}`)
+        http.delete(`/api/v1/workerGroup/${group.id}`)
             .then(() => {
                 getWorkers()
             }).catch(() => alert('مشکل در ارتباط با سرور'))

@@ -7,7 +7,7 @@ export async function getOrders(state) {
                 state
             }
         }).catch((err) => err)
-        return { orders: orderFromDb }
+        return { dbRes: orderFromDb }
 
     } catch (error) {
         return error

@@ -1,9 +1,9 @@
 "use client";
 
 import PageHeader from "@/components/utils/page-header";
+import http from '@/core/http/axios';
 import { formatDatetime } from "@/core/util/date-format";
 import { numeral } from "@/core/util/number";
-import Toastify from "toastify-js";
 import { PermIdentity } from "@mui/icons-material";
 import {
   Alert,
@@ -19,9 +19,9 @@ import {
   Skeleton,
   TextField,
 } from "@mui/material";
-import axios from "axios";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
+import Toastify from "toastify-js";
 
 interface INewSale {
   phoneNumber: string;
@@ -54,14 +54,14 @@ export default function NewSale() {
 
   const getOrderDetail = (orderId) => {
     setLoading((prevState) => ({ ...prevState, detail: true }));
-    axios
+    http
       .get("/api/v1/order/searchOrder", {
         params: {
           id: orderId,
         },
       })
       .then((response) => {
-        setOrderDetail(response.data);
+        setOrderDetail(response);
       })
       .catch(() => alert("مشکل در ارتباط با سرور"))
       .finally(() =>
@@ -76,7 +76,7 @@ export default function NewSale() {
     const payload = {
       amount: orderAmount,
     };
-    axios
+    http
       .put(`/api/v1/order/${orderDetail.id}/update`, payload)
       .then(() => {
         Toastify({

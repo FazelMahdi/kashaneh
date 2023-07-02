@@ -3,15 +3,15 @@ import { createDriver } from "@/prisma/repositories/driver/create";
 import { NextApiRequest, NextApiResponse } from "next";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
-        try {
-            const data = req.body;
-            const { driver, error } = await createDriver(data);
-            if (error) throw new Error(error);
-            return res.status(200).json({ driver })
+    try {
+        const data = req.body;
+        const { error, dbRes } = await createDriver(data)
+        if (error) throw new Error(error);
+        return res.status(200).json(dbRes)
 
-        } catch (error) {
-            return res.status(500).json({ error: error.message })
-        }
+    } catch (error) {
+        return res.status(500).json({ error: error.message })
+    }
     // res.setHeader('Allow', ['GET', 'POST'])
 }
 

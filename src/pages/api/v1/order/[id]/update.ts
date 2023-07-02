@@ -7,9 +7,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         const data = req.body;
         const { id } = req.query as any
 
-        const { order, error } = await updateOrder(id, { ...data, state: 10 });
+        const { error, dbRes } = await updateOrder(id, { ...data, state: 10 });
         if (error) throw new Error(error);
-        return res.status(200).json({ order })
+        return res.status(200).json(dbRes)
 
     } catch (error) {
         return res.status(500).json({ error: error.message })

@@ -1,5 +1,6 @@
 import AddDriverDialog from '@/components/driver/add-driver-dialog';
 import PageHeader from '@/components/utils/page-header';
+import http from '@/core/http/axios';
 import { formatDatetime } from '@/core/util/date-format';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { Alert, Box, Button, Container, IconButton, Skeleton, styled } from '@mui/material';
@@ -9,7 +10,6 @@ import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
-import axios from 'axios';
 import { useEffect, useState } from 'react';
 
 const StyledTableRow = styled(TableRow)(({ theme }) => ({
@@ -29,9 +29,9 @@ export default function Drivers() {
 
     const getDrivers = () => {
         setLoading(true)
-        axios.get('/api/v1/driver/search')
+        http.get('/api/v1/driver/search')
             .then(async (response: any) => {
-                await setDrivers(response.data.drivers)
+                await setDrivers(response)
             }).catch(() => alert('مشکل در ارتباط با سرور'))
             .finally(() => setLoading(false))
     }
@@ -42,7 +42,7 @@ export default function Drivers() {
 
     const deleteDriver = (driver) => {
         setLoading(true)
-        axios.delete(`/api/v1/driver/${driver.id}`)
+        http.delete(`/api/v1/driver/${driver.id}`)
             .then(() => {
                 getDrivers()
             }).catch(() => alert('مشکل در ارتباط با سرور'))
@@ -117,7 +117,7 @@ export default function Drivers() {
                     </Box>
                 }
             </Box>
-            {addDriverDialog && <AddDriverDialog show={addDriverDialog} onClose={() => setAddDrivertDialog(false)} />}
+            {addDriverDialog && <AddDriverDialog show={addDriverDialog} onClose={() => setAddDrivertDialog(false)} onUpdate={() => getDrivers()} />}
         </Container>
 
     );

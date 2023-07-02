@@ -6,9 +6,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         try {
             const { state } = req.query as any
 
-            const { orders, error } = await getOrders(+state);
+            const { error, dbRes } = await getOrders(+state);
             if (error) throw new Error(error);
-            return res.status(200).json({ orders })
+            return res.status(200).json(dbRes)
 
         } catch (error) {
             return res.status(500).json({ error: error.message })

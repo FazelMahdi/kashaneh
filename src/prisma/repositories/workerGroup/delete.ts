@@ -9,7 +9,7 @@ export async function deleteWorker(id: string) {
             },
 
         }).catch((err) => err)
-        return { data: deleteGroup }
+        return { dbRes: deleteGroup }
     } catch (error) {
         return error
     }

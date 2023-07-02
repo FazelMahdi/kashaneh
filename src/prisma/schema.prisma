@@ -41,8 +41,6 @@ model Driver {
   pelak     Pelak
   fullPelak String
   createdAt DateTime @default(now())
-
-  @@unique([firstName, lastName])
 }
 
 model Product {

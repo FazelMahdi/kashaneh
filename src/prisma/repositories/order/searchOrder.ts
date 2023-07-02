@@ -8,7 +8,7 @@ export async function getOrder(id: string) {
             },
 
         }).catch((err) => err)
-        return { data: orderFromDb }
+        return { dbRes: orderFromDb }
     } catch (error) {
         return error
     }

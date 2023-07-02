@@ -3,15 +3,15 @@ import { createDestination } from "@/prisma/repositories/destination/create";
 import { NextApiRequest, NextApiResponse } from "next";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
-        try {
-            const data = req.body;
-            const { destination, error } = await createDestination(data);
-            if (error) throw new Error(error);
-            return res.status(200).json({ destination })
+    try {
+        const data = req.body;
+        const { error, dbRes } = await createDestination(data);
+        if (error) throw new Error(error);
+        return res.status(200).json(dbRes)
 
-        } catch (error) {
-            return res.status(500).json({ error: error.message })
-        }
+    } catch (error) {
+        return res.status(500).json({ error: error.message })
+    }
     // res.setHeader('Allow', ['GET', 'POST'])
 }
 

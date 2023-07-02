@@ -9,7 +9,7 @@ export async function deleteProduct(id: string) {
             },
 
         }).catch((err) => err)
-        return { data: deleteProd }
+        return { dbRes: deleteProd }
     } catch (error) {
         return error
     }

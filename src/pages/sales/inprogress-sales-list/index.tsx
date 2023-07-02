@@ -1,5 +1,6 @@
 import SaleCheckoutDialog from "@/components/sales/sale-checkout";
 import PageHeader from "@/components/utils/page-header";
+import http from '@/core/http/axios';
 import DeleteIcon from "@mui/icons-material/Delete";
 import {
   Alert,
@@ -15,7 +16,6 @@ import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
-import axios from "axios";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
@@ -38,10 +38,10 @@ export default function InprogressSalesList() {
 
   const getOrders = () => {
     setLoading(true);
-    axios
+    http
       .get("/api/v1/order/search", { params: { state: 1 } })
       .then(async (response: any) => {
-        await setOrders(response.data.orders);
+        await setOrders(response);
       })
       .catch(() => alert("مشکل در ارتباط با سرور"))
       .finally(() => setLoading(false));

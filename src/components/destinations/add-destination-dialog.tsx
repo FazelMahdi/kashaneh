@@ -1,9 +1,9 @@
+import http from '@/core/http/axios';
 import { Box, TextField } from "@mui/material";
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
-import axios from "axios";
 import { useEffect, useState } from "react";
 
 interface INewDestination {
@@ -18,7 +18,7 @@ export default function AddDestionationDialog({ show, onClose }) {
   const [loading, setLoading] = useState<boolean>(false);
   const addDestination = () => {
     setLoading(true);
-    axios
+    http
       .post("/api/v1/destination/create", {
         title: form.title,
       })
@@ -26,7 +26,6 @@ export default function AddDestionationDialog({ show, onClose }) {
         setOpen(false);
         onClose(false);
       })
-      .catch(() => alert("مشکل در ارتباط با سرور"))
       .finally(() => setLoading(false));
   };
 

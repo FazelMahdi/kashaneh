@@ -1,9 +1,9 @@
+import http from '@/core/http/axios';
 import { Box, TextField } from '@mui/material';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
-import axios from 'axios';
 import { useEffect, useState } from 'react';
 
 interface INewGroup {
@@ -18,7 +18,7 @@ export default function AddProductDialog({ show, onClose }) {
     const [loading, setLoading] = useState<boolean>(false)
     const addGroup = () => {
         setLoading(true)
-        axios.post('/api/v1/workerGroup/create', {
+        http.post('/api/v1/workerGroup/create', {
             title: form.title,
         })
             .then(() => {

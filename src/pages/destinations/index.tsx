@@ -1,5 +1,6 @@
 import AddDestinationDialog from '@/components/destinations/add-destination-dialog';
 import PageHeader from '@/components/utils/page-header';
+import http from '@/core/http/axios';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { Alert, Box, Button, Container, IconButton, Skeleton, styled } from '@mui/material';
 import Table from '@mui/material/Table';
@@ -8,7 +9,6 @@ import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
-import axios from 'axios';
 import { useEffect, useState } from 'react';
 
 const StyledTableRow = styled(TableRow)(({ theme }) => ({
@@ -28,10 +28,10 @@ export default function Destinations() {
 
     const getDestinations = () => {
         setLoading(true)
-        axios.get('/api/v1/destination/search')
+        http.get('/api/v1/destination/search')
             .then(async (response: any) => {
-                await setDestinations(response.data.destinations)
-            }).catch(() => alert('مشکل در ارتباط با سرور'))
+                await setDestinations(response)
+            })
             .finally(() => setLoading(false))
     }
 
@@ -41,7 +41,7 @@ export default function Destinations() {
 
     const deleteDest = (group) => {
         setLoading(true)
-        axios.delete(`/api/v1/destination/${group.id}`)
+        http.delete(`/api/v1/destination/${group.id}`)
             .then(() => {
                 getDestinations()
             }).catch(() => alert('مشکل در ارتباط با سرور'))

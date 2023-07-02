@@ -1,5 +1,6 @@
 import AddProductDialog from '@/components/product/add-product-dialog';
 import PageHeader from '@/components/utils/page-header';
+import http from '@/core/http/axios';
 import { formatDatetime } from '@/core/util/date-format';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { Alert, Box, Button, Container, IconButton, Skeleton, styled } from '@mui/material';
@@ -9,7 +10,6 @@ import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
-import axios from 'axios';
 import { useEffect, useState } from 'react';
 
 const StyledTableRow = styled(TableRow)(({ theme }) => ({
@@ -29,9 +29,9 @@ export default function Products() {
 
     const getProducts = () => {
         setLoading(true)
-        axios.get('/api/v1/product/search')
+        http.get('/api/v1/product/search')
             .then(async (response: any) => {
-                await setProducts(response.data.products)
+                await setProducts(response)
             }).catch(() => alert('مشکل در ارتباط با سرور'))
             .finally(() => setLoading(false))
     }
@@ -42,7 +42,7 @@ export default function Products() {
 
     const deleteProduct = (prod) => {
         setLoading(true)
-        axios.delete(`/api/v1/product/${prod.id}`)
+        http.delete(`/api/v1/product/${prod.id}`)
             .then(() => {
                 getProducts()
             }).catch(() => alert('مشکل در ارتباط با سرور'))

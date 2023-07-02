@@ -7,9 +7,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         try {
             const { keyword } = req.query as any
 
-            const { error, data } = await getDriver(keyword)
+            const { error, dbRes } = await getDriver(keyword)
             if (error) throw new Error(error);
-            return res.status(200).json(data)
+            return res.status(200).json(dbRes)
 
         } catch (error) {
             return res.status(500).json({ error: error.message })

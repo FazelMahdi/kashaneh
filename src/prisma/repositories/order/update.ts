@@ -12,7 +12,7 @@ export async function updateOrder(id: string, order: any) {
                 updatedAt: new Date(),
             }
         }).catch((err) => err)
-        return { order: orderFromDb }
+        return { dbRes: orderFromDb }
 
     } catch (error) {
         return error

@@ -4,9 +4,9 @@ import { NextApiRequest, NextApiResponse } from "next";
 
 const handler = async (_req: NextApiRequest, res: NextApiResponse) => {
         try {
-            const { products, error } = await getAllProducts();
+            const { error, dbRes } = await getAllProducts();
             if (error) throw new Error(error);
-            return res.status(200).json({ products })
+            return res.status(200).json(dbRes)
 
         } catch (error) {
             return res.status(500).json({ error: error.message })

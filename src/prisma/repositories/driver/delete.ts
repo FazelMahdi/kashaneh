@@ -9,7 +9,7 @@ export async function deleteDriver(id: string) {
             },
 
         }).catch((err) => err)
-        return { data: deleteDriver }
+        return { dbRes: deleteDriver }
     } catch (error) {
         return error
     }
