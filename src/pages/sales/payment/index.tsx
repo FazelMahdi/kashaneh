@@ -1,7 +1,8 @@
 "use client";
 
+import PrintOrderDialog from "@/components/sales/print-order-dialof";
 import PageHeader from "@/components/utils/page-header";
-import http from '@/core/http/axios';
+import http from "@/core/http/axios";
 import { formatDatetime } from "@/core/util/date-format";
 import { numeral } from "@/core/util/number";
 import { PermIdentity } from "@mui/icons-material";
@@ -313,7 +314,7 @@ export default function NewSale() {
                               {numeral(
                                 Math.floor(
                                   +form.cardLoadedWeight -
-                                  orderDetail.emptyWeight
+                                    orderDetail.emptyWeight
                                 )
                               )}
                             </span>
@@ -404,6 +405,7 @@ export default function NewSale() {
             </Alert>
           )}
         </Box>
+        <PrintOrderDialog show={false} />
       </Container>
     </>
   );
