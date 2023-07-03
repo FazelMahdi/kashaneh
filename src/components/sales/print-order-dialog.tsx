@@ -3,7 +3,14 @@ import domtoimage from "dom-to-image";
 import { Dialog, Divider } from "@mui/material";
 import { numeral } from "@/core/util/number";
 
-const PrintOrderDialog = ({ show, order }) => {
+const PrintOrderDialog = ({
+  show,
+  order,
+  totalPrice,
+  totalDiscount,
+  totalLoadPrice,
+  totalFinalPrice,
+}) => {
   const [open, setOpen] = useState(false);
   const designRef = useRef(null); // Ref to the design container element
 
@@ -91,7 +98,13 @@ const PrintOrderDialog = ({ show, order }) => {
             </div>
             <div className="mt-2 flex justify-between items-center">
               <p className="ml-1">تاریخ:</p>
-              <p className="ml-1 font-bold text-lg">{order.createdAt}</p>
+              <p className="ml-1 font-bold text-lg">
+                {new Date(order.createdAt).toLocaleString("fa-IR", {
+                  year: "numeric",
+                  month: "2-digit",
+                  day: "numeric",
+                })}
+              </p>
             </div>
           </div>
         </div>
@@ -111,7 +124,7 @@ const PrintOrderDialog = ({ show, order }) => {
               <div className="flex justify-between items-center m-1 border-1 border-solid border p-2 border-gray-500 rounded-lg">
                 <p className="ml-1"> راننده/خریدار:</p>
                 <p className="ml-1 font-bold text-md">
-                  {order.driver.firstName} 
+                  {order.driver.firstName}
                   {order.driver.lastName}
                 </p>
               </div>
@@ -126,7 +139,9 @@ const PrintOrderDialog = ({ show, order }) => {
             <div className="w-6/12 ">
               <div className="flex justify-between items-center m-1 border-1 border-solid border p-2 border-gray-500 rounded-lg">
                 <p className="ml-1">آدرس</p>
-                <p className="ml-1 text-sm">{order.destination.title} - {order.address}</p>
+                <p className="ml-1 text-sm">
+                  {order.destination.title} - {order.address}
+                </p>
               </div>
             </div>
           </div>
@@ -136,27 +151,35 @@ const PrintOrderDialog = ({ show, order }) => {
           <div className="flex justify-between flex-row flex-wrap mt-3">
             <div className="w-6/12 ">
               <div className="flex justify-between items-center m-1 border-1 border-solid border p-2 border-gray-500 rounded-lg">
-                <p >نام کالا:</p>
-                <span className="font-bold text-lg flex-1 mr-2">{order.product.title}</span>
+                <p>نام کالا:</p>
+                <span className="font-bold text-lg flex-1 mr-2">
+                  {order.product.title}
+                </span>
               </div>
             </div>
             <div className="w-6/12 ">
               <div className="flex justify-between items-center m-1 border-1 border-solid border p-2 border-gray-500 rounded-lg">
                 <p className="ml-1">قیمت هر واحد:</p>
-                <p className="ml-1 font-bold text-lg">{numeral(order.product.price)}</p>
+                <p className="ml-1 font-bold text-lg">
+                  {numeral(order.product.price)}
+                </p>
               </div>
             </div>
 
             <div className="w-6/12 ">
               <div className="flex justify-between items-center m-1 border-1 border-solid border p-2 border-gray-500 rounded-lg">
                 <p className="ml-1">هزینه بارگیری:</p>
-                <p className="ml-1 font-bold text-lg">{numeral(order.product.loadPrice)}</p>
+                <p className="ml-1 font-bold text-lg">
+                  {numeral(order.product.loadPrice)}
+                </p>
               </div>
             </div>
             <div className="w-6/12 ">
               <div className="flex justify-between items-center m-1 border-1 border-solid border p-2 border-gray-500 rounded-lg">
                 <p className="ml-1">هزینه باسکول:</p>
-                <p className="ml-1 font-bold text-lg">{numeral(order.product.baskulPrice)}</p>
+                <p className="ml-1 font-bold text-lg">
+                  {numeral(order.product.baskulPrice)}
+                </p>
               </div>
             </div>
           </div>
@@ -167,32 +190,40 @@ const PrintOrderDialog = ({ show, order }) => {
             <div className="w-full mb-2 border-1 border-solid border p-2 bord er-gray-500 rounded-lg">
               <div className="flex justify-between items-center">
                 <p className="ml-1">وزن بارگیری شده:</p>
-                <p className="ml-1 font-bold text-lg">{numeral(order.amount)}</p>
+                <p className="ml-1 font-bold text-lg">
+                  {numeral(order.amount)}
+                </p>
               </div>
             </div>
             <div className="w-full mb-2 border-1 border-solid border p-2 border-gray-500 rounded-lg">
               <div className="flex justify-between items-center">
                 <p className="ml-1">جمع مبلغ:</p>
-                <p className="ml-1 font-bold text-lg">۲۵ت۳۴۵</p>
+                <p className="ml-1 font-bold text-lg">{numeral(totalPrice)}</p>
               </div>
             </div>
 
             <div className="w-full mb-2 border-1 border-solid border p-2 border-gray-500 rounded-lg">
               <div className="flex justify-between items-center">
                 <p className="ml-1">هزینه بارگیری:</p>
-                <p className="ml-1 font-bold text-lg">۲۵ت۳۴۵</p>
+                <p className="ml-1 font-bold text-lg">
+                  {numeral(totalLoadPrice)}
+                </p>
               </div>
             </div>
             <div className="w-full mb-2 border-1 border-solid border p-2 border-gray-500 rounded-lg">
               <div className="flex justify-between items-center">
                 <p className="ml-1">تخفیف:</p>
-                <p className="ml-1 font-bold text-lg">۰</p>
+                <p className="ml-1 font-bold text-lg">
+                  {numeral(totalDiscount)}
+                </p>
               </div>
             </div>
             <div className="w-full border-1 border-solid border p-2 border-gray-500 rounded-lg">
               <div className="flex justify-between items-center">
                 <p className="ml-1 text-lg">جمع کل:</p>
-                <p className="ml-1 font-bold text-xl">234,2344,2</p>
+                <p className="ml-1 font-bold text-xl">
+                  {numeral(totalFinalPrice)}
+                </p>
               </div>
             </div>
           </div>
