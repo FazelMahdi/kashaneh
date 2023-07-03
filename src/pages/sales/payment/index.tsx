@@ -405,7 +405,7 @@ export default function NewSale() {
             </Alert>
           )}
         </Box>
-        <PrintOrderDialog show={false} />
+        {orderDetail && <PrintOrderDialog show={true} order={orderDetail} />}
       </Container>
     </>
   );
