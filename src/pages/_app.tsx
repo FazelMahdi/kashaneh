@@ -1,14 +1,13 @@
 import "@/core/theme/scss/index.scss";
 import "@/styles/globals.css";
 
+import useLoading from "@/components/utils/useLoading";
 import DefaultLayout from "@/layouts/default";
 import EmptyLayout from "@/layouts/empty";
 import createEmotionCache from "@/utility/createEmotionCache";
 import theme from "@/utility/theme";
 import { CacheProvider } from "@emotion/react";
 import { ThemeProvider } from "@mui/material";
-import { useRouter } from "next/router";
-import useLoading from "@/components/utils/useLoading";
 import Image from "next/image";
 
 const layouts = {
@@ -49,7 +48,6 @@ export default function App({
   return (
     <CacheProvider value={emotionCache}>
       <ThemeProvider theme={theme}>
-        {" "}
         <Layout>
           {isLoading ? (
             <div className="text-center mt-10">

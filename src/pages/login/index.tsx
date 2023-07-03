@@ -1,7 +1,8 @@
+import { setItem } from "@/core/util/storage";
 import Button from "@mui/material/Button";
+import Container from "@mui/material/Container";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
-import Container from "@mui/material/Container";
 import Image from "next/image";
 import { useState } from "react";
 
@@ -14,12 +15,17 @@ export default function Login() {
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    if (form.userName === process.env.ADMIN_USERNAME) {
+    if (form.userName === process.env.NEXT_PUBLIC_ADMIN_USERNAME) {
       alert("super admin");
-    } else if (form.userName === process.env.SELLER_USERNAME) {
-      alert("seller managment");
-    }else{
-        alert('nothing')
+      setItem('userInfo', process.env.NEXT_PUBLIC_ADMIN_USERNAME)
+    } else if (form.userName === process.env.NEXT_PUBLIC_SELLER_USERNAME) {
+      // setItem('userInfo', {
+      //   mobile: process.env.SELLER_USERNAME,
+      //   name: process.env.SELLER_NAME,
+      //   isAdmin: false
+      // })
+    } else {
+      alert('nothing')
     }
   };
 
