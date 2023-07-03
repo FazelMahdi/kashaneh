@@ -1,62 +1,75 @@
-import MenuIcon from '@mui/icons-material/Menu';
-import { Avatar, Tooltip } from '@mui/material';
-import AppBar from '@mui/material/AppBar';
-import Box from '@mui/material/Box';
-import Container from '@mui/material/Container';
-import IconButton from '@mui/material/IconButton';
-import Menu from '@mui/material/Menu';
-import MenuItem from '@mui/material/MenuItem';
-import Toolbar from '@mui/material/Toolbar';
-import Typography from '@mui/material/Typography';
-import Image from 'next/image';
-import Link from 'next/link';
-import { MouseEvent, useState } from 'react';
-import "toastify-js/src/toastify.css"
-
-const pages = [
-  {
-    title: 'فروش',
-    path: '/sales/new-sale'
-  },
-  {
-    title: 'سفارش جاری',
-    path: '/sales/inprogress-sales-list'
-  },
-  {
-    title: 'گروه بارگیری',
-    path: '/worker-groups'
-  },
-  {
-    title: 'محصولات',
-    path: '/products'
-  },
-  {
-    title: 'مقصد ها',
-    path: '/destinations'
-  },
-  {
-    title: 'رانندگان',
-    path: '/drivers'
-  },
-  {
-    title: 'گزارشات فروش',
-    path: '/reports/sales-report'
-  },
-  {
-    title: 'حسابداری',
-    path: ''
-  },
-  {
-    title: 'مشتریان',
-    path: ''
-  },
-];
-const settings = ['مهدی فاضلی', 'تنظیمات', 'خروج'];
+import { getItem, removeItem } from "@/core/util/storage";
+import MenuIcon from "@mui/icons-material/Menu";
+import { Avatar, Tooltip } from "@mui/material";
+import AppBar from "@mui/material/AppBar";
+import Box from "@mui/material/Box";
+import Container from "@mui/material/Container";
+import IconButton from "@mui/material/IconButton";
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
+import Toolbar from "@mui/material/Toolbar";
+import Typography from "@mui/material/Typography";
+import Image from "next/image";
+import Link from "next/link";
+import { useRouter } from "next/router";
+import { MouseEvent, useEffect, useState } from "react";
+import "toastify-js/src/toastify.css";
 
 export default function DefaultLayout({ children }) {
-
   const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
+  const router = useRouter();
+  const [menuItems, setMenuItems] = useState<any>([
+    {
+      title: "فروش",
+      path: "/sales/new-sale",
+      admin: false,
+    },
+    {
+      title: "سفارش جاری",
+      path: "/sales/inprogress-sales-list",
+      admin: false,
+    },
+    {
+      title: "گروه بارگیری",
+      path: "/worker-groups",
+      admin: false,
+    },
+    {
+      title: "محصولات",
+      path: "/products",
+      admin: false,
+    },
+    {
+      title: "مقصد ها",
+      path: "/destinations",
+      admin: false,
+    },
+    {
+      title: "رانندگان",
+      path: "/drivers",
+      admin: false,
+    },
+    {
+      title: "گزارشات فروش",
+      path: "/reports/sales-report",
+      admin: true,
+    },
+    {
+      title: "حسابداری",
+      path: "",
+      admin: true,
+    },
+    {
+      title: "مشتریان",
+      path: "",
+      admin: true,
+    },
+  ]);
+  const [userInfo, setUserInfo] = useState<any>({
+    name: null,
+    isAdmin: false,
+  });
 
   const handleOpenNavMenu = (event: MouseEvent<HTMLElement>) => {
     setAnchorElNav(event.currentTarget);
@@ -71,12 +84,34 @@ export default function DefaultLayout({ children }) {
   };
 
   const handleCloseUserMenu = () => {
-    setAnchorElUser(null)
+    setAnchorElUser(null);
   };
 
+  const logout = () => {
+    removeItem("userInfo");
+    router.push("/login");
+  };
+
+  useEffect(() => {
+    getItem("userInfo").then((response) => {
+      if (response === process.env.NEXT_PUBLIC_ADMIN_USERNAME) {
+        setUserInfo({
+          name: process.env.NEXT_PUBLIC_ADMIN_NAME,
+          isAdmin: true,
+        });
+      } else if (response === process.env.NEXT_PUBLIC_SELLER_USERNAME) {
+        setUserInfo({
+          name: process.env.NEXT_PUBLIC_SELLER_USERNAME,
+          isAdmin: false,
+        });
+        setMenuItems((prevState) => prevState.filter((x) => !x.admin));
+      }
+    });
+  }, []);
+
   return (
-    < >
-      <AppBar color='secondary' position="static" dir='rtl'>
+    <>
+      <AppBar color="secondary" position="static" dir="rtl">
         <Container maxWidth={false}>
           <Toolbar disableGutters>
             <Typography
@@ -84,15 +119,18 @@ export default function DefaultLayout({ children }) {
               noWrap
               component="a"
               href="/"
-              className='md:flex mr-1'
+              className="md:flex mr-1"
             >
-              <Image src="/logo.png" alt="کاشانه"
+              <Image
+                src="/logo.png"
+                alt="کاشانه"
                 width={40}
                 height={40}
-                priority />
+                priority
+              />
             </Typography>
 
-            <Box className='flex grow md:hidden '>
+            <Box className="flex grow md:hidden ">
               <IconButton
                 size="large"
                 aria-label="account of current user"
@@ -107,32 +145,41 @@ export default function DefaultLayout({ children }) {
                 id="menu-appbar"
                 anchorEl={anchorElNav}
                 anchorOrigin={{
-                  vertical: 'bottom',
-                  horizontal: 'left',
+                  vertical: "bottom",
+                  horizontal: "left",
                 }}
                 keepMounted
                 transformOrigin={{
-                  vertical: 'top',
-                  horizontal: 'left',
+                  vertical: "top",
+                  horizontal: "left",
                 }}
                 open={Boolean(anchorElNav)}
                 onClose={handleCloseNavMenu}
                 sx={{
-                  display: { xs: 'block', md: 'none' },
+                  display: { xs: "block", md: "none" },
                 }}
               >
-                {pages.map((page, index) => (
+                {menuItems.map((page, index) => (
                   <MenuItem key={index} onClick={handleCloseNavMenu}>
-                    <Link href={page.path} shallow={true} className='text-gray-700 font-bold text-center'>
+                    <Link
+                      href={page.path}
+                      shallow={true}
+                      className="text-gray-700 font-bold text-center"
+                    >
                       {page.title}
                     </Link>
                   </MenuItem>
                 ))}
               </Menu>
             </Box>
-            <Box className='grow hidden md:flex'>
-              {pages.map((page, i) => (
-                <Link href={page.path} shallow={true} key={i + 'mo'} className='text-gray-700 font-bold text-center mx-3'>
+            <Box className="grow hidden md:flex">
+              {menuItems.map((page, i) => (
+                <Link
+                  href={page.path}
+                  shallow={true}
+                  key={i + "mo"}
+                  className="text-gray-700 font-bold text-center mx-3"
+                >
                   {page.title}
                 </Link>
               ))}
@@ -145,32 +192,43 @@ export default function DefaultLayout({ children }) {
                 </IconButton>
               </Tooltip>
               <Menu
-                sx={{ mt: '45px' }}
+                sx={{ mt: "45px" }}
                 id="menu-appbar"
                 anchorEl={anchorElUser}
                 anchorOrigin={{
-                  vertical: 'top',
-                  horizontal: 'right',
+                  vertical: "top",
+                  horizontal: "right",
                 }}
                 keepMounted
                 transformOrigin={{
-                  vertical: 'top',
-                  horizontal: 'right',
+                  vertical: "top",
+                  horizontal: "right",
                 }}
                 open={Boolean(anchorElUser)}
                 onClose={handleCloseUserMenu}
               >
-                {settings.map((setting) => (
-                  <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                    <Typography className='text-gray-700 font-bold' textAlign="center">{setting}</Typography>
-                  </MenuItem>
-                ))}
+                <MenuItem onClick={handleCloseUserMenu}>
+                  <Typography
+                    className="text-gray-700 font-bold"
+                    textAlign="center"
+                  >
+                    {userInfo.name}
+                  </Typography>
+                </MenuItem>
+                <MenuItem onClick={() => logout()}>
+                  <Typography
+                    className="text-red-700 font-bold"
+                    textAlign="center"
+                  >
+                    خروج
+                  </Typography>
+                </MenuItem>
               </Menu>
             </Box>
           </Toolbar>
         </Container>
       </AppBar>
-      <Container maxWidth={false} className='my-5'>
+      <Container maxWidth={false} className="my-5">
         {children}
       </Container>
     </>

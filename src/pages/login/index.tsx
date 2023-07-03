@@ -8,7 +8,7 @@ import { useRouter } from "next/router";
 import { useState } from "react";
 
 export default function Login() {
-  const router = useRouter()
+  const router = useRouter();
   const [form, setForm] = useState({
     userName: "",
     password: "",
@@ -18,16 +18,13 @@ export default function Login() {
     event.preventDefault();
 
     if (form.userName === process.env.NEXT_PUBLIC_ADMIN_USERNAME) {
-      setItem('userInfo', process.env.NEXT_PUBLIC_ADMIN_USERNAME)
-      router.push('/dashboard')
+      setItem("userInfo", process.env.NEXT_PUBLIC_ADMIN_USERNAME);
+      router.push("/dashboard");
     } else if (form.userName === process.env.NEXT_PUBLIC_SELLER_USERNAME) {
-      // setItem('userInfo', {
-      //   mobile: process.env.SELLER_USERNAME,
-      //   name: process.env.SELLER_NAME,
-      //   isAdmin: false
-      // })
+      setItem("userInfo", process.env.NEXT_PUBLIC_SELLER_USERNAME);
+      router.push("/dashboard");
     } else {
-      alert('nothing')
+      alert("nothing");
     }
   };
 
