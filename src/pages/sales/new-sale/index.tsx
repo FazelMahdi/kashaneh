@@ -390,6 +390,7 @@ export default function NewSale() {
           <AddDriverDialog
             show={showAddDriverDialog}
             onClose={() => setShowAddDriverDialog(false)}
+            onUpdate={() => setShowAddDriverDialog(false)}
           />
         )}
       </Container>

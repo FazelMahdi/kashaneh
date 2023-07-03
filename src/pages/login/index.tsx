@@ -4,9 +4,11 @@ import Container from "@mui/material/Container";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import Image from "next/image";
+import { useRouter } from "next/router";
 import { useState } from "react";
 
 export default function Login() {
+  const router = useRouter()
   const [form, setForm] = useState({
     userName: "",
     password: "",
@@ -16,8 +18,8 @@ export default function Login() {
     event.preventDefault();
 
     if (form.userName === process.env.NEXT_PUBLIC_ADMIN_USERNAME) {
-      alert("super admin");
       setItem('userInfo', process.env.NEXT_PUBLIC_ADMIN_USERNAME)
+      router.push('/dashboard')
     } else if (form.userName === process.env.NEXT_PUBLIC_SELLER_USERNAME) {
       // setItem('userInfo', {
       //   mobile: process.env.SELLER_USERNAME,
