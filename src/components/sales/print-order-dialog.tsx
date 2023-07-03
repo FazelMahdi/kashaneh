@@ -164,7 +164,7 @@ const PrintOrderDialog = ({ show, order }) => {
         <div className="mt-3">
           <p className="font-extrabold">محاسبات:</p>
           <div className="flex justify-between flex-row flex-wrap mt-3">
-            <div className="w-full mb-2 border-1 border-solid border p-2 border-gray-500 rounded-lg">
+            <div className="w-full mb-2 border-1 border-solid border p-2 bord er-gray-500 rounded-lg">
               <div className="flex justify-between items-center">
                 <p className="ml-1">وزن بارگیری شده:</p>
                 <p className="ml-1 font-bold text-lg">{numeral(order.amount)}</p>

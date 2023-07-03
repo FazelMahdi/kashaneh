@@ -1,6 +1,6 @@
 "use client";
 
-import PrintOrderDialog from "@/components/sales/print-order-dialof";
+import PrintOrderDialog from "@/components/sales/print-order-dialog";
 import PageHeader from "@/components/utils/page-header";
 import http from "@/core/http/axios";
 import { formatDatetime } from "@/core/util/date-format";
