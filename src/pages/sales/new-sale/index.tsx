@@ -370,6 +370,7 @@ export default function NewSale() {
                   className="mb-5 w-full bg-green-600 font-extrabold rounded-lg py-5 text-white"
                   variant="contained"
                   size="large"
+                  disabled={loading.save}
                   onClick={handleSubmit(onSubmit)}
                 >
                   صدور مجوز بارگیری
