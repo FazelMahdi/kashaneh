@@ -405,7 +405,16 @@ export default function NewSale() {
             </Alert>
           )}
         </Box>
-        {orderDetail && <PrintOrderDialog show={true} order={orderDetail} />}
+        {orderDetail && (
+          <PrintOrderDialog
+            show={true}
+            order={orderDetail}
+            totalPrice={totalPrice()}
+            totalDiscount={totalDiscount()}
+            totalLoadPrice={totalLoadPrice()}
+            totalFinalPrice={totalFinalPrice()}
+          />
+        )}
       </Container>
     </>
   );
