@@ -21,7 +21,7 @@ import {
   TextField,
 } from "@mui/material";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import Toastify from "toastify-js";
 
 interface INewSale {
@@ -30,7 +30,7 @@ interface INewSale {
   family: string;
   carNO: string;
   carWeightEmpty: number | undefined;
-  cardLoadedWeight: number | undefined;
+  carLoadedWeight: number | undefined;
   productType: number | null;
 }
 
@@ -41,11 +41,12 @@ export default function NewSale() {
     family: "",
     carNO: "",
     carWeightEmpty: undefined,
-    cardLoadedWeight: undefined,
+    carLoadedWeight: undefined,
     productType: 1,
   });
 
   const [orderDetail, setOrderDetail] = useState<any>(null);
+  const [showPrintDialog, setShowPrintDialog] = useState<boolean>(false);
 
   const [loading, setLoading] = useState<any>({
     save: false,
@@ -53,26 +54,28 @@ export default function NewSale() {
   });
   const router = useRouter();
 
-  const getOrderDetail = (orderId) => {
+  const getOrderDetail = useCallback(() => {
     setLoading((prevState) => ({ ...prevState, detail: true }));
-    http
-      .get("/api/v1/order/searchOrder", {
-        params: {
-          id: orderId,
-        },
-      })
-      .then((response) => {
-        setOrderDetail(response);
-      })
-      .catch(() => alert("مشکل در ارتباط با سرور"))
-      .finally(() =>
-        setLoading((prevState) => ({ ...prevState, detail: false }))
-      );
-  };
+    const orderId = router.query.orderId;
+    if (orderId) {
+      http
+        .get("/api/v1/order/searchOrder", {
+          params: {
+            orderId: router.query.orderId,
+          },
+        })
+        .then((response) => {
+          setOrderDetail(response);
+        })
+        .finally(() =>
+          setLoading((prevState) => ({ ...prevState, detail: false }))
+        );
+    }
+  }, [router.query.orderId]);
   const onSaveOrder = () => {
     setLoading((prevState) => ({ ...prevState, save: true }));
     const orderAmount = Math.floor(
-      +form.cardLoadedWeight - orderDetail.emptyWeight
+      +form.carLoadedWeight - orderDetail.emptyWeight
     );
     const payload = {
       amount: orderAmount,
@@ -94,7 +97,7 @@ export default function NewSale() {
             padding: "1rem",
           },
         }).showToast();
-        router.push("/sales/inprogress-sales-list");
+        setShowPrintDialog(true)
       })
       .finally(() =>
         setLoading((prevState) => ({ ...prevState, save: false }))
@@ -103,33 +106,33 @@ export default function NewSale() {
 
   const totalPrice = () => {
     const orderAmount = Math.floor(
-      +form.cardLoadedWeight - orderDetail.emptyWeight
+      +form.carLoadedWeight - orderDetail.emptyWeight
     );
     return orderAmount * orderDetail.product.price;
   };
   const totalDiscount = () => {
     const orderAmount = Math.floor(
-      +form.cardLoadedWeight - orderDetail.emptyWeight
+      +form.carLoadedWeight - orderDetail.emptyWeight
     );
     return totalPrice() - orderAmount * orderDetail.product.finalPrice;
   };
   const totalLoadPrice = () => {
     const orderAmount = Math.floor(
-      +form.cardLoadedWeight - orderDetail.emptyWeight
+      +form.carLoadedWeight - orderDetail.emptyWeight
     );
     return orderAmount * orderDetail.product.loadPrice || 0;
   };
 
   const totalFinalPrice = () => {
     const orderAmount = Math.floor(
-      +form.cardLoadedWeight - orderDetail.emptyWeight
+      +form.carLoadedWeight - orderDetail.emptyWeight
     );
     return orderAmount * orderDetail.product.finalPrice + totalLoadPrice();
   };
 
   const canSave = () => {
     return (
-      form.cardLoadedWeight && form.cardLoadedWeight > orderDetail.emptyWeight
+      form.carLoadedWeight && form.carLoadedWeight > orderDetail.emptyWeight
     );
   };
 
@@ -142,9 +145,8 @@ export default function NewSale() {
   };
 
   useEffect(() => {
-    getOrderDetail(router.query.orderId);
-  }, []);
-
+    getOrderDetail();
+  }, [getOrderDetail]);
   return (
     <>
       <Container maxWidth={false}>
@@ -299,9 +301,9 @@ export default function NewSale() {
                       label="وزن ماشین در حالت بارگیری شده"
                       placeholder="به کیلوگرم وارد شود"
                       className="w-full my-2 ltr"
-                      name="cardLoadedWeight"
+                      name="carLoadedWeight"
                       onChange={(e) => handleChange(e)}
-                      value={form.cardLoadedWeight}
+                      value={form.carLoadedWeight}
                     />
                   </div>
                   {canSave() ? (
@@ -313,8 +315,8 @@ export default function NewSale() {
                             <span className="text-lg font-extrabold ml-2">
                               {numeral(
                                 Math.floor(
-                                  +form.cardLoadedWeight -
-                                    orderDetail.emptyWeight
+                                  +form.carLoadedWeight -
+                                  orderDetail.emptyWeight
                                 )
                               )}
                             </span>
@@ -405,7 +407,7 @@ export default function NewSale() {
             </Alert>
           )}
         </Box>
-        {orderDetail && (
+        {showPrintDialog && (
           <PrintOrderDialog
             show={true}
             order={orderDetail}
@@ -413,6 +415,11 @@ export default function NewSale() {
             totalDiscount={totalDiscount()}
             totalLoadPrice={totalLoadPrice()}
             totalFinalPrice={totalFinalPrice()}
+            totalAmount={
+              Math.floor(
+                +form.carLoadedWeight - orderDetail.emptyWeight
+              )
+            }
           />
         )}
       </Container>

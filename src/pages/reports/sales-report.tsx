@@ -39,10 +39,9 @@ export default function SalesReport() {
         setLoading(true);
         http
             .get("/api/v1/order/search", { params: { state: 10 } })
-            .then(async (response: any) => {
-                await setOrders(response);
+            .then( (response: any) => {
+                 setOrders(response);
             })
-            .catch(() => alert("مشکل در ارتباط با سرور"))
             .finally(() => setLoading(false));
     };
 

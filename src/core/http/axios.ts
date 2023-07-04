@@ -30,6 +30,9 @@ http.interceptors.response.use(
                 case "P2002":
                     errorText = 'این رکورد قبلا ثبت شده است'
                     break;
+                case "P2023":
+                    errorText = 'اطلاعاتی یافت نشد'
+                    break;
                 default:
                     break;
             }
@@ -38,8 +41,8 @@ http.interceptors.response.use(
                 className: "font-extrabold text-md",
                 duration: 5000,
                 newWindow: true,
-                gravity: "bottom", // `top` or `bottom`
-                position: "center", // `left`, `center` or `right`
+                gravity: "top", // `top` or `bottom`
+                position: "left", // `left`, `center` or `right`
                 stopOnFocus: true, // Prevents dismissing of toast on hover
                 style: {
                     background: "red",
@@ -47,6 +50,7 @@ http.interceptors.response.use(
                     padding: "1rem",
                 },
             }).showToast();
+            return Promise.reject(response?.data);
         }
         return response?.data;
     },

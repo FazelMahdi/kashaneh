@@ -1,6 +1,7 @@
 "use client";
 
 import AddDriverDialog from "@/components/driver/add-driver-dialog";
+import PrintLicenseDialog from "@/components/sales/print-license-dialog";
 import PageHeader from "@/components/utils/page-header";
 import http from '@/core/http/axios';
 import { AccountCircleOutlined } from "@mui/icons-material";
@@ -27,6 +28,7 @@ import Toastify from "toastify-js";
 
 export default function NewSale() {
   const router = useRouter();
+  const [license, setLicense] = useState();
 
   const {
     control,
@@ -131,7 +133,8 @@ export default function NewSale() {
     };
     http
       .post("/api/v1/order/create", payload)
-      .then(() => {
+      .then((response) => {
+        setLicense(response)
         Toastify({
           text: "مجوز با موفقیت صادر شد.",
           className: "font-extrabold text-lg",
@@ -146,7 +149,6 @@ export default function NewSale() {
             padding: "1rem",
           },
         }).showToast();
-        router.push("/sales/inprogress-sales-list");
       })
       .catch(() => alert("مشکل در ارتباط با سرور"))
       .finally(() =>
@@ -392,6 +394,12 @@ export default function NewSale() {
             show={showAddDriverDialog}
             onClose={() => setShowAddDriverDialog(false)}
             onUpdate={() => setShowAddDriverDialog(false)}
+          />
+        )}
+        {license && (
+          <PrintLicenseDialog
+            show={true}
+            order={license}
           />
         )}
       </Container>

@@ -2,9 +2,9 @@ import prisma from "..";
 
 export async function getOrder(id: string) {
     try {
-        const orderFromDb = await prisma.order.findFirst({
+        const orderFromDb = await prisma.order.findUniqueOrThrow({
             where: {
-                id
+                id: id
             },
 
         }).catch((err) => err)

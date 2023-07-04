@@ -1,11 +1,13 @@
-import React, { useEffect, useRef, useState } from "react";
-import domtoimage from "dom-to-image";
-import { Dialog, Divider } from "@mui/material";
 import { numeral } from "@/core/util/number";
+import { Dialog, Divider } from "@mui/material";
+import domtoimage from "dom-to-image";
+import { useRouter } from "next/router";
+import { useEffect, useRef, useState } from "react";
 
 const PrintOrderDialog = ({
   show,
   order,
+  totalAmount,
   totalPrice,
   totalDiscount,
   totalLoadPrice,
@@ -13,6 +15,7 @@ const PrintOrderDialog = ({
 }) => {
   const [open, setOpen] = useState(false);
   const designRef = useRef(null); // Ref to the design container element
+  const router = useRouter();
 
   const handlePrint = () => {
     const element = designRef.current; // HTML element to be printed
@@ -64,6 +67,7 @@ const PrintOrderDialog = ({
           </html>
         `);
         printWindow.document.close();
+        router.push('/sales/inprogress-sales-list')
       })
       .catch((error) => {
         console.error("Error:", error);
@@ -90,11 +94,12 @@ const PrintOrderDialog = ({
         <div className="flex justify-between items-center">
           <div>
             <img src="/logo.png" alt="کاشانه" width={80} height={80} />
+            <small>شرکت تعاونی آجر ماشینی کاشانه کوهدشت</small>
           </div>
           <div>
             <div className="flex justify-between items-center">
               <p className="ml-1">شماره فروش:</p>
-              <p className="ml-1 font-bold text-lg">{order.id}</p>
+              <p className="ml-1 font-bold text-lg">{new Date(order.createdAt).getTime()}</p>
             </div>
             <div className="mt-2 flex justify-between items-center">
               <p className="ml-1">تاریخ:</p>
@@ -110,7 +115,7 @@ const PrintOrderDialog = ({
         </div>
         <Divider className="bg-gray-800 my-3" />
         <div className="mt-3">
-          <p className="font-extrabold">مشخصات خریدار و وسیله:</p>
+          <p className="font-bold text-[0.95rem]">مشخصات خریدار و وسیله:</p>
           <div className="flex justify-between flex-row flex-wrap mt-3">
             <div className="w-6/12 ">
               <div className="flex justify-between items-center m-1 border-1 border-solid border p-2 border-gray-500 rounded-lg">
@@ -123,9 +128,9 @@ const PrintOrderDialog = ({
             <div className="w-6/12 ">
               <div className="flex justify-between items-center m-1 border-1 border-solid border p-2 border-gray-500 rounded-lg">
                 <p className="ml-1"> راننده/خریدار:</p>
-                <p className="ml-1 font-bold text-md">
-                  {order.driver.firstName}
-                  {order.driver.lastName}
+                <p className="ml-1 font-bold text-[1rem]">
+                  <span className="ml-1 inline-block">{order.driver.firstName}</span>
+                  <span className="inline-block">{order.driver.lastName}</span>
                 </p>
               </div>
             </div>
@@ -139,7 +144,7 @@ const PrintOrderDialog = ({
             <div className="w-6/12 ">
               <div className="flex justify-between items-center m-1 border-1 border-solid border p-2 border-gray-500 rounded-lg">
                 <p className="ml-1">آدرس</p>
-                <p className="ml-1 text-sm">
+                <p className="ml-1 text-[1rem]">
                   {order.destination.title} - {order.address}
                 </p>
               </div>
@@ -147,7 +152,7 @@ const PrintOrderDialog = ({
           </div>
         </div>
         <div className="mt-3">
-          <p className="font-extrabold">مشخصات کالا:</p>
+          <p className="font-bold text-[0.95rem]">مشخصات کالا:</p>
           <div className="flex justify-between flex-row flex-wrap mt-3">
             <div className="w-6/12 ">
               <div className="flex justify-between items-center m-1 border-1 border-solid border p-2 border-gray-500 rounded-lg">
@@ -162,6 +167,7 @@ const PrintOrderDialog = ({
                 <p className="ml-1">قیمت هر واحد:</p>
                 <p className="ml-1 font-bold text-lg">
                   {numeral(order.product.price)}
+                  <small className="text-xs"> ریال</small>
                 </p>
               </div>
             </div>
@@ -171,6 +177,7 @@ const PrintOrderDialog = ({
                 <p className="ml-1">هزینه بارگیری:</p>
                 <p className="ml-1 font-bold text-lg">
                   {numeral(order.product.loadPrice)}
+                  <small className="text-xs"> ریال</small>
                 </p>
               </div>
             </div>
@@ -179,26 +186,31 @@ const PrintOrderDialog = ({
                 <p className="ml-1">هزینه باسکول:</p>
                 <p className="ml-1 font-bold text-lg">
                   {numeral(order.product.baskulPrice)}
+                  <small className="text-xs"> ریال</small>
                 </p>
               </div>
             </div>
           </div>
         </div>
         <div className="mt-3">
-          <p className="font-extrabold">محاسبات:</p>
+          <p className="font-bold text-[0.95rem]">محاسبات:</p>
           <div className="flex justify-between flex-row flex-wrap mt-3">
-            <div className="w-full mb-2 border-1 border-solid border p-2 bord er-gray-500 rounded-lg">
+            <div className="w-full mb-2 border-1 border-solid border p-2 border-gray-500 rounded-lg">
               <div className="flex justify-between items-center">
                 <p className="ml-1">وزن بارگیری شده:</p>
                 <p className="ml-1 font-bold text-lg">
-                  {numeral(order.amount)}
+                  {numeral(totalAmount)}
+                  <small className="text-xs"> کیلوگرم</small>
                 </p>
               </div>
             </div>
             <div className="w-full mb-2 border-1 border-solid border p-2 border-gray-500 rounded-lg">
               <div className="flex justify-between items-center">
                 <p className="ml-1">جمع مبلغ:</p>
-                <p className="ml-1 font-bold text-lg">{numeral(totalPrice)}</p>
+                <p className="ml-1 font-bold text-lg">
+                  {numeral(totalPrice)}
+                  <small className="text-xs"> ریال</small>
+                </p>
               </div>
             </div>
 
@@ -207,6 +219,7 @@ const PrintOrderDialog = ({
                 <p className="ml-1">هزینه بارگیری:</p>
                 <p className="ml-1 font-bold text-lg">
                   {numeral(totalLoadPrice)}
+                  <small className="text-xs"> ریال</small>
                 </p>
               </div>
             </div>
@@ -215,6 +228,7 @@ const PrintOrderDialog = ({
                 <p className="ml-1">تخفیف:</p>
                 <p className="ml-1 font-bold text-lg">
                   {numeral(totalDiscount)}
+                  <small className="text-xs"> ریال</small>
                 </p>
               </div>
             </div>
@@ -223,6 +237,7 @@ const PrintOrderDialog = ({
                 <p className="ml-1 text-lg">جمع کل:</p>
                 <p className="ml-1 font-bold text-xl">
                   {numeral(totalFinalPrice)}
+                  <small className="text-xs"> ریال</small>
                 </p>
               </div>
             </div>
@@ -233,7 +248,7 @@ const PrintOrderDialog = ({
           <p className="font-bold">شرایط:</p>
           <p>
             تحویل کالا از طرف شرکت به موسسات حمل و نقل به منزله‌ی کالا به خریدار
-            است. و بارنامه ‌ی رسید کالا از طرف مشتری تلقی می‌گردد و شکرت نسبت به
+            است. و بارنامه ‌ی رسید کالا از طرف مشتری تلقی می‌گردد و شرکت نسبت به
             خسارات و ضایعات بین راهی هیچ گونه مسئولیتی ندارد.
           </p>
         </div>
