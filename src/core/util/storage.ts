@@ -1,7 +1,7 @@
 import Cookies from 'js-cookie';
 
 export function setItem(key, value) {
-    return Cookies.set(key, value);
+    return Cookies.set(key, value, {expires: 0.5});
 }
 
 export async function getItem(key) {
