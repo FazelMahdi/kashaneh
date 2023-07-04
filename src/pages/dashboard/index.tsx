@@ -1,3 +1,5 @@
+"use client";
+
 import http from "@/core/http/axios";
 import { numeral } from "@/core/util/number";
 import { Box, Container, Skeleton } from "@mui/material";
