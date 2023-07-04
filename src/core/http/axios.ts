@@ -56,7 +56,7 @@ http.interceptors.response.use(
     },
     ((error) => {
         Toastify({
-            text: error.response.statusText + '-' + error.response.status,
+            text: error.response?.statusText + '-' + error.response?.status || 'خطا در ارتباط با سرور',
             className: "font-extrabold text-md",
             duration: 5000,
             newWindow: true,
