@@ -21,6 +21,7 @@ model Order {
   amount        Int
   needsOfAmount Int
   preOrder      Int         @default(0)
+  buyerName     String
 }
 
 model WorkerGroup {
@@ -37,9 +38,9 @@ model Driver {
   id        String   @id @default(auto()) @map("_id") @db.ObjectId
   firstName String
   lastName  String
-  mobile    String   @unique
+  mobile    String   
   pelak     Pelak
-  fullPelak String
+  fullPelak String   @unique
   createdAt DateTime @default(now())
 }
 
