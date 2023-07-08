@@ -14,6 +14,20 @@ http.interceptors.request.use(
         return config;
     },
     (error) => {
+        Toastify({
+            text: 'خطا در برقراری ارتباط با سرور',
+            className: "font-extrabold text-md",
+            duration: 5000,
+            newWindow: true,
+            gravity: "top", // `top` or `bottom`
+            position: "left", // `left`, `center` or `right`
+            stopOnFocus: true, // Prevents dismissing of toast on hover
+            style: {
+                background: "red",
+                borderRadius: "1rem",
+                padding: "1rem",
+            },
+        }).showToast();
         return Promise.reject(error);
     }
 );

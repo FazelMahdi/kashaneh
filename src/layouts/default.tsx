@@ -56,8 +56,8 @@ export default function DefaultLayout({ children }) {
       admin: true,
     },
     {
-      title: "حسابداری",
-      path: "",
+      title: "درخواست ها",
+      path: "/reports/requests",
       admin: true,
     },
     {
