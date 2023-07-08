@@ -67,11 +67,8 @@ const PrintOrderDialog = ({
           </html>
         `);
         printWindow.document.close();
-        // router.push('/sales/inprogress-sales-list')
+        router.push('/sales/inprogress-sales-list')
       })
-      .catch((error) => {
-        console.error("Error:", error);
-      });
   };
 
   const handleClose = () => {

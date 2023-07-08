@@ -33,7 +33,8 @@ http.interceptors.response.use(
                 case "P2023":
                     errorText = 'اطلاعاتی یافت نشد'
                     break;
-                default:
+                    default:
+                    errorText = 'اطلاعاتی یافت نشد'
                     break;
             }
             Toastify({

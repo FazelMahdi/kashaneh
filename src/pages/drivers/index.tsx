@@ -44,7 +44,7 @@ export default function Drivers() {
 
     const deleteDriver = (driver) => {
         setLoading(true)
-        http.deletes
+        http.delete(`/api/v1/driver/${driver.id}/delete`)
             .then(() => {
                 getDrivers()
             })
