@@ -2,6 +2,7 @@ import AddDriverDialog from '@/components/driver/add-driver-dialog';
 import PageHeader from '@/components/utils/page-header';
 import http from '@/core/http/axios';
 import { formatDatetime } from '@/core/util/date-format';
+import { EditOutlined } from '@mui/icons-material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { Alert, Box, Button, Container, IconButton, Skeleton, styled } from '@mui/material';
 import Table from '@mui/material/Table';
@@ -25,6 +26,7 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 export default function Drivers() {
     const [addDriverDialog, setAddDrivertDialog] = useState<Boolean>(false)
     const [drivers, setDrivers] = useState<any>(null)
+    const [selectedDriver, setSelectedDriver] = useState<any>(null)
     const [loading, setLoading] = useState<boolean>(false)
 
     const getDrivers = () => {
@@ -42,11 +44,16 @@ export default function Drivers() {
 
     const deleteDriver = (driver) => {
         setLoading(true)
-        http.delete(`/api/v1/driver/${driver.id}`)
+        http.deletes
             .then(() => {
                 getDrivers()
             })
             .finally(() => setLoading(false))
+    }
+
+    const updateDriver = (dv) => {
+        setSelectedDriver(dv)
+        setAddDrivertDialog(true);
     }
 
 
@@ -73,29 +80,32 @@ export default function Drivers() {
                                 </TableRow>
                             </TableHead>
                             <TableBody>
-                                {drivers.map((driver, index) => (
+                                {drivers.map((user, index) => (
                                     <StyledTableRow
                                         key={index}
                                     >
                                         <TableCell component="th" scope="row">
-                                            {driver.firstName}
+                                            {user.firstName}
                                         </TableCell>
                                         <TableCell component="th" scope="row">
-                                            {driver.lastName}
+                                            {user.lastName}
                                         </TableCell>
                                         <TableCell component="th" scope="row">
-                                            {driver.mobile}
+                                            {user.mobile}
                                         </TableCell>
                                         <TableCell component="th" scope="row">
-                                            {formatDatetime(driver.createdAt)}
+                                            {formatDatetime(user.createdAt)}
                                         </TableCell>
                                         <TableCell component="th" scope="row">
-                                            {driver.fullPelak}
+                                            {user.fullPelak}
                                         </TableCell>
                                         <TableCell align="left">
                                             <div className='flex justify-end items-center'>
-                                                <IconButton aria-label="حدف راننده" disabled={loading} onClick={() => deleteDriver(driver)}>
+                                                <IconButton aria-label="حدف راننده" disabled={loading} onClick={() => deleteDriver(user)}>
                                                     <DeleteIcon />
+                                                </IconButton>
+                                                <IconButton aria-label="ویرایش راننده" size='small' disabled={loading} onClick={() => updateDriver(user)} >
+                                                    <EditOutlined className="text-blue-500" />
                                                 </IconButton>
                                             </div>
                                         </TableCell>
@@ -117,7 +127,7 @@ export default function Drivers() {
                     </Box>
                 }
             </Box>
-            {addDriverDialog && <AddDriverDialog show={addDriverDialog} onClose={() => setAddDrivertDialog(false)} onUpdate={() => getDrivers()} />}
+            {addDriverDialog && <AddDriverDialog show={addDriverDialog} onClose={() => setAddDrivertDialog(false)} onUpdate={() => getDrivers()} driver={selectedDriver} />}
         </Container>
 
     );

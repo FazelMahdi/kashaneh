@@ -75,7 +75,6 @@ const PrintLicenseDialog = ({
 
   useEffect(() => {
     setOpen(show);
-    console.log(order)
     setTimeout(() => {
       handlePrint();
     }, 2000);

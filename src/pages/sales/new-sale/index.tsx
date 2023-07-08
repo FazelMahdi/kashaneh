@@ -28,7 +28,7 @@ import Toastify from "toastify-js";
 
 export default function NewSale() {
   const router = useRouter();
-  const [license, setLicense] = useState();
+  const [license, setLicense] = useState<any>();
 
   const {
     control,
@@ -50,6 +50,7 @@ export default function NewSale() {
       needsOfAmount: undefined,
       amount: 0,
       preOrder: 0,
+      buyerName: '',
     },
   });
 
@@ -80,9 +81,13 @@ export default function NewSale() {
             keyword,
           },
         })
-        .then((response) => {
-          response ? setDriver(response)
-            : setShowAddDriverDialog(true);
+        .then((response: any) => {
+          if (response) {
+            setDriver(response);
+            setValue("buyerName", `${response.firstName} ${response.lastName}`)
+          } else {
+            setShowAddDriverDialog(true);
+          }
         })
         .finally(() =>
           setLoading((prevState) => ({ ...prevState, driver: false }))
@@ -181,6 +186,7 @@ export default function NewSale() {
             <TextField
               label="شماره همراه / شماره پلاک"
               name="keyword"
+              autoComplete="off"
               className="w-full ltr ml-2"
               onChange={(e) => setKeyword(() => e.target.value)}
               value={keyword}
@@ -244,6 +250,20 @@ export default function NewSale() {
               </Divider>
               <div className="flex flex-col justify-center items-center">
                 <Controller
+                  name="buyerName"
+                  control={control}
+                  rules={{ required: true }}
+                  render={({ field }) => (
+                    <TextField
+                      {...field}
+                      error={!!errors.buyerName}
+                      label="نام خریدار"
+                      autoComplete="off"
+                      className="w-full mb-5"
+                    />
+                  )}
+                />
+                <Controller
                   name="emptyWeight"
                   control={control}
                   rules={{ required: true }}
@@ -253,6 +273,7 @@ export default function NewSale() {
                       error={!!errors.emptyWeight}
                       label="وزن ماشین (بدون بار)"
                       className="w-full mb-5"
+                      autoComplete="off"
                       placeholder="کیلوگرم"
                     />
                   )}
@@ -273,6 +294,7 @@ export default function NewSale() {
                         {...field}
                         labelId="productId"
                         error={!!errors.productId}
+                        autoComplete="off"
                         className="text-right"
                         label="نوع محصول"
                       >
@@ -297,6 +319,7 @@ export default function NewSale() {
                       {...field}
                       label="مقدار سفارش"
                       error={!!errors.needsOfAmount}
+                      autoComplete="off"
                       placeholder="کیلوگرم"
                       className="mb-5 w-full"
                     />
@@ -318,6 +341,7 @@ export default function NewSale() {
                         error={!!errors.workerGroupId}
                         labelId="workerGroupId"
                         className="text-right"
+                        autoComplete="off"
                         label="گروه بارگیری"
                       >
                         {prms &&
@@ -348,6 +372,7 @@ export default function NewSale() {
                       {...params}
                       label="مقصد بار"
                       className="mb-5"
+                      autoComplete="off"
                       error={!!errors.destinations}
                       inputProps={{
                         ...params.inputProps,

@@ -9,7 +9,7 @@ import { useEffect, useState } from 'react';
 import { Controller, useForm } from "react-hook-form";
 import Toastify from "toastify-js";
 
-export default function AddDriverDialog({ show, onClose, onUpdate }) {
+export default function AddDriverDialog({ show, onClose, onUpdate, driver }) {
     const [open, setOpen] = useState(false);
     const {
         control,
@@ -35,27 +35,51 @@ export default function AddDriverDialog({ show, onClose, onUpdate }) {
     const [loading, setLoading] = useState<boolean>(false)
     const onSubmit = async (data) => {
         setLoading(true)
-        http.post('/api/v1/driver/create', { ...data, fullPelak: data.pelak.p1 + data.pelak.p2 + data.pelak.p3 })
-            .then(() => {
-                setOpen(false);
-                onClose(false);
-                onUpdate(true);
-                Toastify({
-                    text: "راننده جدید با موفقیت اضافه شد",
-                    className: "font-extrabold text-lg",
-                    duration: 3000,
-                    newWindow: true,
-                    gravity: "bottom", // `top` or `bottom`
-                    position: "center", // `left`, `center` or `right`
-                    stopOnFocus: true, // Prevents dismissing of toast on hover
-                    style: {
-                        background: "green",
-                        borderRadius: "1rem",
-                        padding: "1rem",
-                    },
-                }).showToast();
-            })
-            .finally(() => setLoading(false))
+        if (driver) {
+            http.put(`/api/v1/driver/${driver.id}/update`, { ...data, fullPelak: data.pelak.p1 + data.pelak.p2 + data.pelak.p3 })
+                .then(() => {
+                    setOpen(false);
+                    onClose(false);
+                    onUpdate(true);
+                    Toastify({
+                        text: "ویرایش با موفقیت انجام شد",
+                        className: "font-extrabold text-lg",
+                        duration: 3000,
+                        newWindow: true,
+                        gravity: "bottom", // `top` or `bottom`
+                        position: "center", // `left`, `center` or `right`
+                        stopOnFocus: true, // Prevents dismissing of toast on hover
+                        style: {
+                            background: "green",
+                            borderRadius: "1rem",
+                            padding: "1rem",
+                        },
+                    }).showToast();
+                })
+                .finally(() => setLoading(false))
+        } else {
+            http.post('/api/v1/driver/create', { ...data, fullPelak: data.pelak.p1 + data.pelak.p2 + data.pelak.p3 })
+                .then(() => {
+                    setOpen(false);
+                    onClose(false);
+                    onUpdate(true);
+                    Toastify({
+                        text: "راننده جدید با موفقیت اضافه شد",
+                        className: "font-extrabold text-lg",
+                        duration: 3000,
+                        newWindow: true,
+                        gravity: "bottom", // `top` or `bottom`
+                        position: "center", // `left`, `center` or `right`
+                        stopOnFocus: true, // Prevents dismissing of toast on hover
+                        style: {
+                            background: "green",
+                            borderRadius: "1rem",
+                            padding: "1rem",
+                        },
+                    }).showToast();
+                })
+                .finally(() => setLoading(false))
+        }
     }
 
     const handleClose = (
@@ -69,6 +93,16 @@ export default function AddDriverDialog({ show, onClose, onUpdate }) {
 
     useEffect(() => {
         setOpen(show);
+        if (driver) {
+            setValue('firstName', driver.firstName)
+            setValue('lastName', driver.lastName)
+            setValue('mobile', driver.mobile)
+            setValue('fullPelak', driver.fullPelak)
+            setValue('pelak.p1', driver.pelak.p1)
+            setValue('pelak.p2', driver.pelak.p2)
+            setValue('pelak.p3', driver.pelak.p3)
+            setValue('pelak.p4', driver.pelak.p4)
+        }
     }, [show])
 
     return (
@@ -81,7 +115,9 @@ export default function AddDriverDialog({ show, onClose, onUpdate }) {
         >
             <DialogTitle >
                 <div className='flex justify-between'>
-                    افزودن راننده جدید
+                    {
+                        driver ? `ویرایش ${driver.lastName}` : 'افزودن راننده جدید'
+                    }
                 </div>
             </DialogTitle>
             <DialogContent dividers>

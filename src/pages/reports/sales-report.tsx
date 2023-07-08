@@ -1,3 +1,5 @@
+'use client'
+
 import SaleCheckoutDialog from "@/components/sales/sale-checkout";
 import PageHeader from "@/components/utils/page-header";
 import http from '@/core/http/axios';
@@ -35,12 +37,25 @@ export default function SalesReport() {
     const [saleCheckouttDialog, setSaleCheckouttDialog] =
         useState<Boolean>(false);
 
+
+    // const {
+    //     control,
+    //     formState: { errors },
+    //     handleSubmit,
+    //     setValue,
+    // } = useForm({
+    //     defaultValues: {
+    //         fromDate: pastDays(31, 'minus'),
+    //         toDate: new Date()
+    //     },
+    // });
+
     const getOrders = () => {
         setLoading(true);
         http
             .get("/api/v1/order/search", { params: { state: 10 } })
-            .then( (response: any) => {
-                 setOrders(response);
+            .then((response: any) => {
+                setOrders(response);
             })
             .finally(() => setLoading(false));
     };
@@ -61,6 +76,22 @@ export default function SalesReport() {
         return totalPrice(order) - (order.amount * order.product.finalPrice)
     }
 
+
+    // const onSubmit = (data) => {
+    //     setLoading(true);
+
+    //     // const {
+    //     //     fromDate,
+    //     //     toDate,
+    //     // } = data;
+    //     http
+    //         .post("/api/v1/order/reports/filter", data)
+    //         .then((response) => {
+    //             setOrders(response);
+    //         })
+    //         .finally(() => setLoading(false));
+    // };
+
     useEffect(() => {
         getOrders();
     }, []);
@@ -69,6 +100,21 @@ export default function SalesReport() {
         <Container maxWidth={false}>
             <Box sx={{ bgcolor: "white", borderRadius: "1rem", padding: "2rem" }}>
                 <PageHeader title="لیست کل سفارشات" />
+
+                {/* 
+                <form className="flex justify-start items-center">
+
+                    <Button
+                        variant="outlined"
+                        className="bg-green-50"
+                        size="small"
+                        onClick={handleSubmit(onSubmit)}
+                    >
+                        جستجو
+                    </Button>
+                </form> */}
+
+
                 {orders && orders.length > 0 && (
                     <TableContainer component={Box}>
                         <Table
