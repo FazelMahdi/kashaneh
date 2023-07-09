@@ -47,6 +47,15 @@ export default function InprogressSalesList() {
       .finally(() => setLoading(false));
   };
 
+  const deleteOrder = (order) => {
+    setLoading(true)
+    http.delete(`/api/v1/order/${order.id}/delete`)
+      .then(() => {
+        getOrders()
+      })
+      .finally(() => setLoading(false))
+  }
+
   useEffect(() => {
     getOrders();
   }, []);
@@ -75,10 +84,10 @@ export default function InprogressSalesList() {
                 {orders.map((order, index) => (
                   <StyledTableRow key={index}>
                     <TableCell component="th" scope="row">
-                    {order.driver.firstName} {order.driver.lastName}
+                      {order.driver.firstName} {order.driver.lastName}
                     </TableCell>
                     <TableCell align="right">
-                    {order.driver.mobile}
+                      {order.driver.mobile}
                     </TableCell>
                     <TableCell align="right">
                       {order.driver.fullPelak}
@@ -101,7 +110,7 @@ export default function InprogressSalesList() {
                         >
                           بارگیری
                         </Link>
-                        <IconButton aria-label="delete">
+                        <IconButton aria-label="delete" onClick={() => deleteOrder(order)}>
                           <DeleteIcon />
                         </IconButton>
                       </div>

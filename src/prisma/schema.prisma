@@ -17,6 +17,7 @@ model Order {
   product       ProductType 
   workerGroup   WorkerGroupType
   state         Int         @default(1)
+  isRemove      Boolean     @default(false)
   emptyWeight   Int
   amount        Int
   needsOfAmount Int

@@ -133,8 +133,8 @@ export default function NewSale() {
       workerGroup: prms.workerGroup.find((x) => x.id == workerGroupId),
       destination: prms.destinations.find((x) => x.id == destinationId),
       driver,
-      emptyWeight: +emptyWeight,
-      needsOfAmount: +needsOfAmount,
+      emptyWeight: emptyWeight,
+      needsOfAmount: needsOfAmount,
     };
     http
       .post("/api/v1/order/create", payload)

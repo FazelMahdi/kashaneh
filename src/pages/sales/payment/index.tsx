@@ -4,7 +4,7 @@ import PrintOrderDialog from "@/components/sales/print-order-dialog";
 import PageHeader from "@/components/utils/page-header";
 import http from "@/core/http/axios";
 import { formatDatetime } from "@/core/util/date-format";
-import { numeral } from "@/core/util/number";
+import { fixChars, numeral } from "@/core/util/number";
 import { PermIdentity } from "@mui/icons-material";
 import {
   Alert,
@@ -140,7 +140,7 @@ export default function NewSale() {
     const value = evt.target.value;
     setForm({
       ...form,
-      [evt.target.name]: value,
+      [evt.target.name]: fixChars(value),
     });
   };
 

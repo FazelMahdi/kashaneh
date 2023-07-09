@@ -162,12 +162,20 @@ export default function SalesReport() {
                                         </TableCell>
                                         <TableCell align="right">
                                             {
+                                                order.isRemove &&
+                                                <Chip className="ml-2" label="حذف شد" color="error" size="small" />
+                                            }
+                                            {
                                                 order.state === 1 &&
                                                 <Chip label="در حال بارگیری" color="info" size="small" />
                                             }
                                             {
                                                 order.state === 10 &&
                                                 <Chip label="پرداخت موفق" color="success" size="small" />
+                                            }
+                                            {
+                                                order.state === 0 &&
+                                                <Chip label="پیش سفارش" color="warning" size="small" />
                                             }
                                         </TableCell>
                                     </StyledTableRow>
