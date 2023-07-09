@@ -74,8 +74,8 @@ export default function Drivers() {
                                     <TableCell>نام</TableCell>
                                     <TableCell>نام خانوادگی</TableCell>
                                     <TableCell>شماره همراه</TableCell>
-                                    <TableCell>شماره پلاک</TableCell>
                                     <TableCell>زمان ثبت نام</TableCell>
+                                    <TableCell>شماره پلاک</TableCell>
                                     <TableCell align="right" />
                                 </TableRow>
                             </TableHead>
