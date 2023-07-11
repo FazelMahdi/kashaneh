@@ -1,25 +1,25 @@
 import pastDays, { pastHours } from "@/core/util/past-dates";
 import prisma from "..";
 
-interface OrderFilter {
-    destination?: {
-        title?: string
-    };
-    address?: string;
-    workerGroup?: {
-        id?: string
-    };
-    state?: number;
-    emptyWeight?: number;
-    amount?: number;
-    needsOfAmount?: number;
-    preOrder?: number;
-    createdAt?: DateFilter;
-}
-interface DateFilter {
-    gte?: Date;
-    lte?: Date;
-}
+// interface OrderFilter {
+//     destination?: {
+//         title?: string
+//     };
+//     address?: string;
+//     workerGroup?: {
+//         id?: string
+//     };
+//     state?: number;
+//     emptyWeight?: number;
+//     amount?: number;
+//     needsOfAmount?: number;
+//     preOrder?: number;
+//     createdAt?: DateFilter;
+// }
+// interface DateFilter {
+//     gte?: Date;
+//     lte?: Date;
+// }
 
 export async function todaySales() {
     try {

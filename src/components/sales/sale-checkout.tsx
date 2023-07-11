@@ -9,7 +9,7 @@ export default function SaleCheckoutDialog({ show, onClose }) {
 
     const handleClose = (
         event: any,
-        reason: "backdropClick" | "escapeKeyDown"
+        reason: "backdropClick" | "escapeKeyDown" | "close"
     ) => {
         event.stopPropagation();
         if (reason !== "backdropClick") {
@@ -39,10 +39,10 @@ export default function SaleCheckoutDialog({ show, onClose }) {
 
             </DialogContent>
             <div className='flex justify-between p-5'>
-                <Button autoFocus onClick={handleClose}>
+                <Button autoFocus onClick={(e) => handleClose(e, 'close')}>
                     انصراف
                 </Button>
-                <Button onClick={() => { handleClose() }} variant='contained' className='bg-orange-400'>
+                <Button onClick={(e) => handleClose(e, 'close')} variant='contained' className='bg-orange-400'>
                     ثبت نهایی فروش
                 </Button>
             </div>

@@ -32,9 +32,9 @@ export default function AddProductDialog({ show, onClose, onUpdate }) {
       .post("/api/v1/product/create", {
         title: form.title,
         unit: 1, // kilogram
-        price: +form.price,
-        finalPrice: +form.finalPrice,
-        loadPrice: +form.loadPrice,
+        price: form.price && +form.price,
+        finalPrice: form.finalPrice && +form.finalPrice,
+        loadPrice: form.loadPrice && +form.loadPrice,
         baskulPrice: 0,
       })
       .then(() => {

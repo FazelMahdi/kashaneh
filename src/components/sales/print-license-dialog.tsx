@@ -1,13 +1,11 @@
 import { numeral } from "@/core/util/number";
 import { Button, Dialog, Divider } from "@mui/material";
 import domtoimage from "dom-to-image";
-import { useRouter } from "next/router";
 import { useEffect, useRef, useState } from "react";
 
 const PrintLicenseDialog = ({ show, order }) => {
   const [open, setOpen] = useState(false);
   const designRef = useRef(null); // Ref to the design container element
-  const router = useRouter();
 
   const handlePrint = () => {
     const element = designRef.current; // HTML element to be printed

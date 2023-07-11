@@ -21,13 +21,11 @@ import {
   Skeleton,
   TextField,
 } from "@mui/material";
-import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import Toastify from "toastify-js";
 
 export default function NewSale() {
-  const router = useRouter();
   const [license, setLicense] = useState<any>();
 
   const {
@@ -297,6 +295,9 @@ export default function NewSale() {
                         autoComplete="off"
                         className="text-right"
                         label="نوع محصول"
+                        onChange={(event) =>
+                          setValue("productId", event.target.value)
+                        }
                       >
                         {prms &&
                           prms.products &&
@@ -343,6 +344,9 @@ export default function NewSale() {
                         className="text-right"
                         autoComplete="off"
                         label="گروه بارگیری"
+                        onChange={(event) =>
+                          setValue("workerGroupId", event.target.value)
+                        }
                       >
                         {prms &&
                           prms.workerGroup.map((item, index) => (
@@ -373,7 +377,7 @@ export default function NewSale() {
                       label="مقصد بار"
                       className="mb-5"
                       autoComplete="off"
-                      error={!!errors.destinations}
+                      error={!!errors.destination}
                       inputProps={{
                         ...params.inputProps,
                       }}
@@ -417,6 +421,7 @@ export default function NewSale() {
         {showAddDriverDialog && (
           <AddDriverDialog
             show={showAddDriverDialog}
+            driver={null}
             onClose={() => setShowAddDriverDialog(false)}
             onUpdate={() => setShowAddDriverDialog(false)}
           />
